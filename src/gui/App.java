@@ -16,7 +16,7 @@ public class App extends Application {
     }
 
     /**
-     * @param args the command line arguments
+     * This is a test comment
      */
     public static void main(String[] args) {
         launch(args);
