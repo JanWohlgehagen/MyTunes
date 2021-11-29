@@ -1,4 +1,4 @@
-package gui.model;
+package gui.view;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,9 +10,9 @@ import java.io.IOException;
 public class SceneSwapper {
 
     public void sceneSwitch(Stage window, String fxmlClassName) throws IOException {
-        Parent hubView = FXMLLoader.load(getClass().getResource(fxmlClassName));
-        Scene hubViewScene = new Scene(hubView);
-        window.setScene(hubViewScene);
+        Parent Scene = FXMLLoader.load(getClass().getResource(fxmlClassName));
+        Scene ViewScene = new Scene(Scene);
+        window.setScene(ViewScene);
         window.show();
     }
 }
