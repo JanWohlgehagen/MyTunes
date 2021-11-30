@@ -1,19 +1,23 @@
 package gui.controller;
 
-import be.Song;
+import gui.model.SongModel;
 import gui.view.SceneSwapper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.DragEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class MainController {
+public class MainController  implements Initializable {
 
-
+    @FXML
+    private TextField txtSearch;
     @FXML
     private Slider sldVolume;
     @FXML
@@ -26,10 +30,22 @@ public class MainController {
     private Button btnPlayPause;
     @FXML
     private TableView tvPlaylists;
+
     private final SceneSwapper sceneSwapper;
+    private SongModel songModel;
 
     public MainController(){
         sceneSwapper = new SceneSwapper();
+        songModel = new SongModel();
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+
+
+    txtSearch.textProperty().addListener((observableValue, oldValue, newValue) -> {songModel.searchSong(newValue);});
+
     }
 
     /**
@@ -143,5 +159,7 @@ public class MainController {
      */
     public void HandleDeleteSongBtn(ActionEvent actionEvent) {
     }
+
+
 }
 
