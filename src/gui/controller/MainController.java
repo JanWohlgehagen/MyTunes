@@ -16,6 +16,9 @@ import java.io.IOException;
 public class MainController {
 
     public Button btnPreviousSong;
+    public Button btnAddSongToPlaylist;
+    public Button btnAscendSongInPlaylist;
+    public Button btnDescendSongInPlaylist;
     @FXML
     private Button btnSkipSong;
     @FXML

@@ -5,6 +5,11 @@
     -fx-background-size: 25 25;
     -fx-background-position: center;
 }
+#btnPlayPause:pressed{
+    -fx-background-image: url("../images/pause.PNG");
+    -fx-background-size: 25 25;
+    -fx-background-position: center;
+}
 #btnSkipSong {
     -fx-background-image: url("../Images/skipsong.png");
     -fx-background-size: 25 25;
@@ -13,5 +18,20 @@
 #btnPreviousSong{
     -fx-background-image: url("../Images/goback.PNG");
     -fx-background-size: 25 25;
+    -fx-background-position: center;
+}
+#btnAddSongToPlaylist{
+    -fx-background-image: url("../Images/leftarrow.png");
+    -fx-background-size: 27 27;
+    -fx-background-position: center;
+}
+#btnAscendSongInPlaylist{
+    -fx-background-image: url("../Images/arrowup.png");
+    -fx-background-size: 27 27;
+    -fx-background-position: center;
+}
+#btnDescendSongInPlaylist{
+    -fx-background-image: url("../Images/arrowdown.png");
+    -fx-background-size: 27 27;
     -fx-background-position: center;
 }
