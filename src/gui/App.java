@@ -13,6 +13,7 @@ public class App extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/gui/view/MainView.fxml"));
         stage.setScene(new Scene(root));
         stage.show();
+        stage.setResizable(false);
     }
     // testestetsetsetsetse
 
