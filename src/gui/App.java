@@ -14,11 +14,7 @@ public class App extends Application {
         stage.setScene(new Scene(root));
         stage.show();
     }
-    // testestetsetsetsetse
 
-    /**
-     * This is a test comment
-     */
     public static void main(String[] args) {
         launch(args);
     }

@@ -73,8 +73,7 @@ public class MainController {
      * @throws IOException if cant find stage.
      */
     public void HandleNewPlaylistBtn(ActionEvent actionEvent) throws IOException {
-        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        sceneSwapper.sceneSwitch(window, "NewEditPlaylistView.fxml");
+        sceneSwapper.sceneSwitch(new Stage(), "NewEditPlaylistView.fxml");
     }
     /**
      * switch the scene to a different scene.
@@ -82,8 +81,7 @@ public class MainController {
      * @throws IOException if cant find stage.
      */
     public void HandleEditPlaylistBtn(ActionEvent actionEvent) throws IOException {
-        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        sceneSwapper.sceneSwitch(window, "NewEditPlaylistView.fxml");
+        sceneSwapper.sceneSwitch(new Stage(), "NewEditPlaylistView.fxml");
     }
 
     /**
@@ -124,8 +122,7 @@ public class MainController {
      * @throws IOException if cant find stage.
      */
     public void handleNewSongBtn(ActionEvent actionEvent) throws IOException {
-        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        sceneSwapper.sceneSwitch(window, "NewEditSongView.fxml");
+        sceneSwapper.sceneSwitch(new Stage(), "NewEditSongView.fxml");
     }
     /**
      *  switches the scene over to NewEditSongView.fxml.
@@ -133,8 +130,7 @@ public class MainController {
      * @throws IOException if cant find the stage.
      */
     public void handleEditSongBtn(ActionEvent actionEvent) throws IOException {
-        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        sceneSwapper.sceneSwitch(window, "NewEditSongView.fxml");
+        sceneSwapper.sceneSwitch(new Stage(), "NewEditSongView.fxml");
     }
 
     /**
