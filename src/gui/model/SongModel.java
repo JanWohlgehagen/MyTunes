@@ -17,6 +17,12 @@ public class SongModel {
 
     }
 
+    /**
+     * Searches through song list, to find a song that matches the key word
+     *
+     * @param query the key word, to search for
+     */
+
     public void searchSong(String query) {
         List<Song> searchResults = songManager.searchSong(query);
         songsToBeViewed.clear();

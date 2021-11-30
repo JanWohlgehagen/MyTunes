@@ -18,6 +18,12 @@ public class SongManager {
         return null; // <- songDAO.getAllSongs();
     }
 
+    /**
+     * Searches through song list, to find a song that matches the key word
+     *
+     * @param query the key word, to search for
+     * @return a list of songs that fit, the key word
+     */
     public List<Song> searchSong(String query) {
         List<Song> allSongs = getAllSongs();
         List<Song> searchResult = songSearcher.search(allSongs, query);
