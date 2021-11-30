@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="461.0" prefWidth="729.0" styleClass="&quot;@css/css&quot;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.MainController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="461.0" prefWidth="729.0" styleClass="&quot;@css/css&quot;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.MainController">
    <top>
       <AnchorPane prefHeight="90.0" prefWidth="730.0" BorderPane.alignment="CENTER">
          <children>
@@ -20,9 +20,9 @@
                   <Cursor fx:constant="SE_RESIZE" />
                </cursor>
             </Slider>
-            <Button fx:id="btnSkipSong" layoutX="157.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleNextSongBtn" text="&gt;" />
-            <Button fx:id="btnPreviousSong" layoutX="83.0" layoutY="14.0" mnemonicParsing="false" onAction="#HandlePreviousSongBtn" text="&lt;" />
-            <Button fx:id="btnPlayPause" layoutX="118.0" layoutY="13.0" mnemonicParsing="false" onAction="#handlePlayPauseBtn" prefHeight="28.0" prefWidth="32.0" styleClass="css" text="p" />
+            <Button fx:id="btnSkipSong" layoutX="157.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleNextSongBtn" prefWidth="28.0" />
+            <Button fx:id="btnPreviousSong" layoutX="83.0" layoutY="14.0" mnemonicParsing="false" onAction="#HandlePreviousSongBtn" prefWidth="28.0" />
+            <Button fx:id="btnPlayPause" layoutX="118.0" layoutY="13.0" mnemonicParsing="false" onAction="#handlePlayPauseBtn" prefHeight="28.0" prefWidth="32.0" styleClass="css" />
             <Label layoutX="14.0" layoutY="46.0" text="Volume" />
             <Label fx:id="lblCurrentSongPlaying" layoutX="311.0" layoutY="45.0" text="NONE ::: IS PLAYING" />
             <Label layoutX="531.0" layoutY="45.0" text="Search" />
@@ -53,7 +53,7 @@
                 <TableColumn prefWidth="117.59998741149903" text="Songs" />
               </columns>
             </TableView>
-            <Button fx:id="btnAddSongToPlaylist" layoutX="139.0" layoutY="37.0" mnemonicParsing="false" onAction="#handleAddSongToPlaylistBtn" prefHeight="26.0" prefWidth="35.0" text="&lt;=" />
+            <Button fx:id="btnAddSongToPlaylist" layoutX="139.0" layoutY="37.0" mnemonicParsing="false" onAction="#handleAddSongToPlaylistBtn" prefHeight="26.0" prefWidth="35.0" />
          </children>
       </AnchorPane>
    </center>
