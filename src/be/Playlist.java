@@ -25,4 +25,12 @@ public class Playlist {
     public void addSongToPlayList(Song song){
         this.songList.add(song);
     }
+
+    public int getTotalTime(){
+        int totalTime = 0;
+        for (Song song: getSongList()) {
+            totalTime += Integer.parseInt(song.getDuration());
+        }
+        return totalTime;
+    }
 }

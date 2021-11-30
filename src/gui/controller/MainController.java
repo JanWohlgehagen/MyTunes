@@ -1,5 +1,7 @@
 package gui.controller;
 
+import gui.model.ListModel;
+import gui.model.PlaylistModel;
 import gui.model.SongModel;
 import gui.view.SceneSwapper;
 import javafx.event.ActionEvent;
@@ -15,6 +17,13 @@ import java.util.ResourceBundle;
 
 public class MainController  implements Initializable {
 
+    public TableColumn<SongModel, String> tcTitle;
+    public TableColumn<SongModel, String> tcArtist;
+    public TableColumn<SongModel, String> tcCategory;
+    public TableColumn<SongModel, String> tcTime;
+    public TableColumn<PlaylistModel, String> txtName;
+    public TableColumn<PlaylistModel, Integer>  txtSongs;
+    public TableColumn<PlaylistModel, String>  txtTime;
     @FXML
     private Button btnPreviousSong;
     @FXML
@@ -30,31 +39,46 @@ public class MainController  implements Initializable {
     @FXML
     private Slider sldVolume;
     @FXML
-    private TableView tvSongsOnPlaylist;
+    private TableView<PlaylistModel> tvSongsOnPlaylist;
     @FXML
-    private TableView tvSongs;
+    private TableView<SongModel> tvSongs;
+    @FXML
+    private TableView<PlaylistModel> tvPlaylists;
     @FXML
     private Label lblCurrentSongPlaying;
     @FXML
     private Button btnPlayPause;
-    @FXML
-    private TableView tvPlaylists;
+
 
     private final SceneSwapper sceneSwapper;
-    private SongModel songModel;
+    private ListModel listModel;
+    private PlaylistModel playlistModel;
 
     public MainController(){
-
         sceneSwapper = new SceneSwapper();
-        songModel = new SongModel();
+        listModel = new ListModel();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        // list af alle sange
+    tvSongs.setItems(listModel.getSongs());
+    tcTitle.setCellValueFactory(addSongToList -> addSongToList.getValue().getTitleProperty());
+    tcArtist.setCellValueFactory(addSongToList -> addSongToList.getValue().getArtistProperty());
+    tcCategory.setCellValueFactory(addSongToList -> addSongToList.getValue().getGenreProperty());
+    tcTime.setCellValueFactory(addSongToList -> addSongToList.getValue().getTimeProperty());
+
+        // list af alle playList
+     tvPlaylists.setItems(listModel.getPlayLists());
+     txtName.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getNameProperty());
+     txtSongs.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getSongsProperty().asObject());
+     txtTime.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTimeProperty());
 
 
-    txtSearch.textProperty().addListener((observableValue, oldValue, newValue) -> {songModel.searchSong(newValue);});
+    txtSearch.textProperty().addListener((observableValue, oldValue, newValue) -> {
+        listModel.searchSong(newValue);
+    });
 
     }
 

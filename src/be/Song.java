@@ -7,10 +7,10 @@ public class Song {
     private String title;
     private String artist;
     private String genre;
-    private Duration duration;
+    private String duration;
     private String pathToFile;
 
-    public Song(String title, String artist, String genre, Duration duration, String pathToFile) {
+    public Song(String title, String artist, String genre, String duration, String pathToFile) {
         this.title = title;
         this.artist = artist;
         this.genre = genre;
@@ -30,7 +30,7 @@ public class Song {
         return genre;
     }
 
-    public Duration getDuration() {
+    public String getDuration() {
         return duration;
     }
 
