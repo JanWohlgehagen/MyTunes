@@ -15,11 +15,7 @@ public class App extends Application {
         stage.show();
         stage.setResizable(false);
     }
-    // testestetsetsetsetse
 
-    /**
-     * This is a test comment
-     */
     public static void main(String[] args) {
         launch(args);
     }
