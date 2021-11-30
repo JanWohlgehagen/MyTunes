@@ -1,0 +1,17 @@
+
+
+#btnPlayPause {
+    -fx-background-image: url("../images/play.png");
+    -fx-background-size: 25 25;
+    -fx-background-position: center;
+}
+#btnSkipSong {
+    -fx-background-image: url("../Images/skipsong.png");
+    -fx-background-size: 25 25;
+    -fx-background-position: center;
+}
+#btnPreviousSong{
+    -fx-background-image: url("../Images/goback.PNG");
+    -fx-background-size: 25 25;
+    -fx-background-position: center;
+}

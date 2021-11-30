@@ -6,6 +6,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.stage.Stage;
 
@@ -13,7 +15,9 @@ import java.io.IOException;
 
 public class MainController {
 
-
+    public Button btnPreviousSong;
+    @FXML
+    private Button btnSkipSong;
     @FXML
     private Slider sldVolume;
     @FXML
@@ -29,6 +33,7 @@ public class MainController {
     private final SceneSwapper sceneSwapper;
 
     public MainController(){
+
         sceneSwapper = new SceneSwapper();
     }
 
@@ -58,6 +63,7 @@ public class MainController {
      * @param actionEvent runs when an action is performed on the button
      */
     public void handlePlayPauseBtn(ActionEvent actionEvent) {
+        System.out.println("hello");
     }
 
     /**
