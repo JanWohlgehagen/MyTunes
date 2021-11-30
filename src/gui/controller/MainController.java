@@ -1,26 +1,32 @@
 package gui.controller;
 
-import be.Song;
+import gui.model.SongModel;
 import gui.view.SceneSwapper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.stage.Stage;
-
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class MainController {
 
-    public Button btnPreviousSong;
-    public Button btnAddSongToPlaylist;
-    public Button btnAscendSongInPlaylist;
-    public Button btnDescendSongInPlaylist;
+public class MainController  implements Initializable {
+
+    @FXML
+    private Button btnPreviousSong;
+    @FXML
+    private Button btnAddSongToPlaylist;
+    @FXML
+    private Button btnAscendSongInPlaylist;
+    @FXML
+    private Button btnDescendSongInPlaylist;
     @FXML
     private Button btnSkipSong;
+    @FXML
+    private TextField txtSearch;
     @FXML
     private Slider sldVolume;
     @FXML
@@ -33,11 +39,23 @@ public class MainController {
     private Button btnPlayPause;
     @FXML
     private TableView tvPlaylists;
+
     private final SceneSwapper sceneSwapper;
+    private SongModel songModel;
 
     public MainController(){
 
         sceneSwapper = new SceneSwapper();
+        songModel = new SongModel();
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+
+
+    txtSearch.textProperty().addListener((observableValue, oldValue, newValue) -> {songModel.searchSong(newValue);});
+
     }
 
     /**
@@ -148,5 +166,7 @@ public class MainController {
      */
     public void HandleDeleteSongBtn(ActionEvent actionEvent) {
     }
+
+
 }
 
