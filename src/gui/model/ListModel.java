@@ -1,6 +1,5 @@
 package gui.model;
 
-import be.Song;
 import bll.SongManager;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -22,37 +21,30 @@ public class ListModel {
 
     public ListModel() {
         songManager = new SongManager();
-
-        songsToBeViewed = FXCollections.observableArrayList(songManager.getAllSongs().stream().map(song ->
-                new SongModel(song.getTitle(), song.getArtist(), song.getGenre(), song.getDuration())).toList());
-
-        playListToBeViewed = FXCollections.observableArrayList(songManager.getAllPlayLists().stream().map(playList ->
-                new PlaylistModel(playList.getId(), playList.getName(), playList.getSongList().size(), String.valueOf(playList.getTotalTime()))).toList());
-
-
-        //
     }
 
-    public ObservableList<PlayListSongModel> test(){
-        playSongsToBeViewed = FXCollections.observableArrayList(songManager.getPlayListSongs(selectedPlayList.get().getId()).stream().map(playListSongs -> new PlayListSongModel(playListSongs.getTitle())).toList());
-        return playSongsToBeViewed;
+    public ObjectProperty<PlaylistModel> getSelectedPlayList(){
+        return selectedPlayList;
     }
 
     public ObservableList<PlaylistModel> getPlayLists(){
+        playListToBeViewed = FXCollections.observableArrayList(songManager.getAllPlayLists().stream().map(playList ->
+                new PlaylistModel(playList.getId(), playList.getName(), playList.getSongList().size(), String.valueOf(playList.getTotalTime()))).toList());
         return playListToBeViewed;
     }
 
-    public ObservableList<SongModel> getSongs(){
-        return songsToBeViewed;
-    }
-
     public ObservableList<PlayListSongModel> getPlayListSongs(){
+        playSongsToBeViewed = FXCollections.observableArrayList(songManager.getPlayListSongs(selectedPlayList.get().getIdProperty().get()).stream().map(playListSongs ->
+                new PlayListSongModel(playListSongs.getTitle())).toList());
         return playSongsToBeViewed;
     }
 
-    public ObjectProperty<PlaylistModel> getselectedPlayList(){
-        return selectedPlayList;
+    public ObservableList<SongModel> getSongs(){
+        songsToBeViewed = FXCollections.observableArrayList(songManager.getAllSongs().stream().map(song ->
+                new SongModel(song.getTitle(), song.getArtist(), song.getGenre(), song.getDuration())).toList());
+        return songsToBeViewed;
     }
+
 
     /**
      * Searches through song list, to find a song that matches the key word

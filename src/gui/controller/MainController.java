@@ -5,7 +5,6 @@ import gui.model.PlayListSongModel;
 import gui.model.PlaylistModel;
 import gui.model.SongModel;
 import gui.view.SceneSwapper;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,9 +23,10 @@ public class MainController  implements Initializable {
     @FXML
     private TableView<PlayListSongModel> tvSongsOnPlaylist;
     @FXML
-    private TableView<SongModel> tvSongs;
+    private TableColumn<PlayListSongModel, String> txtSongsInPlayList;
+
     @FXML
-    private TableView<PlaylistModel> tvPlaylists;
+    private TableView<SongModel> tvSongs;
     @FXML
     private TableColumn<SongModel, String> tcTitle;
     @FXML
@@ -35,14 +35,16 @@ public class MainController  implements Initializable {
     private TableColumn<SongModel, String> tcCategory;
     @FXML
     private TableColumn<SongModel, Integer> tcTime;
+
+    @FXML
+    private TableView<PlaylistModel> tvPlaylists;
     @FXML
     private TableColumn<PlaylistModel, String> txtName;
     @FXML
     private TableColumn<PlaylistModel, Integer>  txtSongs;
     @FXML
     private TableColumn<PlaylistModel, String>  txtTime;
-    @FXML
-    private TableColumn<PlayListSongModel, String> txtSongsInPlayList;
+
     @FXML
     private Button btnPreviousSong;
     @FXML
@@ -74,7 +76,7 @@ public class MainController  implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        listModel.getselectedPlayList().bind(tvPlaylists.getSelectionModel().selectedItemProperty());
+        listModel.getSelectedPlayList().bind(tvPlaylists.getSelectionModel().selectedItemProperty());
 
         // list of all songs
     tvSongs.setItems(listModel.getSongs());
@@ -88,8 +90,6 @@ public class MainController  implements Initializable {
     txtName.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getNameProperty());
     txtSongs.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTotalSongsProperty().asObject());
     txtTime.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTimeProperty());
-
-    tvSongsOnPlaylist.setItems(listModel.getPlayListSongs());
 
 
 
@@ -213,7 +213,7 @@ public class MainController  implements Initializable {
 
 
     public void handelViewSongs(MouseEvent mouseEvent) {
-        ObservableList<PlayListSongModel> test = listModel.test();
+        tvSongsOnPlaylist.setItems(listModel.getPlayListSongs());
         txtSongsInPlayList.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTitleProperty());
 
     }
