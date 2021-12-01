@@ -16,6 +16,7 @@ public class ListModel {
 
     public ListModel() {
         songManager = new SongManager();
+
         songsToBeViewed = FXCollections.observableArrayList(songManager.getAllSongs().stream().map(song ->
                 new SongModel(song.getTitle(), song.getArtist(), song.getGenre(), song.getDuration())).toList());
 

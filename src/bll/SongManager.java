@@ -19,11 +19,11 @@ public class SongManager {
 
     public List<Song> getAllSongs(){
         List<Song> allSongstest = new ArrayList<>();
-        allSongstest.add(new Song("test1", "test1", "test1", null, "test½"));
-        allSongstest.add(new Song("dtest2", "test2", "test2", null, "test½"));
-        allSongstest.add(new Song("tfest3", "test1", "test1", null, "test½"));
-        allSongstest.add(new Song("gtest4", "test1", "test1", null, "test½"));
-        allSongstest.add(new Song("gtest5", "test1", "test1", null, "test½"));
+        allSongstest.add(new Song("test1", "test1", "test1", 0, "test½"));
+        allSongstest.add(new Song("dtest2", "test2", "test2", 0, "test½"));
+        allSongstest.add(new Song("tfest3", "test1", "test1", 0, "test½"));
+        allSongstest.add(new Song("gtest4", "test1", "test1", 0, "test½"));
+        allSongstest.add(new Song("gtest5", "test1", "test1", 0, "test½"));
 
 
         return allSongstest; // <- songDAO.getAllSongs();
@@ -53,7 +53,7 @@ public class SongManager {
         allPlayList.add(new Playlist("tobias"));
         allPlayList.add(new Playlist("træt"));
         allPlayList.add(new Playlist("arbejde"));
-        test.addSongToPlayList(new Song("tfest33333", "test1", "test1", "5", "test½"));
+        test.addSongToPlayList(new Song("tfest33333", "test1", "test1", 5, "test½"));
 
         return allPlayList;
     }

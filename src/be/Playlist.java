@@ -29,7 +29,7 @@ public class Playlist {
     public int getTotalTime(){
         int totalTime = 0;
         for (Song song: getSongList()) {
-            totalTime += Integer.parseInt(song.getDuration());
+            totalTime += song.getDuration();
         }
         return totalTime;
     }

@@ -1,16 +1,15 @@
 package be;
 
-import java.time.Duration;
 
 public class Song {
 
     private String title;
     private String artist;
     private String genre;
-    private String duration;
+    private int duration;
     private String pathToFile;
 
-    public Song(String title, String artist, String genre, String duration, String pathToFile) {
+    public Song(String title, String artist, String genre, int duration, String pathToFile) {
         this.title = title;
         this.artist = artist;
         this.genre = genre;
@@ -30,7 +29,7 @@ public class Song {
         return genre;
     }
 
-    public String getDuration() {
+    public int getDuration() {
         return duration;
     }
 

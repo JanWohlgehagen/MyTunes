@@ -17,13 +17,26 @@ import java.util.ResourceBundle;
 
 public class MainController  implements Initializable {
 
-    public TableColumn<SongModel, String> tcTitle;
-    public TableColumn<SongModel, String> tcArtist;
-    public TableColumn<SongModel, String> tcCategory;
-    public TableColumn<SongModel, String> tcTime;
-    public TableColumn<PlaylistModel, String> txtName;
-    public TableColumn<PlaylistModel, Integer>  txtSongs;
-    public TableColumn<PlaylistModel, String>  txtTime;
+    @FXML
+    private TableView<PlaylistModel> tvSongsOnPlaylist;
+    @FXML
+    private TableView<SongModel> tvSongs;
+    @FXML
+    private TableView<PlaylistModel> tvPlaylists;
+    @FXML
+    private TableColumn<SongModel, String> tcTitle;
+    @FXML
+    private TableColumn<SongModel, String> tcArtist;
+    @FXML
+    private TableColumn<SongModel, String> tcCategory;
+    @FXML
+    private TableColumn<SongModel, Integer> tcTime;
+    @FXML
+    private TableColumn<PlaylistModel, String> txtName;
+    @FXML
+    private TableColumn<PlaylistModel, Integer>  txtSongs;
+    @FXML
+    private TableColumn<PlaylistModel, String>  txtTime;
     @FXML
     private Button btnPreviousSong;
     @FXML
@@ -35,24 +48,18 @@ public class MainController  implements Initializable {
     @FXML
     private Button btnSkipSong;
     @FXML
+    private Button btnPlayPause;
+    @FXML
     private TextField txtSearch;
     @FXML
     private Slider sldVolume;
     @FXML
-    private TableView<PlaylistModel> tvSongsOnPlaylist;
-    @FXML
-    private TableView<SongModel> tvSongs;
-    @FXML
-    private TableView<PlaylistModel> tvPlaylists;
-    @FXML
     private Label lblCurrentSongPlaying;
-    @FXML
-    private Button btnPlayPause;
+
 
 
     private final SceneSwapper sceneSwapper;
     private ListModel listModel;
-    private PlaylistModel playlistModel;
 
     public MainController(){
         sceneSwapper = new SceneSwapper();
@@ -62,20 +69,20 @@ public class MainController  implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        // list af alle sange
+        // list of all songs
     tvSongs.setItems(listModel.getSongs());
     tcTitle.setCellValueFactory(addSongToList -> addSongToList.getValue().getTitleProperty());
     tcArtist.setCellValueFactory(addSongToList -> addSongToList.getValue().getArtistProperty());
     tcCategory.setCellValueFactory(addSongToList -> addSongToList.getValue().getGenreProperty());
-    tcTime.setCellValueFactory(addSongToList -> addSongToList.getValue().getTimeProperty());
+    tcTime.setCellValueFactory(addSongToList -> addSongToList.getValue().getTimeProperty().asObject());
 
-        // list af alle playList
-     tvPlaylists.setItems(listModel.getPlayLists());
-     txtName.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getNameProperty());
-     txtSongs.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getSongsProperty().asObject());
-     txtTime.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTimeProperty());
+        // list of all Playlists
+    tvPlaylists.setItems(listModel.getPlayLists());
+    txtName.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getNameProperty());
+    txtSongs.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getSongsProperty().asObject());
+    txtTime.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTimeProperty());
 
-
+        // Search in all songs
     txtSearch.textProperty().addListener((observableValue, oldValue, newValue) -> {
         listModel.searchSong(newValue);
     });
