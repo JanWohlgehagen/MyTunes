@@ -17,7 +17,7 @@ public class SongManager {
         songSearcher = new SongSearcher();
     }
 
-    public List<Song> getPlayListSongs(){
+    public List<Song> getPlayListSongs(int playListId){
         List<Song> playListSongs = new ArrayList<>();
 
 

@@ -36,7 +36,7 @@
    <left>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <TableView fx:id="tvPlaylists" layoutX="4.0" layoutY="2.0" prefHeight="313.0" prefWidth="230.0" tableMenuButtonVisible="true">
+            <TableView fx:id="tvPlaylists" layoutX="4.0" layoutY="2.0" onMouseClicked="#handelViewSongs" prefHeight="313.0" prefWidth="230.0" tableMenuButtonVisible="true">
               <columns>
                 <TableColumn fx:id="txtName" prefWidth="75.0" text="Name" />
                 <TableColumn fx:id="txtSongs" prefWidth="75.0" text="Songs" />

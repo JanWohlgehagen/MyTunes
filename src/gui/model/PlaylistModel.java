@@ -35,5 +35,9 @@ public class PlaylistModel {
         return time;
     }
 
+    public int getId(){
+        return id;
+    }
+
 
 }

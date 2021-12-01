@@ -1,15 +1,17 @@
 package gui.controller;
 
-import be.Song;
 import gui.model.ListModel;
+import gui.model.PlayListSongModel;
 import gui.model.PlaylistModel;
 import gui.model.SongModel;
 import gui.view.SceneSwapper;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
@@ -20,7 +22,7 @@ public class MainController  implements Initializable {
 
 
     @FXML
-    private TableView<Song> tvSongsOnPlaylist;
+    private TableView<PlayListSongModel> tvSongsOnPlaylist;
     @FXML
     private TableView<SongModel> tvSongs;
     @FXML
@@ -40,7 +42,7 @@ public class MainController  implements Initializable {
     @FXML
     private TableColumn<PlaylistModel, String>  txtTime;
     @FXML
-    private TableColumn<Song, String> txtSongsInPlayList;
+    private TableColumn<PlayListSongModel, String> txtSongsInPlayList;
     @FXML
     private Button btnPreviousSong;
     @FXML
@@ -72,7 +74,6 @@ public class MainController  implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
         listModel.getselectedPlayList().bind(tvPlaylists.getSelectionModel().selectedItemProperty());
 
         // list of all songs
@@ -89,7 +90,7 @@ public class MainController  implements Initializable {
     txtTime.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTimeProperty());
 
     tvSongsOnPlaylist.setItems(listModel.getPlayListSongs());
-    txtSongsInPlayList.setCellValueFactory(viewPlayList -> viewPlayList.);
+
 
 
         // Search in all songs
@@ -211,5 +212,10 @@ public class MainController  implements Initializable {
     }
 
 
+    public void handelViewSongs(MouseEvent mouseEvent) {
+        ObservableList<PlayListSongModel> test = listModel.test();
+        txtSongsInPlayList.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTitleProperty());
+
+    }
 }
 
