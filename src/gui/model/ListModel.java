@@ -1,6 +1,9 @@
 package gui.model;
 
+import be.Song;
 import bll.SongManager;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -12,6 +15,9 @@ public class ListModel {
 
     private ObservableList<SongModel> songsToBeViewed;
     private ObservableList<PlaylistModel> playListToBeViewed;
+    private ObservableList<Song> playSongsToBeViewed;
+
+    private ObjectProperty<PlaylistModel> selectedPlayList = new SimpleObjectProperty<>();
 
 
     public ListModel() {
@@ -23,6 +29,9 @@ public class ListModel {
         playListToBeViewed = FXCollections.observableArrayList(songManager.getAllPlayLists().stream().map(playList ->
                 new PlaylistModel(playList.getName(), playList.getSongList().size(), String.valueOf(playList.getTotalTime()))).toList());
 
+        if(selectedPlayList != null) {
+            playSongsToBeViewed = FXCollections.observableArrayList(songManager.getPlayListSongs(selectedPlayList.get().));
+        }
     }
 
     public ObservableList<PlaylistModel> getPlayLists(){
@@ -31,6 +40,14 @@ public class ListModel {
 
     public ObservableList<SongModel> getSongs(){
         return songsToBeViewed;
+    }
+
+    public ObservableList<Song> getPlayListSongs(){
+        return playSongsToBeViewed;
+    }
+
+    public ObjectProperty<PlaylistModel> getselectedPlayList(){
+        return selectedPlayList;
     }
 
     /**

@@ -17,6 +17,13 @@ public class SongManager {
         songSearcher = new SongSearcher();
     }
 
+    public List<Song> getPlayListSongs(){
+        List<Song> playListSongs = new ArrayList<>();
+
+
+        return playListSongs;
+    }
+
     public List<Song> getAllSongs(){
         List<Song> allSongstest = new ArrayList<>();
         allSongstest.add(new Song("test1", "test1", "test1", 0, "test½"));

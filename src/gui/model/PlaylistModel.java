@@ -1,20 +1,25 @@
 package gui.model;
 
+import be.Song;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import java.util.List;
+
 public class PlaylistModel {
 
     private StringProperty name = new SimpleStringProperty();
-    private IntegerProperty songs = new SimpleIntegerProperty();
+    private IntegerProperty totalSongs = new SimpleIntegerProperty();
     private StringProperty time = new SimpleStringProperty();
+    private int id;
 
-    public PlaylistModel(String name, Integer songs, String time){
+    public PlaylistModel(int id, String name, Integer totalSongs, String time){
         this.getNameProperty().set(name);
-        this.getSongsProperty().set(songs);
+        this.getTotalSongsProperty().set(totalSongs);
         this.getTimeProperty().set(time);
+        this.id = id;
 
     }
 
@@ -22,12 +27,13 @@ public class PlaylistModel {
         return name;
     }
 
-    public IntegerProperty getSongsProperty() {
-        return songs;
+    public IntegerProperty getTotalSongsProperty() {
+        return totalSongs;
     }
 
     public StringProperty getTimeProperty() {
         return time;
     }
+
 
 }

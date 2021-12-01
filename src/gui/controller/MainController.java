@@ -1,5 +1,6 @@
 package gui.controller;
 
+import be.Song;
 import gui.model.ListModel;
 import gui.model.PlaylistModel;
 import gui.model.SongModel;
@@ -17,8 +18,9 @@ import java.util.ResourceBundle;
 
 public class MainController  implements Initializable {
 
+
     @FXML
-    private TableView<PlaylistModel> tvSongsOnPlaylist;
+    private TableView<Song> tvSongsOnPlaylist;
     @FXML
     private TableView<SongModel> tvSongs;
     @FXML
@@ -37,6 +39,8 @@ public class MainController  implements Initializable {
     private TableColumn<PlaylistModel, Integer>  txtSongs;
     @FXML
     private TableColumn<PlaylistModel, String>  txtTime;
+    @FXML
+    private TableColumn<Song, String> txtSongsInPlayList;
     @FXML
     private Button btnPreviousSong;
     @FXML
@@ -69,6 +73,8 @@ public class MainController  implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        listModel.getselectedPlayList().bind(tvPlaylists.getSelectionModel().selectedItemProperty());
+
         // list of all songs
     tvSongs.setItems(listModel.getSongs());
     tcTitle.setCellValueFactory(addSongToList -> addSongToList.getValue().getTitleProperty());
@@ -79,8 +85,12 @@ public class MainController  implements Initializable {
         // list of all Playlists
     tvPlaylists.setItems(listModel.getPlayLists());
     txtName.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getNameProperty());
-    txtSongs.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getSongsProperty().asObject());
+    txtSongs.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTotalSongsProperty().asObject());
     txtTime.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTimeProperty());
+
+    tvSongsOnPlaylist.setItems(listModel.getPlayListSongs());
+    txtSongsInPlayList.setCellValueFactory(viewPlayList -> viewPlayList.);
+
 
         // Search in all songs
     txtSearch.textProperty().addListener((observableValue, oldValue, newValue) -> {
@@ -123,6 +133,8 @@ public class MainController  implements Initializable {
      * @param actionEvent runs when an action is performed on a button.
      */
     public void handleAddSongToPlaylistBtn(ActionEvent actionEvent) {
+
+
     }
 
     /**
