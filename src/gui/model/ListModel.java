@@ -14,7 +14,7 @@ public class ListModel {
 
     private ObservableList<SongModel> songsToBeViewed;
     private ObservableList<PlaylistModel> playListToBeViewed;
-    private ObservableList<PlayListSongModel> playSongsToBeViewed;
+    private ObservableList<PlayListSongModel> playListSongsToBeViewed;
 
     private ObjectProperty<PlaylistModel> selectedPlayList = new SimpleObjectProperty<>();
 
@@ -34,9 +34,9 @@ public class ListModel {
     }
 
     public ObservableList<PlayListSongModel> getPlayListSongs(){
-        playSongsToBeViewed = FXCollections.observableArrayList(songManager.getPlayListSongs(selectedPlayList.get().getIdProperty().get()).stream().map(playListSongs ->
+        playListSongsToBeViewed = FXCollections.observableArrayList(songManager.getPlayListSongs(selectedPlayList.get().getIdProperty().get()).stream().map(playListSongs ->
                 new PlayListSongModel(playListSongs.getTitle())).toList());
-        return playSongsToBeViewed;
+        return playListSongsToBeViewed;
     }
 
     public ObservableList<SongModel> getSongs(){
