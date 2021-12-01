@@ -6,10 +6,12 @@ import java.util.List;
 public class Playlist {
 
     private String name;
+    private int id;
     private List<Song> songList;
 
-    public Playlist(String name){
+    public Playlist(int id, String name){
         this.name = name;
+        this.id = id;
         this.songList = new ArrayList<>();
 
     }
@@ -24,6 +26,10 @@ public class Playlist {
 
     public void addSongToPlayList(Song song){
         this.songList.add(song);
+    }
+
+    public int getId(){
+        return id;
     }
 
     public int getTotalTime(){

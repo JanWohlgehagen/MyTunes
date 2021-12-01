@@ -7,9 +7,11 @@ public class Song {
     private String artist;
     private String genre;
     private int duration;
+    private int id;
     private String pathToFile;
 
-    public Song(String title, String artist, String genre, int duration, String pathToFile) {
+    public Song(int id, String title, String artist, String genre, int duration, String pathToFile) {
+        this.id = id;
         this.title = title;
         this.artist = artist;
         this.genre = genre;
@@ -35,5 +37,9 @@ public class Song {
 
     public String getPathToFile() {
         return pathToFile;
+    }
+
+    public int getId() {
+        return id;
     }
 }
