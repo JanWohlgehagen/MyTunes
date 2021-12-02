@@ -5,7 +5,6 @@ import gui.model.ListModel;
 import gui.model.PlayListSongModel;
 import gui.model.PlaylistModel;
 import gui.model.SongModel;
-import gui.model.SongPlayerModel;
 import gui.util.SceneSwapper;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
