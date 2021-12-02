@@ -4,8 +4,8 @@ import gui.model.ListModel;
 import gui.model.PlayListSongModel;
 import gui.model.PlaylistModel;
 import gui.model.SongModel;
-import gui.model.SongPlayerModel;
 import gui.util.SceneSwapper;
+import gui.util.SongPlayer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -68,8 +68,8 @@ public class MainController  implements Initializable {
 
     private final SceneSwapper sceneSwapper;
     private ListModel listModel;
-    SongPlayerModel songPlayerModel = new SongPlayerModel("C:/Users/Magnus Overgaard/Downloads/bip.mp3");
-
+    SongPlayer songPlayer = new SongPlayer("songs/bip.mp3");
+                  //"C:/Users/Magnus Overgaard/Downloads/bip.mp3"
     public MainController(){
         sceneSwapper = new SceneSwapper();
         listModel = new ListModel();
@@ -81,7 +81,7 @@ public class MainController  implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         listModel.getSelectedPlayList().bind(tvPlaylists.getSelectionModel().selectedItemProperty());
 
-        sldVolume.setValue(songPlayerModel.getSongVolume() * 100); // 100 a hundred because method get volume is between 0.0 and 1.0
+        sldVolume.setValue(songPlayer.getVolume() * 100); // 100 a hundred because method get volume is between 0.0 and 1.0
         //just sets the volume slider default starting value to be the same as the songs' volume.
 
         // list of all songs
@@ -112,7 +112,7 @@ public class MainController  implements Initializable {
      */
     public void sldVolumeInput(MouseEvent dragEvent) {
         System.out.println(sldVolume.getValue());
-        songPlayerModel.setSongVolume(sldVolume.getValue());
+        songPlayer.setVolume(sldVolume.getValue());
 
     }
 
@@ -138,9 +138,7 @@ public class MainController  implements Initializable {
         btnPause.setVisible(true);
         btnPlay.setVisible(false);
 
-
-
-        songPlayerModel.playSong();
+        songPlayer.playSong();
     }
 
     /**
@@ -148,7 +146,7 @@ public class MainController  implements Initializable {
      * @param actionEvent
      */
     public void handlePauseBtn(ActionEvent actionEvent) {
-        songPlayerModel.pauseSong();
+        songPlayer.pauseMusic();
         btnPlay.setVisible(true);
         btnPause.setVisible(false);
     }
