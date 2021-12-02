@@ -46,17 +46,18 @@ public class PlaylistDAO implements IPlaylistRepository {
     }
 
     @Override
-    public List<Song> getSongsFromPlaylist(Playlist playlist) throws DALException {
+    public List<Song> getSongsFromPlaylist(int playlistId) throws DALException {
         List<Song> songsInPlaylist = new ArrayList<>();
 
         //Create a connection
         try(Connection connection = databaseConnector.getConnection()){
-            String sql = "SELECT id, title, filePath, artist, genre, duration FROM Song INNER JOIN PlaylistSongs ON PlaylistSongs.songId = Song.id;"; //sql command
-            Statement statement = connection.createStatement(); //Create statement
+            String sql = "SELECT id, title, filePath, artist, genre, duration FROM Song INNER JOIN PlaylistSongs ON PlaylistSongs.songId = Song.id WHERE playlistId =(?);"; //sql command
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(1, playlistId);
 
             //Extract data from DB
-            if(statement.execute(sql)){
-                ResultSet resultSet = statement.getResultSet();
+            if(preparedStatement.execute()){
+                ResultSet resultSet = preparedStatement.getResultSet();
                 while(resultSet.next()){
                     int id = resultSet.getInt("id");
                     String title = resultSet.getString("title");
@@ -70,6 +71,7 @@ public class PlaylistDAO implements IPlaylistRepository {
                 }
             }
         } catch (SQLException SQLex) {
+            SQLex.printStackTrace();
             throw new DALException("Error");
         }
         return songsInPlaylist;
@@ -104,6 +106,7 @@ public class PlaylistDAO implements IPlaylistRepository {
                 if (resultSet.next()) {
                     int id = resultSet.getInt(1);
                     Playlist playlist = new Playlist(id, name);
+                    //System.out.println(playlist.getName());
                     return playlist;
                 }
             }
@@ -146,6 +149,18 @@ public class PlaylistDAO implements IPlaylistRepository {
             throw new DALException("Error");
         }
     }
+
+    /**
+    public static void main(String[] args) throws IOException, DALException {
+        PlaylistDAO playlistDao = new PlaylistDAO();
+        List <Song> theList = playlistDao.getSongsFromPlaylist(1);
+
+        for (Song s: theList) {
+            System.out.println(s.getId() +": "+ s.getTitle());
+        }
+        System.out.println("Done");
+    }
+     */
 
 }
 

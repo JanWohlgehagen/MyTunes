@@ -1,5 +1,6 @@
 package gui.controller;
 
+import be.Playlist;
 import dal.DALException;
 import gui.model.ListModel;
 import gui.model.PlayListSongModel;
@@ -94,9 +95,9 @@ public class MainController  implements Initializable {
             e.printStackTrace();
         }
         tcTitle.setCellValueFactory(addSongToList -> addSongToList.getValue().getTitleProperty());
-    tcArtist.setCellValueFactory(addSongToList -> addSongToList.getValue().getArtistProperty());
-    tcCategory.setCellValueFactory(addSongToList -> addSongToList.getValue().getGenreProperty());
-    tcTime.setCellValueFactory(addSongToList -> addSongToList.getValue().getTimeProperty().asObject());
+        tcArtist.setCellValueFactory(addSongToList -> addSongToList.getValue().getArtistProperty());
+        tcCategory.setCellValueFactory(addSongToList -> addSongToList.getValue().getGenreProperty());
+        tcTime.setCellValueFactory(addSongToList -> addSongToList.getValue().getTimeProperty().asObject());
 
         // list of all Playlists
         try {
@@ -105,8 +106,8 @@ public class MainController  implements Initializable {
             e.printStackTrace();
         }
         txtName.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getNameProperty());
-    txtSongs.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTotalSongsProperty().asObject());
-    txtTime.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTimeProperty());
+        txtSongs.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTotalSongsProperty().asObject());
+        txtTime.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTimeProperty());
 
 
 
@@ -266,5 +267,6 @@ public class MainController  implements Initializable {
         txtSongsInPlayList.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTitleProperty());
 
     }
+
 }
 
