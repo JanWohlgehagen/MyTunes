@@ -4,12 +4,8 @@ import be.Playlist;
 import be.Song;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import dal.interfaces.IPlaylistRepository;
-
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,12 +18,41 @@ public class PlaylistDAO implements IPlaylistRepository {
     }
 
     @Override
-    public List<Song> getAllPlaylists() throws Exception {
-        List<Song> allPlaylists = new ArrayList<>();
+    public List<Playlist> getAllPlaylists() throws Exception {
+        List<Playlist> allPlaylists = new ArrayList<>();
 
         //Create a connection
         try(Connection connection = databaseConnector.getConnection()){
-            String sql = "SELECT * FROM Song;"; //sql command
+            String sql = "SELECT * FROM Playlist;"; //sql command
+            Statement statement = connection.createStatement(); //Create statement
+
+            //Extract data from DB
+            if(statement.execute(sql)){
+                ResultSet resultSet = statement.getResultSet();
+                while(resultSet.next()){
+                    int id = resultSet.getInt("id");
+                    String name = resultSet.getString("Name");
+
+
+                    Playlist playlist = new Playlist(id, name);
+                    allPlaylists.add(playlist);
+                }
+            }
+        } catch (SQLServerException throwables) {
+            //TODO
+        } catch (SQLException throwables) {
+            //TODO
+        }
+        return allPlaylists;
+    }
+
+    @Override
+    public List<Song> getSongsFromPlaylist(Playlist playlist) throws Exception {
+        List<Song> songsInPlaylist = new ArrayList<>();
+
+        //Create a connection
+        try(Connection connection = databaseConnector.getConnection()){
+            String sql = "SELECT id, title, filePath, artist, genre, duration FROM Song INNER JOIN PlaylistSongs ON PlaylistSongs.songId = Song.id;"; //sql command
             Statement statement = connection.createStatement(); //Create statement
 
             //Extract data from DB
@@ -42,7 +67,7 @@ public class PlaylistDAO implements IPlaylistRepository {
                     String pathToFile = resultSet.getString("filePath");
 
                     Song song = new Song(id, title, artist, genre, duration, pathToFile);
-                    allPlaylists.add(song);
+                    songsInPlaylist.add(song);
                 }
             }
         } catch (SQLServerException throwables) {
@@ -50,31 +75,84 @@ public class PlaylistDAO implements IPlaylistRepository {
         } catch (SQLException throwables) {
             //TODO
         }
-        return allPlaylists;
+        return songsInPlaylist;
     }
 
     @Override
-    public void addSongToPLaylist(Song song) throws Exception {
+    public void addSongToPLaylist(int songId, int playlistId) throws Exception {
+        try (Connection connection = databaseConnector.getConnection()) {
+            String sql = "INSERT INTO PlaylistSongs VALUES (?,?);";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(1, songId);
+            preparedStatement.setInt(2, playlistId);
+            preparedStatement.executeUpdate();
 
+        } catch (SQLException throwables) {
+            //TODO
+        }
     }
 
-    @Override
-    public List<Song> getSongsFromPlaylist(Playlist playlist) throws Exception {
-        return null;
-    }
 
     @Override
-    public Song createPlaylist(String name) throws Exception {
-        return null;
+    public Playlist createPlaylist(String name) throws Exception {
+        try (Connection connection = databaseConnector.getConnection()) {
+            String sql = "INSERT INTO Playlist VALUES (?);";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, name);
+
+            int affectedRows = preparedStatement.executeUpdate();
+
+            if (affectedRows == 1) {
+                ResultSet resultSet = preparedStatement.getGeneratedKeys();
+                if (resultSet.next()) {
+                    int id = resultSet.getInt(1);
+                    Playlist playlist = new Playlist(id, name);
+                    return playlist;
+                }
+            }
+        } catch (SQLException throwables) {
+            //TODO
+        }
+        throw new Exception();
     }
 
     @Override
     public void updatePlaylist(Playlist playlist) throws Exception {
+        try(Connection connection = databaseConnector.getConnection()){
+            String sql = "UPDATE Playlist SET name=? WHERE Id=?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, playlist.getName());
+            preparedStatement.setInt(2, playlist.getId());
 
+            int affectedRows = preparedStatement.executeUpdate();
+
+            if(affectedRows != 1){
+                throw new Exception();
+            }
+        } catch (SQLServerException throwables) {
+            //TODO
+        } catch (SQLException throwables) {
+            //TODO
+        }
     }
 
     @Override
     public void deletePlaylist(Playlist playlist) throws Exception {
+        try(Connection connection = databaseConnector.getConnection()){
+            String sql = "DELETE FROM Playlist WHERE Id=?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, playlist.getId());
+            int affectedRows = preparedStatement.executeUpdate();
 
+            if(affectedRows != 1){
+                throw new Exception();
+            }
+        } catch (SQLServerException throwables) {
+            //TODO
+        } catch (SQLException throwables) {
+            //TODO
+        }
     }
+
 }
+
