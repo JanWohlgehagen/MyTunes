@@ -1,5 +1,7 @@
 package gui.controller;
 
+import dal.db.PlaylistDAO;
+import dal.db.SongDAO;
 import gui.model.ListModel;
 import gui.model.PlayListSongModel;
 import gui.model.PlaylistModel;
@@ -120,7 +122,13 @@ public class MainController  implements Initializable {
      * skips current song to next song
      * @param actionEvent when an action is performed on button program will run
      */
-    public void handleNextSongBtn(ActionEvent actionEvent) {
+    public void handleNextSongBtn(ActionEvent actionEvent){
+      /*
+        PlaylistModel playlistModel = new PlaylistModel();
+        playlistModel.
+
+            // har brug for en metode der kan få alle sange i en playlist
+       */
     }
 
     /**
@@ -129,6 +137,7 @@ public class MainController  implements Initializable {
      */
     public void HandlePreviousSongBtn(ActionEvent actionEvent) {
     }
+    // samme problem ^^
 
     /**
      * switches to picture of pause button
@@ -156,7 +165,6 @@ public class MainController  implements Initializable {
      * @param actionEvent runs when an action is performed on a button.
      */
     public void handleAddSongToPlaylistBtn(ActionEvent actionEvent) {
-
 
     }
 
