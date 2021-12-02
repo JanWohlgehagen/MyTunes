@@ -6,13 +6,13 @@ import be.Song;
 import java.util.List;
 
 public interface IPlaylistRepository {
-    public List<Song> getAllPlaylists() throws Exception;
+    public List<Playlist> getAllPlaylists() throws Exception;
 
-    public void addSongToPLaylist(Song song) throws Exception;
+    public void addSongToPLaylist(int songId, int playlistId) throws Exception;
 
     public List<Song> getSongsFromPlaylist (Playlist playlist) throws Exception;
 
-    public Song createPlaylist(String name) throws Exception;
+    public Playlist createPlaylist(String name) throws Exception;
 
     public void updatePlaylist(Playlist playlist) throws Exception;
 
