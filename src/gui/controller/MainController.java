@@ -1,6 +1,6 @@
 package gui.controller;
 
-import be.Playlist;
+
 import dal.DALException;
 import gui.model.ListModel;
 import gui.model.PlayListSongModel;
@@ -9,30 +9,24 @@ import gui.model.SongModel;
 import gui.util.SceneSwapper;
 import gui.util.SongPlayer;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.stage.FileChooser;
+
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Collections;
+
 import java.util.ResourceBundle;
 
 
 public class MainController  implements Initializable {
 
     public Button btnPause;
-    public TextField txttest;
     @FXML
     private TableView<PlayListSongModel> tvSongsOnPlaylist;
     @FXML
@@ -104,7 +98,7 @@ public class MainController  implements Initializable {
         tvSongsOnPlaylist.setPlaceholder(new Label("Select playlist"));
 
         listModel.getSelectedPlayList().bind(tvPlaylists.getSelectionModel().selectedItemProperty());
-        tvSongs.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        //tvSongs.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         listModel.getSelectedSong().bind(tvSongs.getSelectionModel().selectedItemProperty());
 
         // list of all songs
@@ -122,14 +116,7 @@ public class MainController  implements Initializable {
         txtTime.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTimeProperty());
 
         // Search in all songs
-        txtSearch.textProperty().addListener((observableValue, oldValue, newValue) -> {
-            try {
-                listModel.searchSong(newValue);
-            } catch (DALException e) {
-
-                e.printStackTrace();
-            }
-            });
+        txtSearch.textProperty().addListener((observableValue, oldValue, newValue) -> {listModel.searchSong(newValue);});
 
     }
 

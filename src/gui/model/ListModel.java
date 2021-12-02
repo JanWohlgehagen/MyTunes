@@ -78,7 +78,7 @@ public class ListModel {
      * @param query the key word, to search for
      */
 
-    public void searchSong(String query) throws DALException {
+    public void searchSong(String query) {
         List<SongModel> searchResults = songManager.searchSong(query).stream().map(song ->
                 new SongModel(song.getId(), song.getTitle(), song.getArtist(), song.getGenre(), song.getDuration())).toList();
 
