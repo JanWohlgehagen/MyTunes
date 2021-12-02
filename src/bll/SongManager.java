@@ -17,36 +17,27 @@ import java.util.List;
 public class SongManager {
 
     private ISearcher songSearcher;
-    private IPlaylistRepository playListDAO;
     private ISongRepository songDAO;
 
     public SongManager() throws DALException, IOException {
         songSearcher = new SongSearcher();
-        playListDAO = new PlaylistDAO();
         songDAO = new SongDAO();
 
     }
 
-    public List<Song> getPlayListSongs(int playListId) throws DALException{
-        List<Song> playListSongs = new ArrayList<>();
+    public Song createSong(String title, String artist, String genre, int duration, String pathToFile) throws DALException{
+        return  songDAO.createSong(title, artist, genre, duration, pathToFile);
+    }
 
+    public void updateSong(Song song) throws DALException{
+        songDAO.updateSong(song);
+    }
 
-        playListSongs.add(new Song(1,"test1", "test1", "test1", 0, "test½"));
-        playListSongs.add(new Song(2,"dtest2", "test2", "test2", 0, "test½"));
-
-        return playListSongs;
+    public void deleteSong(Song song) throws DALException{
+        songDAO.deleteSong(song);
     }
 
     public List<Song> getAllSongs() throws DALException {
-        /*
-        List<Song> allSongstest = new ArrayList<>();
-        allSongstest.add(new Song(1,"test1", "test1", "test1", 0, "test½"));
-        allSongstest.add(new Song(2,"dtest2", "test2", "test2", 0, "test½"));
-        allSongstest.add(new Song(3,"tfest3", "test1", "test1", 0, "test½"));
-        allSongstest.add(new Song(4,"gtest4", "test1", "test1", 0, "test½"));
-        allSongstest.add(new Song(5,"gtest5", "test1", "test1", 0, "test½"));
-         */
-
         return songDAO.getAllSongs(); // <- songDAO.getAllSongs();
     }
 
@@ -63,24 +54,6 @@ public class SongManager {
     }
 
 
-
-    // til at få alle PlayList i databassen
-
-    public List<Playlist> getAllPlayLists() throws DALException {
-        /*
-        List<Playlist> allPlayList = new ArrayList<>();
-        Playlist test = new Playlist(1,"testtetestests");
-        allPlayList.add(test);
-        allPlayList.add(new Playlist(2,"test"));
-        allPlayList.add(new Playlist(3, "tobias"));
-        allPlayList.add(new Playlist(4, "træt"));
-        allPlayList.add(new Playlist(5, "arbejde"));
-        test.addSongToPlayList(new Song(6,"tfest33333", "test1", "test1", 5, "test½"));
-
-         */
-
-        return playListDAO.getAllPlaylists();
-    }
 
 
 }

@@ -34,7 +34,7 @@ public class SongDAO implements ISongRepository {
                     int id = resultSet.getInt("id");
                     String title = resultSet.getString("title");
                     String artist = resultSet.getString("artist");
-                    String genre = resultSet.getString("genree");
+                    String genre = resultSet.getString("genre");
                     int duration = resultSet.getInt("duration");
                     String pathToFile = resultSet.getString("filePath");
 
@@ -111,39 +111,6 @@ public class SongDAO implements ISongRepository {
             throw new DALException("Error");
         }
     }
-
-    /** Test af SongDAO
-    public static void main(String[] args) throws Exception {
-        SongDAO songDAO = new SongDAO();
-
-        songDAO.createSong("Julemandens ankosmt", "Jan Wohlgehagen", "julemusik", 200, "C:/Desktop/Data/Julemandens_ankomst.mp3");
-        songDAO.createSong("Julemandens ankosmt1", "Jan Wohlgehagen", "julemusik", 200, "C:/Desktop/Data/Julemandens_ankomst.mp3");
-        songDAO.createSong("Julemandens ankosmt2", "Jan Wohlgehagen", "julemusik", 200, "C:/Desktop/Data/Julemandens_ankomst.mp3");
-        songDAO.createSong("Julemandens ankosmt3", "Jan Wohlgehagen", "julemusik", 200, "C:/Desktop/Data/Julemandens_ankomst.mp3");
-        songDAO.createSong("Julemandens ankosmt4", "Jan Wohlgehagen", "julemusik", 200, "C:/Desktop/Data/Julemandens_ankomst.mp3");
-
-        List<Song> songlist = songDAO.getAllSongs();
-
-        System.out.println("Initial list of songs, expected 5 songs:");
-        for (Song song:songlist) {
-            System.out.println(song.getTitle);
-        }
-        System.out.println();
-        System.out.println("List of songs after Julemandens ankomst3 has been deleted and Julemandens ankomst's title has been altered.");
-
-        songDAO.deleteSong(songlist.get(3));
-        Song song = new Song(1, "Julemanden skrider", "Jan Wohlgehagen", "julemusik", 200, "C:/Desktop/Data/Julemandens_ankomst.mp3");
-        songDAO.updateSong(song);
-
-        songlist=songDAO.getAllSongs();
-
-        for (Song s:songlist) {
-            System.out.println(s.getTitle);
-        }
-
-        System.out.println("\n done");
-    }
-     */
 }
 
 

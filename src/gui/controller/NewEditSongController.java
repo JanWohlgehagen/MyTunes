@@ -1,5 +1,8 @@
 package gui.controller;
 
+import be.Song;
+import dal.DALException;
+import gui.model.SongModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,6 +17,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -33,16 +37,19 @@ public class NewEditSongController implements Initializable {
     private ComboBox cBoxCategory;
 
     final FileChooser fileChooser;
+    private SongModel songModel;
     private File file;
     private Media media;
     private MediaPlayer mediaPlayer;
     private ObservableList<String> categories;
+    private String strDurInMinutes ="";
 
 
-    public NewEditSongController() {
+    public NewEditSongController() throws DALException, IOException {
         fileChooser = new FileChooser();
         categories = FXCollections.observableArrayList();
         cBoxCategory = new ComboBox();
+        songModel = new SongModel();
     }
 
     @Override
@@ -74,7 +81,7 @@ public class NewEditSongController implements Initializable {
                 int minutes = (int) durInSeconds / 60; // divide by 60 to get the minutes from seconds.
                 int seconds = (int) durInSeconds % 60; // remaining seconds
 
-                String strDurInMinutes = minutes + ":" + seconds;
+                strDurInMinutes = minutes + ":" + seconds;
 
                 txtTime.setText(strDurInMinutes);
             });
@@ -83,12 +90,19 @@ public class NewEditSongController implements Initializable {
 
     }
 
-    public void handleSaveBtn(ActionEvent actionEvent) {
-        //TODO
+    public void handleSaveBtn(ActionEvent actionEvent) throws DALException, IOException {
+        if(!txtArtist.getText().isBlank() && !txtTime.getText().isBlank() && !txtFile.getText().isBlank() && !txtTitle.getText().isBlank() && cBoxCategory.getSelectionModel().getSelectedItem() != null){
+            songModel.createSong(txtTitle.getText(), txtArtist.getText(), cBoxCategory.getSelectionModel().getSelectedItem().toString(),  (int)media.getDuration().toSeconds(), txtFile.getText());
+            closeStage();
+        }
     }
 
     //closes the stage
     public void handleCancelBtn(ActionEvent actionEvent) {
+        closeStage();
+    }
+
+    public void closeStage(){
         Stage stage = (Stage) gridPaneId.getScene().getWindow();
         stage.close();
     }

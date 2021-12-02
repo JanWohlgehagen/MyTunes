@@ -1,5 +1,6 @@
 package gui.controller;
 
+import be.Playlist;
 import dal.DALException;
 import gui.model.ListModel;
 import gui.model.PlayListSongModel;
@@ -8,14 +9,23 @@ import gui.model.SongModel;
 import gui.util.SceneSwapper;
 import gui.util.SongPlayer;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.ResourceBundle;
 
 
@@ -73,6 +83,7 @@ public class MainController  implements Initializable {
     SongPlayer songPlayer = new SongPlayer("songs/bip.mp3");
 
     public MainController() throws DALException, IOException {
+
         try {
             sceneSwapper = new SceneSwapper();
             listModel = new ListModel();
@@ -98,9 +109,9 @@ public class MainController  implements Initializable {
             e.printStackTrace();
         }
         tcTitle.setCellValueFactory(addSongToList -> addSongToList.getValue().getTitleProperty());
-    tcArtist.setCellValueFactory(addSongToList -> addSongToList.getValue().getArtistProperty());
-    tcCategory.setCellValueFactory(addSongToList -> addSongToList.getValue().getGenreProperty());
-    tcTime.setCellValueFactory(addSongToList -> addSongToList.getValue().getTimeProperty().asObject());
+        tcArtist.setCellValueFactory(addSongToList -> addSongToList.getValue().getArtistProperty());
+        tcCategory.setCellValueFactory(addSongToList -> addSongToList.getValue().getGenreProperty());
+        tcTime.setCellValueFactory(addSongToList -> addSongToList.getValue().getTimeProperty().asObject());
 
         // list of all Playlists
         try {
@@ -109,10 +120,8 @@ public class MainController  implements Initializable {
             e.printStackTrace();
         }
         txtName.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getNameProperty());
-    txtSongs.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTotalSongsProperty().asObject());
-    txtTime.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTimeProperty());
-
-
+        txtSongs.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTotalSongsProperty().asObject());
+        txtTime.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTimeProperty());
 
         // Search in all songs
     txtSearch.textProperty().addListener((observableValue, oldValue, newValue) -> {
