@@ -1,5 +1,6 @@
 package gui;
 
+import bll.SongPlayer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,6 +15,7 @@ public class App extends Application {
         stage.setScene(new Scene(root));
         stage.show();
         stage.setResizable(false);
+
     }
 
     public static void main(String[] args) {

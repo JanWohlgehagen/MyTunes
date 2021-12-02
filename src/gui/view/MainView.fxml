@@ -10,19 +10,20 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="461.0" prefWidth="729.0" styleClass="&quot;@css/css&quot;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.MainController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="461.0" prefWidth="729.0" styleClass="&quot;@css/css&quot;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.MainController">
    <top>
       <AnchorPane prefHeight="90.0" prefWidth="730.0" BorderPane.alignment="CENTER">
          <children>
-            <Slider fx:id="sldVolume" layoutX="68.0" layoutY="47.0" onDragDone="#sldVolumeInput" prefHeight="12.0" prefWidth="131.0">
+            <Slider fx:id="sldVolume" layoutX="68.0" layoutY="47.0" onMouseReleased="#sldVolumeInput" prefHeight="12.0" prefWidth="131.0">
                <cursor>
                   <Cursor fx:constant="SE_RESIZE" />
                </cursor>
             </Slider>
             <Button fx:id="btnSkipSong" layoutX="157.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleNextSongBtn" prefWidth="28.0" />
             <Button fx:id="btnPreviousSong" layoutX="83.0" layoutY="14.0" mnemonicParsing="false" onAction="#HandlePreviousSongBtn" prefWidth="28.0" />
-            <Button fx:id="btnPlayPause" layoutX="118.0" layoutY="13.0" mnemonicParsing="false" onAction="#handlePlayPauseBtn" prefHeight="28.0" prefWidth="32.0" styleClass="css" />
+            <Button fx:id="btnPlay" layoutX="118.0" layoutY="13.0" mnemonicParsing="false" onAction="#handlePlayBtn" prefHeight="28.0" prefWidth="32.0" styleClass="css" />
             <Label layoutX="14.0" layoutY="46.0" text="Volume" />
             <Label fx:id="lblCurrentSongPlaying" layoutX="311.0" layoutY="45.0" text="NONE ::: IS PLAYING" />
             <Label layoutX="531.0" layoutY="45.0" text="Search" />
@@ -30,6 +31,11 @@
             <Label layoutX="13.0" layoutY="76.0" text="Playlists" />
             <Label layoutX="255.0" layoutY="76.0" text="Songs in playlist" />
             <Label layoutX="419.0" layoutY="76.0" text="Songs in Mytunes" />
+            <Button fx:id="btnPause" layoutX="116.0" layoutY="14.0" mnemonicParsing="false" onAction="#handlePauseBtn" prefHeight="22.0" prefWidth="34.0" text="." visible="false">
+               <font>
+                  <Font size="1.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
    </top>

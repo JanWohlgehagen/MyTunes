@@ -65,7 +65,7 @@ public class NewEditSongController implements Initializable {
         }
 
         if(file != null){ //DirectoryChooser returns null if the user closes the browse window
-            txtFile.setText(file.getAbsolutePath());
+            txtFile.setText(file.getAbsolutePath().replace("\\", "/"));
             media = new Media(file.toURI().toString());
             mediaPlayer = new MediaPlayer(media);
 
