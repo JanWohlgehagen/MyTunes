@@ -1,17 +1,15 @@
 package gui.controller;
 
-import dal.DALException;
 import gui.model.ListModel;
 import gui.model.PlayListSongModel;
 import gui.model.PlaylistModel;
 import gui.model.SongModel;
-import gui.view.SceneSwapper;
-import javafx.application.Platform;
+import gui.model.SongPlayerModel;
+import gui.util.SceneSwapper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import java.io.IOException;
@@ -21,7 +19,7 @@ import java.util.ResourceBundle;
 
 public class MainController  implements Initializable {
 
-
+    public Button btnPause;
     @FXML
     private TableView<PlayListSongModel> tvSongsOnPlaylist;
     @FXML
@@ -58,7 +56,7 @@ public class MainController  implements Initializable {
     @FXML
     private Button btnSkipSong;
     @FXML
-    private Button btnPlayPause;
+    private Button btnPlay;
     @FXML
     private TextField txtSearch;
     @FXML
@@ -70,21 +68,21 @@ public class MainController  implements Initializable {
 
     private final SceneSwapper sceneSwapper;
     private ListModel listModel;
+    SongPlayerModel songPlayerModel = new SongPlayerModel("C:/Users/Magnus Overgaard/Downloads/bip.mp3");
 
     public MainController(){
-        try {
-            sceneSwapper = new SceneSwapper();
-            listModel = new ListModel();
+        sceneSwapper = new SceneSwapper();
+        listModel = new ListModel();
 
-        } catch (DALException DALex){
-            displayError(DALex);
-            System.exit(0);
-        }
+
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         listModel.getSelectedPlayList().bind(tvPlaylists.getSelectionModel().selectedItemProperty());
+
+        sldVolume.setValue(songPlayerModel.getSongVolume() * 100); // 100 a hundred because method get volume is between 0.0 and 1.0
+        //just sets the volume slider default starting value to be the same as the songs' volume.
 
         // list of all songs
     tvSongs.setItems(listModel.getSongs());
@@ -103,34 +101,19 @@ public class MainController  implements Initializable {
 
         // Search in all songs
     txtSearch.textProperty().addListener((observableValue, oldValue, newValue) -> {
-        try {
-            listModel.searchSong(newValue);
-        } catch (DALException e) {
-            e.printStackTrace();
-        }
+        listModel.searchSong(newValue);
     });
 
-    }
-
-    /**
-     * Displays errormessages to the user.
-     *
-     * @param ex The Exception
-     */
-    private void displayError(Exception ex) {
-        Platform.runLater(() -> {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Something went wrong");
-            alert.setHeaderText(ex.getMessage());
-            alert.showAndWait();
-        });
     }
 
     /**
      * sets volume og the songs that will be played
      * @param dragEvent when you move the slider you change the volume
      */
-    public void sldVolumeInput(DragEvent dragEvent) {
+    public void sldVolumeInput(MouseEvent dragEvent) {
+        System.out.println(sldVolume.getValue());
+        songPlayerModel.setSongVolume(sldVolume.getValue());
+
     }
 
     /**
@@ -148,11 +131,26 @@ public class MainController  implements Initializable {
     }
 
     /**
-     * switches between pausing and playing music
+     * switches to picture of pause button
      * @param actionEvent runs when an action is performed on the button
      */
-    public void handlePlayPauseBtn(ActionEvent actionEvent) {
-        System.out.println("hello");
+    public void handlePlayBtn(ActionEvent actionEvent) {
+        btnPause.setVisible(true);
+        btnPlay.setVisible(false);
+
+
+
+        songPlayerModel.playSong();
+    }
+
+    /**
+     * switches to the play button picture
+     * @param actionEvent
+     */
+    public void handlePauseBtn(ActionEvent actionEvent) {
+        songPlayerModel.pauseSong();
+        btnPlay.setVisible(true);
+        btnPause.setVisible(false);
     }
 
     /**
@@ -178,7 +176,7 @@ public class MainController  implements Initializable {
      * @throws IOException if cant find stage.
      */
     public void HandleEditPlaylistBtn(ActionEvent actionEvent) throws IOException {
-        sceneSwapper.sceneSwitch(new Stage(), "NewEditPlaylistView.fxml");
+        sceneSwapper.sceneSwitch(new Stage(),"NewEditPlaylistView.fxml");
     }
 
     /**

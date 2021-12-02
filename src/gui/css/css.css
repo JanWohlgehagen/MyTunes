@@ -1,12 +1,12 @@
 
 
-#btnPlayPause {
+#btnPlay {
     -fx-background-image: url("../images/play.png");
     -fx-background-size: 25 25;
     -fx-background-position: center;
 }
-#btnPlayPause:pressed{
-    -fx-background-image: url("../images/pause.PNG");
+#btnPause{
+    -fx-background-image: url("../images/pausereal.PNG");
     -fx-background-size: 25 25;
     -fx-background-position: center;
 }
