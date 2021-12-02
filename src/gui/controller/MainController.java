@@ -62,7 +62,7 @@ public class MainController  implements Initializable {
 
     private final SceneSwapper sceneSwapper;
     private ListModel listModel;
-    SongPlayerModel songPlayerModel = new SongPlayerModel("c:/Users/Magnus Overgaard/Downloads/bip.mp3");
+    SongPlayerModel songPlayerModel = new SongPlayerModel("C:/Users/Magnus Overgaard/Downloads/bip.mp3");
 
     public MainController(){
         sceneSwapper = new SceneSwapper();
