@@ -8,14 +8,23 @@ import gui.model.PlaylistModel;
 import gui.model.SongModel;
 import gui.util.SceneSwapper;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.ResourceBundle;
 
 
@@ -73,6 +82,7 @@ public class MainController  implements Initializable {
 
 
     public MainController() throws DALException, IOException {
+
         try {
             sceneSwapper = new SceneSwapper();
             listModel = new ListModel();
@@ -108,8 +118,6 @@ public class MainController  implements Initializable {
         txtName.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getNameProperty());
         txtSongs.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTotalSongsProperty().asObject());
         txtTime.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTimeProperty());
-
-
 
         // Search in all songs
     txtSearch.textProperty().addListener((observableValue, oldValue, newValue) -> {
@@ -267,6 +275,5 @@ public class MainController  implements Initializable {
         txtSongsInPlayList.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTitleProperty());
 
     }
-
 }
 

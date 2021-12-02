@@ -1,6 +1,7 @@
 package gui.model;
 
 import be.Playlist;
+import be.Song;
 import bll.PlaylistManager;
 import bll.SongManager;
 import dal.DALException;
@@ -28,6 +29,7 @@ public class ListModel {
         songManager = new SongManager();
         playlistManager = new PlaylistManager();
         playListToBeViewed = FXCollections.observableArrayList();
+        songsToBeViewed = FXCollections.observableArrayList();
     }
 
     public ObjectProperty<PlaylistModel> getSelectedPlayList(){
@@ -56,6 +58,10 @@ public class ListModel {
        playListToBeViewed.add(new PlaylistModel(playlist.getId(), playlist.getName(),playlist.getSongList().size(), String.valueOf(playlist.getTotalTime())));
     }
 
+    public void addSongToView(Song song) throws DALException, IOException {
+        songsToBeViewed.add(new SongModel(song.getTitle(), song.getArtist(), song.getGenre(), song.getDuration()));
+    }
+
 
     /**
      * Searches through song list, to find a song that matches the key word
@@ -70,4 +76,6 @@ public class ListModel {
         songsToBeViewed.clear();
         songsToBeViewed.addAll((searchResults));
     }
+
+
 }

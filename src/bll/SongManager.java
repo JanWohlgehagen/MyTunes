@@ -25,17 +25,19 @@ public class SongManager {
 
     }
 
+    public Song createSong(String title, String artist, String genre, int duration, String pathToFile) throws DALException{
+        return  songDAO.createSong(title, artist, genre, duration, pathToFile);
+    }
+
+    public void updateSong(Song song) throws DALException{
+        songDAO.updateSong(song);
+    }
+
+    public void deleteSong(Song song) throws DALException{
+        songDAO.deleteSong(song);
+    }
 
     public List<Song> getAllSongs() throws DALException {
-        /*
-        List<Song> allSongstest = new ArrayList<>();
-        allSongstest.add(new Song(1,"test1", "test1", "test1", 0, "test½"));
-        allSongstest.add(new Song(2,"dtest2", "test2", "test2", 0, "test½"));
-        allSongstest.add(new Song(3,"tfest3", "test1", "test1", 0, "test½"));
-        allSongstest.add(new Song(4,"gtest4", "test1", "test1", 0, "test½"));
-        allSongstest.add(new Song(5,"gtest5", "test1", "test1", 0, "test½"));
-         */
-
         return songDAO.getAllSongs(); // <- songDAO.getAllSongs();
     }
 
