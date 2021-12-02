@@ -5,7 +5,7 @@ import gui.model.PlayListSongModel;
 import gui.model.PlaylistModel;
 import gui.model.SongModel;
 import gui.model.SongPlayerModel;
-import gui.view.SceneSwapper;
+import gui.util.SceneSwapper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -176,7 +176,7 @@ public class MainController  implements Initializable {
      * @throws IOException if cant find stage.
      */
     public void HandleEditPlaylistBtn(ActionEvent actionEvent) throws IOException {
-        sceneSwapper.sceneSwitch(new Stage(), "NewEditPlaylistView.fxml");
+        sceneSwapper.sceneSwitch(new Stage(),"NewEditPlaylistView.fxml");
     }
 
     /**
