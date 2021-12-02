@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class NewEditPlaylistController {
+public class EditPlaylistController {
 
     @FXML
     private AnchorPane anchorPaneId;
@@ -19,14 +19,16 @@ public class NewEditPlaylistController {
     private PlaylistModel playlistModel;
     private MainController mainController;
 
-    public NewEditPlaylistController() throws IOException, DALException {
+    public EditPlaylistController() throws IOException, DALException {
         playlistModel = new PlaylistModel();
         mainController = new MainController();
     }
 
     public void handleSaveBtn(ActionEvent actionEvent) throws DALException {
-        playlistModel.createPlaylist(txtName.getText());
-        closeStage();
+        if(!txtName.getText().isBlank()) {
+            //TODO
+            closeStage();
+        }
     }
 
     public void handleCancelBtn(ActionEvent actionEvent) {

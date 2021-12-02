@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-public class NewEditSongController implements Initializable {
+public class NewSongController implements Initializable {
 
     @FXML
     private GridPane gridPaneId;
@@ -45,7 +45,7 @@ public class NewEditSongController implements Initializable {
     private String strDurInMinutes ="";
 
 
-    public NewEditSongController() throws DALException, IOException {
+    public NewSongController() throws DALException, IOException {
         fileChooser = new FileChooser();
         categories = FXCollections.observableArrayList();
         cBoxCategory = new ComboBox();

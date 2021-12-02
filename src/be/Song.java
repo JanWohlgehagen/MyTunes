@@ -42,4 +42,11 @@ public class Song {
     public int getId() {
         return id;
     }
+
+    public String getDurationString(){
+        int minutes = duration / 60; // divide by 60 to get the minutes from seconds.
+        int seconds = duration % 60; // remaining seconds
+
+        return minutes + ":" + seconds;
+    }
 }

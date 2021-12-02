@@ -207,7 +207,7 @@ public class MainController  implements Initializable {
      * @throws IOException if cant find stage.
      */
     public void HandleNewPlaylistBtn(ActionEvent actionEvent) throws IOException {
-        sceneSwapper.sceneSwitch(new Stage(), "NewEditPlaylistView.fxml");
+        sceneSwapper.sceneSwitch(new Stage(), "NewPlaylistView.fxml");
     }
     /**
      * switch the scene to a different scene.
@@ -215,7 +215,7 @@ public class MainController  implements Initializable {
      * @throws IOException if cant find stage.
      */
     public void HandleEditPlaylistBtn(ActionEvent actionEvent) throws IOException {
-        sceneSwapper.sceneSwitch(new Stage(),"NewEditPlaylistView.fxml");
+        sceneSwapper.sceneSwitch(new Stage(),"EditPlaylistView.fxml");
     }
 
     /**
@@ -256,7 +256,7 @@ public class MainController  implements Initializable {
      * @throws IOException if cant find stage.
      */
     public void handleNewSongBtn(ActionEvent actionEvent) throws IOException {
-        sceneSwapper.sceneSwitch(new Stage(), "NewEditSongView.fxml");
+        sceneSwapper.sceneSwitch(new Stage(), "NewSongView.fxml");
     }
     /**
      *  switches the scene over to NewEditSongView.fxml.
@@ -264,7 +264,7 @@ public class MainController  implements Initializable {
      * @throws IOException if cant find the stage.
      */
     public void handleEditSongBtn(ActionEvent actionEvent) throws IOException {
-        sceneSwapper.sceneSwitch(new Stage(), "NewEditSongView.fxml");
+        sceneSwapper.sceneSwitch(new Stage(), "EditSongView.fxml");
     }
 
     /**
