@@ -6,6 +6,7 @@ import gui.model.PlayListSongModel;
 import gui.model.PlaylistModel;
 import gui.model.SongModel;
 import gui.util.SceneSwapper;
+import gui.util.SongPlayer;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -69,7 +70,7 @@ public class MainController  implements Initializable {
 
     private SceneSwapper sceneSwapper;
     private ListModel listModel;
-
+    SongPlayer songPlayer = new SongPlayer("songs/bip.mp3");
 
     public MainController() throws DALException, IOException {
         try {
@@ -85,6 +86,9 @@ public class MainController  implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        sldVolume.setValue(songPlayer.getVolume()*100);
+
         listModel.getSelectedPlayList().bind(tvPlaylists.getSelectionModel().selectedItemProperty());
 
         // list of all songs
@@ -141,9 +145,8 @@ public class MainController  implements Initializable {
      * @param dragEvent when you move the slider you change the volume
      */
     public void sldVolumeInput(MouseEvent dragEvent) {
+        songPlayer.setVolume(sldVolume.getValue());
         System.out.println(sldVolume.getValue());
-
-
     }
 
     /**
@@ -167,6 +170,7 @@ public class MainController  implements Initializable {
     public void handlePlayBtn(ActionEvent actionEvent) {
         btnPause.setVisible(true);
         btnPlay.setVisible(false);
+        songPlayer.playSong();
     }
 
     /**
@@ -176,6 +180,7 @@ public class MainController  implements Initializable {
     public void handlePauseBtn(ActionEvent actionEvent) {
         btnPlay.setVisible(true);
         btnPause.setVisible(false);
+        songPlayer.pauseMusic();
     }
 
     /**
