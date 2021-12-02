@@ -3,6 +3,7 @@ package dal.db;
 import be.Playlist;
 import be.Song;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
+import dal.DALException;
 import dal.interfaces.IPlaylistRepository;
 
 import java.io.IOException;
@@ -22,7 +23,7 @@ public class PlaylistDAO implements IPlaylistRepository {
     }
 
     @Override
-    public List<Song> getAllPlaylists() throws Exception {
+    public List<Song> getAllPlaylists() throws DALException {
         List<Song> allPlaylists = new ArrayList<>();
 
         //Create a connection
@@ -45,36 +46,34 @@ public class PlaylistDAO implements IPlaylistRepository {
                     allPlaylists.add(song);
                 }
             }
-        } catch (SQLServerException throwables) {
-            //TODO
-        } catch (SQLException throwables) {
-            //TODO
+        }  catch (SQLException SQLex) {
+            throw new DALException("test", SQLex.getCause());
         }
         return allPlaylists;
     }
 
     @Override
-    public void addSongToPLaylist(Song song) throws Exception {
+    public void addSongToPLaylist(Song song) throws DALException {
 
     }
 
     @Override
-    public List<Song> getSongsFromPlaylist(Playlist playlist) throws Exception {
+    public List<Song> getSongsFromPlaylist(Playlist playlist) throws DALException {
         return null;
     }
 
     @Override
-    public Song createPlaylist(String name) throws Exception {
+    public Song createPlaylist(String name) throws DALException {
         return null;
     }
 
     @Override
-    public void updatePlaylist(Playlist playlist) throws Exception {
+    public void updatePlaylist(Playlist playlist) throws DALException {
 
     }
 
     @Override
-    public void deletePlaylist(Playlist playlist) throws Exception {
+    public void deletePlaylist(Playlist playlist) throws DALException {
 
     }
 }

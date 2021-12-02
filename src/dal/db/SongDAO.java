@@ -2,6 +2,7 @@ package dal.db;
 
 import be.Song;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
+import dal.DALException;
 import dal.interfaces.ISongRepository;
 
 import java.io.IOException;
@@ -13,12 +14,12 @@ public class SongDAO implements ISongRepository {
 
     private MyConnection databaseConnector;
 
-    public SongDAO() throws IOException {
+    public SongDAO() throws DALException, IOException {
         databaseConnector = new MyConnection();
     }
 
     @Override
-    public List<Song> getAllSongs() throws Exception {
+    public List<Song> getAllSongs() throws DALException {
         List<Song> allSongsList = new ArrayList<>();
 
         //Create a connection
@@ -33,7 +34,7 @@ public class SongDAO implements ISongRepository {
                     int id = resultSet.getInt("id");
                     String title = resultSet.getString("title");
                     String artist = resultSet.getString("artist");
-                    String genre = resultSet.getString("genre");
+                    String genre = resultSet.getString("genree");
                     int duration = resultSet.getInt("duration");
                     String pathToFile = resultSet.getString("filePath");
 
@@ -41,16 +42,14 @@ public class SongDAO implements ISongRepository {
                     allSongsList.add(song);
                 }
             }
-        } catch (SQLServerException throwables) {
-            //TODO
-        } catch (SQLException throwables) {
-            //TODO
+        }  catch (SQLException SQLex) {
+           throw new DALException("Error Error Error Error", SQLex.getCause());
         }
         return allSongsList;
     }
 
     @Override
-    public Song createSong(String title, String artist, String genre, int duration, String pathToFile) throws Exception {
+    public Song createSong(String title, String artist, String genre, int duration, String pathToFile) throws DALException {
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "INSERT INTO Song VALUES (?,?,?,?,?);";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -72,11 +71,11 @@ public class SongDAO implements ISongRepository {
         } catch (SQLException throwables) {
             //TODO
         }
-        throw new Exception();
+        throw new DALException();
     }
 
     @Override
-    public void updateSong(Song song) throws Exception {
+    public void updateSong(Song song) throws DALException {
         try(Connection connection = databaseConnector.getConnection()){
             String sql = "UPDATE Song SET title = ?, filePath=?, artist=?, genre=?, duration=? WHERE Id=?;";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -90,7 +89,7 @@ public class SongDAO implements ISongRepository {
             int affectedRows = preparedStatement.executeUpdate();
 
             if(affectedRows != 1){
-                throw new Exception();
+                throw new DALException();
             }
         } catch (SQLServerException throwables) {
             //TODO
@@ -100,7 +99,7 @@ public class SongDAO implements ISongRepository {
     }
 
     @Override
-    public void deleteSong(Song song) throws Exception {
+    public void deleteSong(Song song) throws DALException {
         try(Connection connection = databaseConnector.getConnection()){
             String sql = "DELETE FROM Song WHERE Id=?;";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -108,7 +107,7 @@ public class SongDAO implements ISongRepository {
             int affectedRows = preparedStatement.executeUpdate();
 
             if(affectedRows != 1){
-                throw new Exception();
+                throw new DALException();
             }
         } catch (SQLServerException throwables) {
             //TODO

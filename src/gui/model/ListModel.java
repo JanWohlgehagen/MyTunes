@@ -1,6 +1,7 @@
 package gui.model;
 
 import bll.SongManager;
+import dal.DALException;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -52,7 +53,7 @@ public class ListModel {
      * @param query the key word, to search for
      */
 
-    public void searchSong(String query) {
+    public void searchSong(String query) throws DALException {
         List<SongModel> searchResults = songManager.searchSong(query).stream().map(song ->
                 new SongModel(song.getTitle(), song.getArtist(), song.getGenre(), song.getDuration())).toList();
 

@@ -4,6 +4,7 @@ import be.Playlist;
 import be.Song;
 import bll.util.ISearcher;
 import bll.util.SongSearcher;
+import dal.DALException;
 import dal.db.PlaylistDAO;
 import dal.db.SongDAO;
 import dal.interfaces.IPlaylistRepository;
@@ -19,14 +20,14 @@ public class SongManager {
     private IPlaylistRepository playListDAO;
     private ISongRepository songDAO;
 
-    public SongManager() throws IOException {
+    public SongManager() throws DALException, IOException {
         songSearcher = new SongSearcher();
         playListDAO = new PlaylistDAO();
         songDAO = new SongDAO();
 
     }
 
-    public List<Song> getPlayListSongs(int playListId){
+    public List<Song> getPlayListSongs(int playListId) throws DALException{
         List<Song> playListSongs = new ArrayList<>();
 
 
@@ -36,7 +37,7 @@ public class SongManager {
         return playListSongs;
     }
 
-    public List<Song> getAllSongs() throws Exception {
+    public List<Song> getAllSongs() throws DALException {
         /*
         List<Song> allSongstest = new ArrayList<>();
         allSongstest.add(new Song(1,"test1", "test1", "test1", 0, "test½"));
@@ -55,7 +56,7 @@ public class SongManager {
      * @param query the key word, to search for
      * @return a list of songs that fit, the key word
      */
-    public List<Song> searchSong(String query) throws Exception {
+    public List<Song> searchSong(String query) throws DALException {
         List<Song> allSongs = songDAO.getAllSongs();
         List<Song> searchResult = songSearcher.search(allSongs, query);
         return searchResult;
@@ -65,7 +66,7 @@ public class SongManager {
 
     // til at få alle PlayList i databassen
 
-    public List<Playlist> getAllPlayLists() throws Exception {
+    public List<Playlist> getAllPlayLists() throws DALException {
         /*
         List<Playlist> allPlayList = new ArrayList<>();
         Playlist test = new Playlist(1,"testtetestests");

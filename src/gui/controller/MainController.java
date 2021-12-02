@@ -1,10 +1,12 @@
 package gui.controller;
 
+import dal.DALException;
 import gui.model.ListModel;
 import gui.model.PlayListSongModel;
 import gui.model.PlaylistModel;
 import gui.model.SongModel;
 import gui.view.SceneSwapper;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -70,8 +72,14 @@ public class MainController  implements Initializable {
     private ListModel listModel;
 
     public MainController(){
-        sceneSwapper = new SceneSwapper();
-        listModel = new ListModel();
+        try {
+            sceneSwapper = new SceneSwapper();
+            listModel = new ListModel();
+
+        } catch (DALException DALex){
+            displayError(DALex);
+            System.exit(0);
+        }
     }
 
     @Override
@@ -95,9 +103,27 @@ public class MainController  implements Initializable {
 
         // Search in all songs
     txtSearch.textProperty().addListener((observableValue, oldValue, newValue) -> {
-        listModel.searchSong(newValue);
+        try {
+            listModel.searchSong(newValue);
+        } catch (DALException e) {
+            e.printStackTrace();
+        }
     });
 
+    }
+
+    /**
+     * Displays errormessages to the user.
+     *
+     * @param ex The Exception
+     */
+    private void displayError(Exception ex) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Something went wrong");
+            alert.setHeaderText(ex.getMessage());
+            alert.showAndWait();
+        });
     }
 
     /**
