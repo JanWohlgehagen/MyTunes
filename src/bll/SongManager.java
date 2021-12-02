@@ -25,6 +25,10 @@ public class SongManager {
 
     }
 
+    public List<Song> getAllSongs() {
+        return songDAO.getAllSongs();
+    }
+
     public Song createSong(String title, String artist, String genre, int duration, String pathToFile) throws DALException{
         return  songDAO.createSong(title, artist, genre, duration, pathToFile);
     }
@@ -35,10 +39,6 @@ public class SongManager {
 
     public void deleteSong(Song song) throws DALException{
         songDAO.deleteSong(song);
-    }
-
-    public List<Song> getAllSongs() throws DALException {
-        return songDAO.getAllSongs(); // <- songDAO.getAllSongs();
     }
 
     /**

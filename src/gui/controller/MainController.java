@@ -32,6 +32,7 @@ import java.util.ResourceBundle;
 public class MainController  implements Initializable {
 
     public Button btnPause;
+    public TextField txttest;
     @FXML
     private TableView<PlayListSongModel> tvSongsOnPlaylist;
     @FXML
@@ -100,39 +101,40 @@ public class MainController  implements Initializable {
 
         sldVolume.setValue(songPlayer.getVolume()*100);
 
+        tvSongsOnPlaylist.setPlaceholder(new Label("Select playlist"));
+
         listModel.getSelectedPlayList().bind(tvPlaylists.getSelectionModel().selectedItemProperty());
+        tvSongs.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        listModel.getSelectedSong().bind(tvSongs.getSelectionModel().selectedItemProperty());
 
         // list of all songs
-        try {
-            tvSongs.setItems(listModel.getSongs());
-        } catch (DALException e) {
-            e.printStackTrace();
-        }
+        tvSongs.setItems(listModel.getSongs());
         tcTitle.setCellValueFactory(addSongToList -> addSongToList.getValue().getTitleProperty());
         tcArtist.setCellValueFactory(addSongToList -> addSongToList.getValue().getArtistProperty());
         tcCategory.setCellValueFactory(addSongToList -> addSongToList.getValue().getGenreProperty());
         tcTime.setCellValueFactory(addSongToList -> addSongToList.getValue().getTimeProperty().asObject());
 
         // list of all Playlists
-        try {
-            tvPlaylists.setItems(listModel.getPlayLists());
-        } catch (DALException e) {
-            e.printStackTrace();
-        }
+
+        tvPlaylists.setItems(listModel.getPlayLists());
         txtName.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getNameProperty());
         txtSongs.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTotalSongsProperty().asObject());
         txtTime.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTimeProperty());
 
         // Search in all songs
-    txtSearch.textProperty().addListener((observableValue, oldValue, newValue) -> {
-        try {
-            listModel.searchSong(newValue);
-        } catch (DALException e) {
+        txtSearch.textProperty().addListener((observableValue, oldValue, newValue) -> {
+            try {
+                listModel.searchSong(newValue);
+            } catch (DALException e) {
 
-            e.printStackTrace();
-        }
-    });
+                e.printStackTrace();
+            }
+            });
 
+    }
+
+    public void addPlaylist(String playlistName) throws DALException {
+        listModel.addPlaylistToView(playlistName);
     }
 
     /**
@@ -169,7 +171,7 @@ public class MainController  implements Initializable {
      * goes back to previous song
      * @param actionEvent will run when an action is called on the button
      */
-    public void HandlePreviousSongBtn(ActionEvent actionEvent) {
+    public void handlePreviousSongBtn(ActionEvent actionEvent) {
     }
 
     /**
@@ -196,8 +198,11 @@ public class MainController  implements Initializable {
      * adds a song to a certain playlist
      * @param actionEvent runs when an action is performed on a button.
      */
-    public void handleAddSongToPlaylistBtn(ActionEvent actionEvent) {
+    public void handleAddSongToPlaylistBtn(ActionEvent actionEvent) throws DALException {
+        SongModel songModel = listModel.getSelectedSong().getValue();
+        PlaylistModel playlistModel = listModel.getSelectedPlayList().getValue();
 
+        listModel.addSongToPlatlist(songModel.getIdProperty().get(), playlistModel.getIdProperty().get());
 
     }
 
@@ -206,7 +211,7 @@ public class MainController  implements Initializable {
      * @param actionEvent runs when an action happens on a button.
      * @throws IOException if cant find stage.
      */
-    public void HandleNewPlaylistBtn(ActionEvent actionEvent) throws IOException {
+    public void handleNewPlaylistBtn(ActionEvent actionEvent) throws IOException {
         sceneSwapper.sceneSwitch(new Stage(), "NewPlaylistView.fxml");
     }
     /**
@@ -214,7 +219,7 @@ public class MainController  implements Initializable {
      * @param actionEvent runs when an action happens on a button.
      * @throws IOException if cant find stage.
      */
-    public void HandleEditPlaylistBtn(ActionEvent actionEvent) throws IOException {
+    public void handleEditPlaylistBtn(ActionEvent actionEvent) throws IOException {
         sceneSwapper.sceneSwitch(new Stage(),"EditPlaylistView.fxml");
     }
 
@@ -222,7 +227,7 @@ public class MainController  implements Initializable {
      * deletes a playlist from the application
      * @param actionEvent runs when an action is performed on the button.
      */
-    public void HandleDeletePlaylistBtn(ActionEvent actionEvent) {
+    public void handleDeletePlaylistBtn(ActionEvent actionEvent) {
         tvPlaylists.getItems().remove(tvPlaylists.getSelectionModel().getSelectedItem()); // fjerner kun sangen fra tableview
     }
 
@@ -271,14 +276,16 @@ public class MainController  implements Initializable {
      * removes a song
      * @param actionEvent runs when an action is performed.
      */
-    public void HandleDeleteSongBtn(ActionEvent actionEvent) {
+    public void handleDeleteSongBtn(ActionEvent actionEvent) {
     }
 
 
-    public void handelViewSongs(MouseEvent mouseEvent) throws DALException {
+    public void handleViewSongs(MouseEvent mouseEvent) throws DALException {
         tvSongsOnPlaylist.setItems(listModel.getPlayListSongs());
         txtSongsInPlayList.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTitleProperty());
 
     }
+
+
 }
 
