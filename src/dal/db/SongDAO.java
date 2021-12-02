@@ -14,7 +14,7 @@ public class SongDAO implements ISongRepository {
 
     private MyConnection databaseConnector;
 
-    public SongDAO() throws DALException, IOException {
+    public SongDAO() throws IOException {
         databaseConnector = new MyConnection();
     }
 
@@ -68,10 +68,10 @@ public class SongDAO implements ISongRepository {
                     return song;
                 }
             }
-        } catch (SQLException throwables) {
-            //TODO
+        } catch (SQLException SQLex) {
+            throw new DALException("Error");
         }
-        throw new DALException();
+        return null;
     }
 
     @Override
@@ -91,10 +91,8 @@ public class SongDAO implements ISongRepository {
             if(affectedRows != 1){
                 throw new DALException();
             }
-        } catch (SQLServerException throwables) {
-            //TODO
-        } catch (SQLException throwables) {
-            //TODO
+        } catch (SQLException SQLex) {
+            throw new DALException("Error");
         }
     }
 
@@ -109,10 +107,8 @@ public class SongDAO implements ISongRepository {
             if(affectedRows != 1){
                 throw new DALException();
             }
-        } catch (SQLServerException throwables) {
-            //TODO
-        } catch (SQLException throwables) {
-            //TODO
+        } catch (SQLException SQLex) {
+            throw new DALException("Error");
         }
     }
 

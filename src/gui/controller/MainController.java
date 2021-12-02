@@ -1,11 +1,13 @@
 package gui.controller;
 
+import dal.DALException;
 import gui.model.ListModel;
 import gui.model.PlayListSongModel;
 import gui.model.PlaylistModel;
 import gui.model.SongModel;
 import gui.model.SongPlayerModel;
 import gui.util.SceneSwapper;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -66,13 +68,18 @@ public class MainController  implements Initializable {
 
 
 
-    private final SceneSwapper sceneSwapper;
+    private SceneSwapper sceneSwapper;
     private ListModel listModel;
-    SongPlayerModel songPlayerModel = new SongPlayerModel("C:/Users/Magnus Overgaard/Downloads/bip.mp3");
 
-    public MainController(){
-        sceneSwapper = new SceneSwapper();
-        listModel = new ListModel();
+
+    public MainController() throws DALException, IOException {
+        try {
+            sceneSwapper = new SceneSwapper();
+            listModel = new ListModel();
+        }catch (DALException DALex){
+            displayError(DALex);
+            System.exit(0);
+        }
 
 
     }
@@ -81,19 +88,24 @@ public class MainController  implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         listModel.getSelectedPlayList().bind(tvPlaylists.getSelectionModel().selectedItemProperty());
 
-        sldVolume.setValue(songPlayerModel.getSongVolume() * 100); // 100 a hundred because method get volume is between 0.0 and 1.0
-        //just sets the volume slider default starting value to be the same as the songs' volume.
-
         // list of all songs
-    tvSongs.setItems(listModel.getSongs());
-    tcTitle.setCellValueFactory(addSongToList -> addSongToList.getValue().getTitleProperty());
+        try {
+            tvSongs.setItems(listModel.getSongs());
+        } catch (DALException e) {
+            e.printStackTrace();
+        }
+        tcTitle.setCellValueFactory(addSongToList -> addSongToList.getValue().getTitleProperty());
     tcArtist.setCellValueFactory(addSongToList -> addSongToList.getValue().getArtistProperty());
     tcCategory.setCellValueFactory(addSongToList -> addSongToList.getValue().getGenreProperty());
     tcTime.setCellValueFactory(addSongToList -> addSongToList.getValue().getTimeProperty().asObject());
 
         // list of all Playlists
-    tvPlaylists.setItems(listModel.getPlayLists());
-    txtName.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getNameProperty());
+        try {
+            tvPlaylists.setItems(listModel.getPlayLists());
+        } catch (DALException e) {
+            e.printStackTrace();
+        }
+        txtName.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getNameProperty());
     txtSongs.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTotalSongsProperty().asObject());
     txtTime.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTimeProperty());
 
@@ -101,9 +113,28 @@ public class MainController  implements Initializable {
 
         // Search in all songs
     txtSearch.textProperty().addListener((observableValue, oldValue, newValue) -> {
-        listModel.searchSong(newValue);
+        try {
+            listModel.searchSong(newValue);
+        } catch (DALException e) {
+
+            e.printStackTrace();
+        }
     });
 
+    }
+
+    /**
+     * Displays errormessages to the user.
+     *
+     * @param ex The Exception
+     */
+    private void displayError(Exception ex) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Something went wrong");
+            alert.setHeaderText(ex.getMessage());
+            alert.showAndWait();
+        });
     }
 
     /**
@@ -112,7 +143,7 @@ public class MainController  implements Initializable {
      */
     public void sldVolumeInput(MouseEvent dragEvent) {
         System.out.println(sldVolume.getValue());
-        songPlayerModel.setSongVolume(sldVolume.getValue());
+
 
     }
 
@@ -137,10 +168,6 @@ public class MainController  implements Initializable {
     public void handlePlayBtn(ActionEvent actionEvent) {
         btnPause.setVisible(true);
         btnPlay.setVisible(false);
-
-
-
-        songPlayerModel.playSong();
     }
 
     /**
@@ -148,7 +175,6 @@ public class MainController  implements Initializable {
      * @param actionEvent
      */
     public void handlePauseBtn(ActionEvent actionEvent) {
-        songPlayerModel.pauseSong();
         btnPlay.setVisible(true);
         btnPause.setVisible(false);
     }
@@ -236,7 +262,7 @@ public class MainController  implements Initializable {
     }
 
 
-    public void handelViewSongs(MouseEvent mouseEvent) {
+    public void handelViewSongs(MouseEvent mouseEvent) throws DALException {
         tvSongsOnPlaylist.setItems(listModel.getPlayListSongs());
         txtSongsInPlayList.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTitleProperty());
 

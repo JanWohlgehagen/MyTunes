@@ -3,6 +3,7 @@ package dal.db;
 import be.Playlist;
 import be.Song;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
+import dal.DALException;
 import dal.interfaces.IPlaylistRepository;
 import java.io.IOException;
 import java.sql.*;
@@ -18,7 +19,7 @@ public class PlaylistDAO implements IPlaylistRepository {
     }
 
     @Override
-    public List<Playlist> getAllPlaylists() throws Exception {
+    public List<Playlist> getAllPlaylists() throws DALException {
         List<Playlist> allPlaylists = new ArrayList<>();
 
         //Create a connection
@@ -38,16 +39,14 @@ public class PlaylistDAO implements IPlaylistRepository {
                     allPlaylists.add(playlist);
                 }
             }
-        } catch (SQLServerException throwables) {
-            //TODO
-        } catch (SQLException throwables) {
-            //TODO
+        } catch (SQLException SQLex) {
+           throw new DALException("Error");
         }
         return allPlaylists;
     }
 
     @Override
-    public List<Song> getSongsFromPlaylist(Playlist playlist) throws Exception {
+    public List<Song> getSongsFromPlaylist(Playlist playlist) throws DALException {
         List<Song> songsInPlaylist = new ArrayList<>();
 
         //Create a connection
@@ -70,16 +69,14 @@ public class PlaylistDAO implements IPlaylistRepository {
                     songsInPlaylist.add(song);
                 }
             }
-        } catch (SQLServerException throwables) {
-            //TODO
-        } catch (SQLException throwables) {
-            //TODO
+        } catch (SQLException SQLex) {
+            throw new DALException("Error");
         }
         return songsInPlaylist;
     }
 
     @Override
-    public void addSongToPLaylist(int songId, int playlistId) throws Exception {
+    public void addSongToPLaylist(int songId, int playlistId) throws DALException {
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "INSERT INTO PlaylistSongs VALUES (?,?);";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -87,14 +84,14 @@ public class PlaylistDAO implements IPlaylistRepository {
             preparedStatement.setInt(2, playlistId);
             preparedStatement.executeUpdate();
 
-        } catch (SQLException throwables) {
-            //TODO
+        } catch (SQLException SQLex) {
+            throw new DALException("Error");
         }
     }
 
 
     @Override
-    public Playlist createPlaylist(String name) throws Exception {
+    public Playlist createPlaylist(String name) throws DALException {
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "INSERT INTO Playlist VALUES (?);";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -110,14 +107,14 @@ public class PlaylistDAO implements IPlaylistRepository {
                     return playlist;
                 }
             }
-        } catch (SQLException throwables) {
-            //TODO
+        } catch (SQLException SQLex) {
+            throw new DALException("Error");
         }
-        throw new Exception();
+        return null;
     }
 
     @Override
-    public void updatePlaylist(Playlist playlist) throws Exception {
+    public void updatePlaylist(Playlist playlist) throws DALException {
         try(Connection connection = databaseConnector.getConnection()){
             String sql = "UPDATE Playlist SET name=? WHERE Id=?;";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -127,17 +124,15 @@ public class PlaylistDAO implements IPlaylistRepository {
             int affectedRows = preparedStatement.executeUpdate();
 
             if(affectedRows != 1){
-                throw new Exception();
+                throw new DALException("Error");
             }
-        } catch (SQLServerException throwables) {
-            //TODO
-        } catch (SQLException throwables) {
-            //TODO
+        } catch (SQLException SQLex) {
+            throw new DALException("Error");
         }
     }
 
     @Override
-    public void deletePlaylist(Playlist playlist) throws Exception {
+    public void deletePlaylist(Playlist playlist) throws DALException {
         try(Connection connection = databaseConnector.getConnection()){
             String sql = "DELETE FROM Playlist WHERE Id=?;";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -145,12 +140,10 @@ public class PlaylistDAO implements IPlaylistRepository {
             int affectedRows = preparedStatement.executeUpdate();
 
             if(affectedRows != 1){
-                throw new Exception();
+                throw new DALException("Error");
             }
-        } catch (SQLServerException throwables) {
-            //TODO
-        } catch (SQLException throwables) {
-            //TODO
+        } catch (SQLException SQLex) {
+            throw new DALException("Error");
         }
     }
 
