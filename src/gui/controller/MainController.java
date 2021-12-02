@@ -95,7 +95,7 @@ public class MainController  implements Initializable {
 
         sldVolume.setValue(songPlayer.getVolume()*100);
 
-        tvSongsOnPlaylist.setPlaceholder(new Label("Select playlist"));
+        tvSongsOnPlaylist.setPlaceholder(new Label("Select a playlist \n with songs"));
 
         listModel.getSelectedPlayList().bind(tvPlaylists.getSelectionModel().selectedItemProperty());
         //tvSongs.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
