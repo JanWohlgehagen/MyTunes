@@ -60,9 +60,7 @@ public class NewSongController implements Initializable {
     public void handleChooseBtn(ActionEvent actionEvent) {
         Stage stage = (Stage) gridPaneId.getScene().getWindow();
 
-        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Music file", "*.mp3"),
-                new FileChooser.ExtensionFilter("Music file", "*.wav"),
-                new FileChooser.ExtensionFilter("Music file", "*.wave"));
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Music file", "*.mp3", "*.wav", "*.wave"));
 
         try {
             file = fileChooser.showOpenDialog(stage); // assigns the chosen file to the file
