@@ -10,6 +10,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 import java.io.IOException;
+import java.util.List;
 
 public class SongModel {
 
@@ -57,5 +58,8 @@ public class SongModel {
 
     public void createSong(String title, String artist, String genre, int duration, String pathToFile) throws DALException, IOException {
         listModel.addSongToView(songManager.createSong(title, artist, genre, duration, pathToFile));
+    }
+    public List<Song> getSong(){
+        return songManager.getAllSongs();
     }
 }
