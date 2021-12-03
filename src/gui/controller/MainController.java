@@ -38,9 +38,9 @@ public class MainController  implements Initializable {
 
     public Button btnPause;
     @FXML
-    private TableView<PlayListSongModel> tvSongsOnPlaylist;
+    private TableView<SongModel> tvSongsOnPlaylist;
     @FXML
-    private TableColumn<PlayListSongModel, String> txtSongsInPlayList;
+    private TableColumn<SongModel, String> txtSongsInPlayList;
 
     @FXML
     private TableView<SongModel> tvSongs;
@@ -251,7 +251,11 @@ public class MainController  implements Initializable {
      * deletes a song from a playlist.
      * @param actionEvent runs when an action is performed on the button.
      */
-    public void handleDeleteSongInPlaylistBtn(ActionEvent actionEvent) {
+    public void handleDeleteSongInPlaylistBtn(ActionEvent actionEvent) throws DALException {
+        SongModel songModel = tvSongsOnPlaylist.getSelectionModel().getSelectedItem();
+        PlaylistModel playlistModel = listModel.getSelectedPlayList().getValue();
+
+        listModel.removeSongFromPlaylist(songModel, playlistModel.getIdProperty().get());
     }
 
     /**

@@ -23,10 +23,6 @@ public class EditPlaylistController implements Initializable {
     private PlaylistModel playlistModel;
 
 
-    public EditPlaylistController() throws IOException, DALException {
-
-    }
-
     public void handleSaveBtn(ActionEvent actionEvent) throws DALException {
         if(!txtName.getText().isBlank()) {
             playlistModel.updatePlaylist(txtName.getText());

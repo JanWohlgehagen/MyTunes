@@ -19,7 +19,7 @@ public class NewPlaylistController {
     @FXML
     private TextField txtName;
 
-    public void handleSaveBtn(ActionEvent actionEvent) throws DALException, IOException {
+    public void handleSaveBtn(ActionEvent actionEvent) throws DALException {
         MainController mainController = new App().getController();
         mainController.addPlaylist(txtName.getText());
         closeStage();

@@ -20,7 +20,7 @@ public class ListModel {
 
     private ObservableList<SongModel> songsToBeViewed;
     private ObservableList<PlaylistModel> playListToBeViewed;
-    private ObservableList<PlayListSongModel> playListSongsToBeViewed;
+    private ObservableList<SongModel> playListSongsToBeViewed;
 
     private ObjectProperty<PlaylistModel> selectedPlayList;
     private ObjectProperty<SongModel> selectedSong;
@@ -51,9 +51,9 @@ public class ListModel {
         return playListToBeViewed;
     }
 
-    public ObservableList<PlayListSongModel> getPlayListSongs() throws DALException {
+    public ObservableList<SongModel> getPlayListSongs() throws DALException {
         playListSongsToBeViewed = FXCollections.observableArrayList(playlistManager.getSongsFromPlaylist(selectedPlayList.get().getIdProperty().get()).stream().map(playListSongs ->
-                new PlayListSongModel(playListSongs.getTitle())).toList());
+                new SongModel(playListSongs.getId(), playListSongs.getTitle(), playListSongs.getArtist(), playListSongs.getGenre(), playListSongs.getDuration(), playListSongs.getPathToFile())).toList());
         return playListSongsToBeViewed;
     }
 
@@ -111,5 +111,11 @@ public class ListModel {
 
     public void deletePlaylist(Playlist playlist) {playListToBeViewed.remove(playlist);
 
+    }
+
+    public void removeSongFromPlaylist(SongModel songModel, int playlistId) throws DALException {
+        playlistManager.removeSongFromPLaylist(songModel.getIdProperty().get(), playlistId);
+
+        playListSongsToBeViewed.remove(songModel);
     }
 }
