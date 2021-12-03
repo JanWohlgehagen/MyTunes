@@ -25,7 +25,7 @@ public class SongManager {
 
     }
 
-    public List<Song> getAllSongs() {
+    public List<Song> getAllSongs() throws DALException {
         return songDAO.getAllSongs();
     }
 
@@ -47,7 +47,7 @@ public class SongManager {
      * @param query the key word, to search for
      * @return a list of songs that fit, the key word
      */
-    public List<Song> searchSong(String query){
+    public List<Song> searchSong(String query) throws DALException {
         List<Song> allSongs = songDAO.getAllSongs();
         List<Song> searchResult = songSearcher.search(allSongs, query);
         return searchResult;

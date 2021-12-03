@@ -17,13 +17,17 @@ public class SongModel {
     private StringProperty genre = new SimpleStringProperty();
     private StringProperty duration = new SimpleStringProperty();
     private  IntegerProperty id = new SimpleIntegerProperty();
-    private Song song;
     private SongManager songManager;
     private ListModel listModel;
 
 
     public SongModel(Song song) {
-        this.song = song;
+        this.getIdProperty().set(song.getId());
+        this.getTitleProperty().set(song.getTitle());
+        this.getArtistProperty().set(song.getArtist());
+        this.getGenreProperty().set(song.getGenre());
+        this.getDurationProperty().set(song.getDurationString());
+
     }
 
     public SongModel() throws DALException, IOException {
@@ -31,25 +35,27 @@ public class SongModel {
         listModel = new ListModel();
     }
 
+    public IntegerProperty getIdProperty() {
+        return id;
+    }
+
     public StringProperty getTitleProperty() {
-        return song.getTitleProperty();
+        return title;
     }
 
     public StringProperty getArtistProperty() {
-        return song.getArtistProperty();
+        return artist;
     }
 
     public StringProperty getGenreProperty() {
-        return song.getGenreProperty();
+        return genre;
     }
 
     public StringProperty getDurationProperty() {
-        return song.getDurationStringProperty();
+        return duration;
     }
 
-    public IntegerProperty getIdProperty() {
-        return song.getIdProperty();
-    }
+
 
     public void createSong(String title, String artist, String genre, int duration, String pathToFile) throws DALException, IOException {
         listModel.addSongToView(songManager.createSong(title, artist, genre, duration, pathToFile));

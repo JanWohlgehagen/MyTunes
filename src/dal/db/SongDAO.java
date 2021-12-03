@@ -12,7 +12,6 @@ import java.util.List;
 public class SongDAO implements ISongRepository {
 
     private MyConnection databaseConnector;
-    private Song song;
 
     public SongDAO() throws IOException {
         databaseConnector = new MyConnection();
@@ -38,11 +37,11 @@ public class SongDAO implements ISongRepository {
                     int duration = resultSet.getInt("duration");
                     String pathToFile = resultSet.getString("filePath");
 
-                    allSongsList.add(song.createSong(id, title, artist, genre, duration, pathToFile));
+                    allSongsList.add(new Song(id, title, artist, genre, duration, pathToFile));
                 }
             }
         }  catch (SQLException SQLex) {
-           throw new DALException("Error: Can not getAllSongs in Databases", SQLex.getCause());
+           throw new DALException("Error: Can not 'getAllSongs' in Databases", SQLex.getCause());
         }
         return allSongsList;
     }
@@ -65,11 +64,11 @@ public class SongDAO implements ISongRepository {
                 if (resultSet.next()) {
                     int id = resultSet.getInt(1);
 
-                    return song.createSong(id, title, artist, genre, duration, pathToFile);
+                    return new Song(id, title, artist, genre, duration, pathToFile);
                 }
             }
         } catch (SQLException SQLex) {
-            throw new DALException("Error: Can not createSong in Databases", SQLex.getCause());
+            throw new DALException("Error: Can not 'createSong' in Databases", SQLex.getCause());
         }
         return null;
     }
@@ -92,7 +91,7 @@ public class SongDAO implements ISongRepository {
                 throw new DALException();
             }
         } catch (SQLException SQLex) {
-            throw new DALException("Error: Can not updateSong in Databases", SQLex.getCause());
+            throw new DALException("Error: Can not 'updateSong' in Databases", SQLex.getCause());
         }
     }
 
@@ -108,7 +107,7 @@ public class SongDAO implements ISongRepository {
                 throw new DALException();
             }
         } catch (SQLException SQLex) {
-            throw new DALException("Error: Can not deleteSong in Databases", SQLex.getCause());
+            throw new DALException("Error: Can not 'deleteSong' in Databases", SQLex.getCause());
         }
     }
 }

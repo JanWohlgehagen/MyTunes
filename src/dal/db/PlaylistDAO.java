@@ -13,7 +13,6 @@ import java.util.List;
 public class PlaylistDAO implements IPlaylistRepository {
 
     private MyConnection databaseConnector;
-    private Playlist playlist;
 
     public PlaylistDAO() throws IOException {
         databaseConnector = new MyConnection();
@@ -22,7 +21,6 @@ public class PlaylistDAO implements IPlaylistRepository {
     @Override
     public List<Playlist> getAllPlaylists() throws DALException {
         List<Playlist> allPlaylists = new ArrayList<>();
-        List<Song> songs = new ArrayList<>();
 
         //Create a connection
         try(Connection connection = databaseConnector.getConnection()){
@@ -35,15 +33,12 @@ public class PlaylistDAO implements IPlaylistRepository {
                 while(resultSet.next()){
                     int id = resultSet.getInt("id");
                     String name = resultSet.getString("Name");
-                    Playlist newPlaylist = playlist.createPlaylist(id, name);
-
-                    newPlaylist.addSongToPlayList(songs);
-                    allPlaylists.add(newPlaylist);
+                    allPlaylists.add(new Playlist(id, name));
 
                 }
             }
         } catch (SQLException SQLex) {
-           throw new DALException("Error");
+           throw new DALException("Error: Can not 'getAllPlaylist' in Databases");
         }
         return allPlaylists;
     }
@@ -69,13 +64,12 @@ public class PlaylistDAO implements IPlaylistRepository {
                     int duration = resultSet.getInt("duration");
                     String pathToFile = resultSet.getString("filePath");
 
-                    Song song = new Song(id, title, artist, genre, duration, pathToFile);
-                    songsInPlaylist.add(song);
+                    songsInPlaylist.add(new Song(id, title, artist, genre, duration, pathToFile));
                 }
             }
         } catch (SQLException SQLex) {
             SQLex.printStackTrace();
-            throw new DALException("Error");
+            throw new DALException("Error: Can not 'getSongsFromPlaylist' in Databases");
         }
         return songsInPlaylist;
     }
@@ -90,7 +84,7 @@ public class PlaylistDAO implements IPlaylistRepository {
             preparedStatement.executeUpdate();
 
         } catch (SQLException SQLex) {
-            throw new DALException("Error");
+            throw new DALException("Error: Can not 'addSongToPLaylist' in Databases");
         }
     }
 
@@ -108,13 +102,12 @@ public class PlaylistDAO implements IPlaylistRepository {
                 ResultSet resultSet = preparedStatement.getGeneratedKeys();
                 if (resultSet.next()) {
                     int id = resultSet.getInt(1);
-                    Playlist playlist = new Playlist(id, name);
-                    //System.out.println(playlist.getName());
-                    return playlist;
+
+                    return new Playlist(id, name);
                 }
             }
         } catch (SQLException SQLex) {
-            throw new DALException("Error");
+            throw new DALException("Error: Can not 'createPlaylist' in Databases");
         }
         return null;
     }
@@ -130,10 +123,10 @@ public class PlaylistDAO implements IPlaylistRepository {
             int affectedRows = preparedStatement.executeUpdate();
 
             if(affectedRows != 1){
-                throw new DALException("Error");
+                throw new DALException("Error: There are too many rows affected");
             }
         } catch (SQLException SQLex) {
-            throw new DALException("Error");
+            throw new DALException("Error: Can not 'updatePlaylist' in Databases");
         }
     }
 
@@ -146,10 +139,10 @@ public class PlaylistDAO implements IPlaylistRepository {
             int affectedRows = preparedStatement.executeUpdate();
 
             if(affectedRows != 1){
-                throw new DALException("Error");
+                throw new DALException("Error: There are too many rows affected");
             }
         } catch (SQLException SQLex) {
-            throw new DALException("Error");
+            throw new DALException("Error: Can not 'deletePlaylist' in Databases");
         }
     }
 

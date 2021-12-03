@@ -20,7 +20,7 @@ public class ListModel {
 
     private ObservableList<SongModel> songsToBeViewed;
     private ObservableList<PlaylistModel> playListToBeViewed;
-    private ObservableList<PlayListSongModel> playListSongsToBeViewed;
+    private ObservableList<SongModel> playListSongsToBeViewed;
 
     private ObjectProperty<PlaylistModel> selectedPlayList;
     private ObjectProperty<SongModel> selectedSong;
@@ -34,10 +34,19 @@ public class ListModel {
 
 
 
-        playListToBeViewed = FXCollections.observableArrayList(playlistManager.getAllPlaylists().stream().map(playList ->
-                new PlaylistModel(playList.getId(), playList.getName(), playList.getSongList().size(), String.valueOf(playList.getTotalTime()))).toList());
+
+        playListToBeViewed = FXCollections.observableArrayList(playlistManager.getAllPlaylists().stream().map(playList -> {
+            try {
+                return new PlaylistModel(playList);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }).toList());
 
         songsToBeViewed = FXCollections.observableArrayList(songManager.getAllSongs().stream().map(song -> new SongModel(song)).toList());
+
+        SongsToPlaylist();
     }
 
     public ObjectProperty<PlaylistModel> getSelectedPlayList(){
@@ -52,9 +61,9 @@ public class ListModel {
         return playListToBeViewed;
     }
 
-    public ObservableList<PlayListSongModel> getPlayListSongs() throws DALException {
+    public ObservableList<SongModel> getPlayListSongs() throws DALException {
         playListSongsToBeViewed = FXCollections.observableArrayList(playlistManager.getSongsFromPlaylist(selectedPlayList.get().getIdProperty().get()).stream().map(playListSongs ->
-                new PlayListSongModel(playListSongs.getTitleProperty().get())).toList());
+                new SongModel(playListSongs)).toList());
         return playListSongsToBeViewed;
     }
 
@@ -62,13 +71,19 @@ public class ListModel {
         return songsToBeViewed;
     }
 
-    public void addPlaylistToView(String playlistName) throws DALException {
+    public void addPlaylistToView(String playlistName) throws DALException, IOException {
         Playlist playlist = playlistManager.createPlaylist(playlistName);
-        playListToBeViewed.add(new PlaylistModel(playlist.getId(), playlist.getName(),playlist.getSongList().size(), String.valueOf(playlist.getTotalTime())));
+        playListToBeViewed.add(new PlaylistModel(playlist));
     }
 
     public void addSongToView(Song song) throws DALException, IOException {
         songsToBeViewed.add(new SongModel(song));
+    }
+
+    public void SongsToPlaylist() throws DALException {
+        for (PlaylistModel playlist: getPlayLists()) {
+            playlist.addSongToPlayList(playlistManager.getSongsFromPlaylist(playlist.getIdProperty().get()));
+        }
     }
 
 
@@ -79,7 +94,7 @@ public class ListModel {
      * @param query the key word, to search for
      */
 
-    public void searchSong(String query) {
+    public void searchSong(String query) throws DALException {
         List<SongModel> searchResults = songManager.searchSong(query).stream().map(song ->
                 new SongModel(song)).toList();
 

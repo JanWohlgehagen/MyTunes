@@ -28,9 +28,9 @@ public class MainController  implements Initializable {
 
     public Button btnPause;
     @FXML
-    private TableView<PlayListSongModel> tvSongsOnPlaylist;
+    private TableView<SongModel> tvSongsOnPlaylist;
     @FXML
-    private TableColumn<PlayListSongModel, String> txtSongsInPlayList;
+    private TableColumn<SongModel, String> txtSongsInPlayList;
 
     @FXML
     private TableView<SongModel> tvSongs;
@@ -113,14 +113,21 @@ public class MainController  implements Initializable {
         tvPlaylists.setItems(listModel.getPlayLists());
         txtName.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getNameProperty());
         txtSongs.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTotalSongsProperty().asObject());
-        txtTime.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTimeProperty());
+        txtTime.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTotalTimeProperty());
 
         // Search in all songs
-        txtSearch.textProperty().addListener((observableValue, oldValue, newValue) -> {listModel.searchSong(newValue);});
+        txtSearch.textProperty().addListener((observableValue, oldValue, newValue) -> {
+            try {
+                listModel.searchSong(newValue);
+            } catch (DALException e) {
+                e.printStackTrace();
+                displayError(new DALException("Error: Something went wrong in the search engine"));
+            }
+        });
 
     }
 
-    public void addPlaylist(String playlistName) throws DALException {
+    public void addPlaylist(String playlistName) throws DALException, IOException {
         listModel.addPlaylistToView(playlistName);
     }
 

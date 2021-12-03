@@ -20,7 +20,7 @@ public class EditPlaylistController {
     private MainController mainController;
 
     public EditPlaylistController() throws IOException, DALException {
-        playlistModel = new PlaylistModel();
+        //playlistModel = new PlaylistModel();
         mainController = new MainController();
     }
 

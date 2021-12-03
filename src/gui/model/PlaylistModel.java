@@ -1,39 +1,53 @@
 package gui.model;
 
 
+import be.Playlist;
+import be.Song;
+import bll.PlaylistManager;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
+import java.io.IOException;
+import java.util.List;
 
 
 public class PlaylistModel {
 
+    private PlaylistManager playlistManager;
+
+    private ObservableList<Song> totalSongs;
     private StringProperty name = new SimpleStringProperty();
-    private IntegerProperty totalSongs = new SimpleIntegerProperty();
     private StringProperty time = new SimpleStringProperty();
     private IntegerProperty id = new SimpleIntegerProperty();
+    private Playlist playlist;
 
-    public PlaylistModel(int id, String name, Integer totalSongs, String time){
-        this.getIdProperty().set(id);
-        this.getNameProperty().set(name);
-        this.getTotalSongsProperty().set(totalSongs);
-        this.getTimeProperty().set(time);
+    public PlaylistModel(Playlist playlist) throws IOException {
+        this.playlist = playlist;
+        this.getIdProperty().set(playlist.getId());
+        this.getNameProperty().set(playlist.getName());
+        this.getTotalTimeProperty().set(playlist.getDurationString());
+        this.totalSongs = FXCollections.observableArrayList();
+
+        playlistManager = new PlaylistManager();
     }
 
-    public PlaylistModel() {
-    }
+
 
     public StringProperty getNameProperty() {
         return name;
     }
 
     public IntegerProperty getTotalSongsProperty() {
-        return totalSongs;
+        IntegerProperty size = new SimpleIntegerProperty();
+        size.set(totalSongs.size());
+        return size;
     }
 
-    public StringProperty getTimeProperty() {
+    public StringProperty getTotalTimeProperty() {
         return time;
     }
 
@@ -41,4 +55,7 @@ public class PlaylistModel {
         return id;
     }
 
+    public void addSongToPlayList(List<Song> songs) {
+        this.totalSongs.addAll(songs);
+    }
 }
