@@ -1,6 +1,7 @@
 package gui.controller;
 
 
+import be.Song;
 import dal.DALException;
 import gui.model.ListModel;
 import gui.model.PlayListSongModel;
@@ -21,6 +22,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 
+import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -75,10 +77,16 @@ public class MainController  implements Initializable {
 
     private SceneSwapper sceneSwapper;
     private ListModel listModel;
-    SongPlayer songPlayer = new SongPlayer("songs/bip.mp3");
+    private SongPlayer songPlayer;
+    private Song currentlySong;
+
+    List<Song> songs;
+    SongModel songModel = new SongModel();
+
 
     public MainController() throws DALException, IOException {
 
+        songs = songModel.getSong();
         try {
             sceneSwapper = new SceneSwapper();
             listModel = new ListModel();
@@ -92,9 +100,6 @@ public class MainController  implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-        sldVolume.setValue(songPlayer.getVolume()*100);
-
         tvSongsOnPlaylist.setPlaceholder(new Label("Select a playlist \n with songs"));
 
         listModel.getSelectedPlayList().bind(tvPlaylists.getSelectionModel().selectedItemProperty());
@@ -165,9 +170,17 @@ public class MainController  implements Initializable {
      * switches to picture of pause button
      * @param actionEvent runs when an action is performed on the button
      */
-    public void handlePlayBtn(ActionEvent actionEvent) {
+    public void handlePlayBtn(ActionEvent actionEvent) throws DALException, IOException {
         btnPause.setVisible(true);
         btnPlay.setVisible(false);
+
+        for (Song song : songs) {
+                if (tvSongsOnPlaylist.getSelectionModel().getSelectedItem().getTitleProperty().toString().contains(song.getTitle())) {
+                    songPlayer = new SongPlayer(song.getPathToFile());
+                    currentlySong = song;
+                    break;
+            }
+        }
         songPlayer.playSong();
     }
 
@@ -178,6 +191,7 @@ public class MainController  implements Initializable {
     public void handlePauseBtn(ActionEvent actionEvent) {
         btnPlay.setVisible(true);
         btnPause.setVisible(false);
+
         songPlayer.pauseMusic();
     }
 
