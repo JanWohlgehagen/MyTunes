@@ -1,7 +1,6 @@
 package gui.model;
 
 import be.Song;
-import bll.PlaylistManager;
 import bll.SongManager;
 import dal.DALException;
 import javafx.beans.property.IntegerProperty;
@@ -16,18 +15,15 @@ public class SongModel {
     private StringProperty title = new SimpleStringProperty();
     private StringProperty artist = new SimpleStringProperty();
     private StringProperty genre = new SimpleStringProperty();
-    private IntegerProperty duration = new SimpleIntegerProperty();
+    private StringProperty duration = new SimpleStringProperty();
     private  IntegerProperty id = new SimpleIntegerProperty();
+    private Song song;
     private SongManager songManager;
     private ListModel listModel;
 
 
-    public SongModel(int id, String title, String artist, String genre, int duration){
-        this.getIdProperty().set(id);
-        this.getTitleProperty().set(title);
-        this.getArtistProperty().set(artist);
-        this.getGenreProperty().set(genre);
-        this.getTimeProperty().set(duration);
+    public SongModel(Song song) {
+        this.song = song;
     }
 
     public SongModel() throws DALException, IOException {
@@ -36,23 +32,23 @@ public class SongModel {
     }
 
     public StringProperty getTitleProperty() {
-        return title;
+        return song.getTitleProperty();
     }
 
     public StringProperty getArtistProperty() {
-        return artist;
+        return song.getArtistProperty();
     }
 
     public StringProperty getGenreProperty() {
-        return genre;
+        return song.getGenreProperty();
     }
 
-    public IntegerProperty getTimeProperty() {
-        return duration;
+    public StringProperty getDurationProperty() {
+        return song.getDurationStringProperty();
     }
 
     public IntegerProperty getIdProperty() {
-        return id;
+        return song.getIdProperty();
     }
 
     public void createSong(String title, String artist, String genre, int duration, String pathToFile) throws DALException, IOException {

@@ -41,7 +41,7 @@ public class MainController  implements Initializable {
     @FXML
     private TableColumn<SongModel, String> tcCategory;
     @FXML
-    private TableColumn<SongModel, Integer> tcTime;
+    private TableColumn<SongModel, String> tcTime;
 
     @FXML
     private TableView<PlaylistModel> tvPlaylists;
@@ -106,7 +106,7 @@ public class MainController  implements Initializable {
         tcTitle.setCellValueFactory(addSongToList -> addSongToList.getValue().getTitleProperty());
         tcArtist.setCellValueFactory(addSongToList -> addSongToList.getValue().getArtistProperty());
         tcCategory.setCellValueFactory(addSongToList -> addSongToList.getValue().getGenreProperty());
-        tcTime.setCellValueFactory(addSongToList -> addSongToList.getValue().getTimeProperty().asObject());
+        tcTime.setCellValueFactory(addSongToList -> addSongToList.getValue().getDurationProperty());
 
         // list of all Playlists
 

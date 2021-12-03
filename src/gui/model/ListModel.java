@@ -32,11 +32,12 @@ public class ListModel {
         selectedPlayList = new SimpleObjectProperty<>();
         selectedSong = new SimpleObjectProperty<>();
 
+
+
         playListToBeViewed = FXCollections.observableArrayList(playlistManager.getAllPlaylists().stream().map(playList ->
                 new PlaylistModel(playList.getId(), playList.getName(), playList.getSongList().size(), String.valueOf(playList.getTotalTime()))).toList());
 
-        songsToBeViewed = FXCollections.observableArrayList(songManager.getAllSongs().stream().map(song ->
-                new SongModel(song.getId(), song.getTitle(), song.getArtist(), song.getGenre(), song.getDuration())).toList());
+        songsToBeViewed = FXCollections.observableArrayList(songManager.getAllSongs().stream().map(song -> new SongModel(song)).toList());
     }
 
     public ObjectProperty<PlaylistModel> getSelectedPlayList(){
@@ -53,7 +54,7 @@ public class ListModel {
 
     public ObservableList<PlayListSongModel> getPlayListSongs() throws DALException {
         playListSongsToBeViewed = FXCollections.observableArrayList(playlistManager.getSongsFromPlaylist(selectedPlayList.get().getIdProperty().get()).stream().map(playListSongs ->
-                new PlayListSongModel(playListSongs.getTitle())).toList());
+                new PlayListSongModel(playListSongs.getTitleProperty().get())).toList());
         return playListSongsToBeViewed;
     }
 
@@ -67,7 +68,7 @@ public class ListModel {
     }
 
     public void addSongToView(Song song) throws DALException, IOException {
-        songsToBeViewed.add(new SongModel(song.getId(), song.getTitle(), song.getArtist(), song.getGenre(), song.getDuration()));
+        songsToBeViewed.add(new SongModel(song));
     }
 
 
@@ -80,7 +81,7 @@ public class ListModel {
 
     public void searchSong(String query) {
         List<SongModel> searchResults = songManager.searchSong(query).stream().map(song ->
-                new SongModel(song.getId(), song.getTitle(), song.getArtist(), song.getGenre(), song.getDuration())).toList();
+                new SongModel(song)).toList();
 
         songsToBeViewed.clear();
         songsToBeViewed.addAll((searchResults));

@@ -30,16 +30,16 @@ public class SongSearcher implements ISearcher {
 
     @Override
     public boolean compareToSongTitle(Song song, String query) {
-        return song.getTitle().toLowerCase().contains(query.toLowerCase());
+        return song.getTitleProperty().get().toLowerCase().contains(query.toLowerCase());
     }
 
     @Override
     public boolean compareToSongArtist(Song song, String query) {
-        return song.getArtist().toLowerCase().contains(query.toLowerCase());
+        return song.getArtistProperty().get().toLowerCase().contains(query.toLowerCase());
     }
 
     @Override
     public boolean compareToSongGerne(Song song, String query) {
-        return song.getGenre().toLowerCase().contains(query.toLowerCase());
+        return song.getGenreProperty().get().toLowerCase().contains(query.toLowerCase());
     }
 }

@@ -78,12 +78,12 @@ public class SongDAO implements ISongRepository {
         try(Connection connection = databaseConnector.getConnection()){
             String sql = "UPDATE Song SET title = ?, filePath=?, artist=?, genre=?, duration=? WHERE Id=?;";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, song.getTitle());
-            preparedStatement.setString(2, song.getPathToFile());
-            preparedStatement.setString(3, song.getArtist());
-            preparedStatement.setString(4, song.getGenre());
-            preparedStatement.setInt(5, song.getDuration());
-            preparedStatement.setInt(6, song.getId());
+            preparedStatement.setString(1, song.getTitleProperty().get());
+            preparedStatement.setString(2, song.getPathToFileProperty().get());
+            preparedStatement.setString(3, song.getArtistProperty().get());
+            preparedStatement.setString(4, song.getGenreProperty().get());
+            preparedStatement.setInt(5, song.getDurationProperty().get());
+            preparedStatement.setInt(6, song.getIdProperty().get());
 
             int affectedRows = preparedStatement.executeUpdate();
 
@@ -100,7 +100,7 @@ public class SongDAO implements ISongRepository {
         try(Connection connection = databaseConnector.getConnection()){
             String sql = "DELETE FROM Song WHERE Id=?;";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, song.getId());
+            preparedStatement.setInt(1, song.getIdProperty().get());
             int affectedRows = preparedStatement.executeUpdate();
 
             if(affectedRows != 1){

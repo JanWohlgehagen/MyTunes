@@ -35,7 +35,7 @@ public class Playlist {
     public int getTotalTime(){
         int totalTime = 0;
         for (Song song: getSongList()) {
-            totalTime += song.getDuration();
+            totalTime += song.getDurationProperty().get();
         }
         return totalTime;
     }
