@@ -13,6 +13,7 @@ import java.util.List;
 public class PlaylistDAO implements IPlaylistRepository {
 
     private MyConnection databaseConnector;
+    private Playlist playlist;
 
     public PlaylistDAO() throws IOException {
         databaseConnector = new MyConnection();
@@ -21,6 +22,7 @@ public class PlaylistDAO implements IPlaylistRepository {
     @Override
     public List<Playlist> getAllPlaylists() throws DALException {
         List<Playlist> allPlaylists = new ArrayList<>();
+        List<Song> songs = new ArrayList<>();
 
         //Create a connection
         try(Connection connection = databaseConnector.getConnection()){
@@ -33,10 +35,11 @@ public class PlaylistDAO implements IPlaylistRepository {
                 while(resultSet.next()){
                     int id = resultSet.getInt("id");
                     String name = resultSet.getString("Name");
+                    Playlist newPlaylist = playlist.createPlaylist(id, name);
 
+                    newPlaylist.addSongToPlayList(songs);
+                    allPlaylists.add(newPlaylist);
 
-                    Playlist playlist = new Playlist(id, name);
-                    allPlaylists.add(playlist);
                 }
             }
         } catch (SQLException SQLex) {

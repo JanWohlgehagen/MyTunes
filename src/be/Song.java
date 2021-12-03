@@ -1,80 +1,59 @@
 package be;
 
-
-import bll.SongManager;
-import dal.DALException;
-import gui.model.ListModel;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-
-import java.io.IOException;
-
 public class Song {
 
-    private StringProperty title = new SimpleStringProperty();
-    private StringProperty artist = new SimpleStringProperty();
-    private StringProperty genre = new SimpleStringProperty();
-    private IntegerProperty duration = new SimpleIntegerProperty();
-    private IntegerProperty id = new SimpleIntegerProperty();
-    private StringProperty pathToFile = new SimpleStringProperty();
+    private String title;
+    private String artist;
+    private String genre;
+    private int duration;
+    private int id;
+    private String pathToFile;
 
-    private SongManager songManager;
-    private ListModel listModel;
-
-
-    public Song(int id, String title, String artist, String genre, int duration, String pathToFile){
-        this.getIdProperty().set(id);
-        this.getTitleProperty().set(title);
-        this.getArtistProperty().set(artist);
-        this.getGenreProperty().set(genre);
-        this.getDurationProperty().set(duration);
-        this.getPathToFileProperty().set(pathToFile);
+    public Song(int id, String title, String artist, String genre, int duration, String pathToFile) {
+        this.id = id;
+        this.title = title;
+        this.artist = artist;
+        this.genre = genre;
+        this.duration = duration;
+        this.pathToFile = pathToFile;
 
 
     }
 
-    public Song() throws DALException, IOException {
-        songManager = new SongManager();
-        listModel = new ListModel();
+    public Song createSong(int id, String title, String artist, String genre, int duration, String pathToFile) {
+        return new Song(id, title, artist,genre, duration,pathToFile);
+        //listModel.addSongToView(songManager.createSong(title, artist, genre, duration, pathToFile));
     }
 
-    public StringProperty getTitleProperty() {
+    public String getTitle() {
         return title;
     }
 
-    public StringProperty getArtistProperty() {
+    public String getArtist() {
         return artist;
     }
 
-    public StringProperty getGenreProperty() {
+    public String getGenre() {
         return genre;
     }
 
-    public IntegerProperty getDurationProperty() {
+    public int getDuration() {
         return duration;
     }
 
-    public IntegerProperty getIdProperty() {
-        return id;
-    }
-
-    public StringProperty getPathToFileProperty() {
+    public String getPathToFile() {
         return pathToFile;
     }
 
-    public StringProperty getDurationStringProperty(){
-        StringProperty time = new SimpleStringProperty();
-
-        int minutes = duration.get() / 60; // divide by 60 to get the minutes from seconds.
-        int seconds = duration.get() % 60; // remaining seconds
-        time.set(minutes + ":" + seconds);
-
-        return time;
+    public int getId() {
+        return id;
     }
 
-    public void createSong(String title, String artist, String genre, int duration, String pathToFile) throws DALException, IOException {
-        listModel.addSongToView(songManager.createSong(title, artist, genre, duration, pathToFile));
+    public String getDurationString() {
+        int minutes = duration / 60; // divide by 60 to get the minutes from seconds.
+        int seconds = duration % 60; // remaining seconds
+
+        return minutes + ":" + seconds;
+
     }
 }
