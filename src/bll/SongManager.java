@@ -25,6 +25,10 @@ public class SongManager {
 
     }
 
+    public List<Song> getAllSongs() {
+        return songDAO.getAllSongs();
+    }
+
     public Song createSong(String title, String artist, String genre, int duration, String pathToFile) throws DALException{
         return  songDAO.createSong(title, artist, genre, duration, pathToFile);
     }
@@ -37,17 +41,13 @@ public class SongManager {
         songDAO.deleteSong(song);
     }
 
-    public List<Song> getAllSongs() throws DALException {
-        return songDAO.getAllSongs(); // <- songDAO.getAllSongs();
-    }
-
     /**
      * Searches through song list, to find a song that matches the key word
      *
      * @param query the key word, to search for
      * @return a list of songs that fit, the key word
      */
-    public List<Song> searchSong(String query) throws DALException {
+    public List<Song> searchSong(String query){
         List<Song> allSongs = songDAO.getAllSongs();
         List<Song> searchResult = songSearcher.search(allSongs, query);
         return searchResult;

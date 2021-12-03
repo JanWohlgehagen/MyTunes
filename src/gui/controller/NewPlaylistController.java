@@ -1,9 +1,11 @@
 package gui.controller;
 
 import dal.DALException;
+import gui.App;
 import gui.model.PlaylistModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -16,19 +18,11 @@ public class NewPlaylistController {
     private AnchorPane anchorPaneId;
     @FXML
     private TextField txtName;
-    private PlaylistModel playlistModel;
-    private MainController mainController;
 
-    public NewPlaylistController() throws IOException, DALException {
-        playlistModel = new PlaylistModel();
-        mainController = new MainController();
-    }
-
-    public void handleSaveBtn(ActionEvent actionEvent) throws DALException {
-        if(!txtName.getText().isBlank()) {
-            playlistModel.createPlaylist(txtName.getText());
-            closeStage();
-        }
+    public void handleSaveBtn(ActionEvent actionEvent) throws DALException, IOException {
+        MainController mainController = new App().getController();
+        mainController.addPlaylist(txtName.getText());
+        closeStage();
     }
 
     public void handleCancelBtn(ActionEvent actionEvent) {

@@ -22,23 +22,32 @@ public class ListModel {
     private ObservableList<PlaylistModel> playListToBeViewed;
     private ObservableList<PlayListSongModel> playListSongsToBeViewed;
 
-    private ObjectProperty<PlaylistModel> selectedPlayList = new SimpleObjectProperty<>();
+    private ObjectProperty<PlaylistModel> selectedPlayList;
+    private ObjectProperty<SongModel> selectedSong;
 
 
     public ListModel() throws DALException, IOException {
         songManager = new SongManager();
         playlistManager = new PlaylistManager();
-        playListToBeViewed = FXCollections.observableArrayList();
-        songsToBeViewed = FXCollections.observableArrayList();
+        selectedPlayList = new SimpleObjectProperty<>();
+        selectedSong = new SimpleObjectProperty<>();
+
+        playListToBeViewed = FXCollections.observableArrayList(playlistManager.getAllPlaylists().stream().map(playList ->
+                new PlaylistModel(playList.getId(), playList.getName(), playList.getSongList().size(), String.valueOf(playList.getTotalTime()))).toList());
+
+        songsToBeViewed = FXCollections.observableArrayList(songManager.getAllSongs().stream().map(song ->
+                new SongModel(song.getId(), song.getTitle(), song.getArtist(), song.getGenre(), song.getDuration())).toList());
     }
 
     public ObjectProperty<PlaylistModel> getSelectedPlayList(){
         return selectedPlayList;
     }
 
-    public ObservableList<PlaylistModel> getPlayLists() throws DALException {
-        playListToBeViewed = FXCollections.observableArrayList(playlistManager.getAllPlaylists().stream().map(playList ->
-                new PlaylistModel(playList.getId(), playList.getName(), playList.getSongList().size(), String.valueOf(playList.getTotalTime()))).toList());
+    public ObjectProperty<SongModel> getSelectedSong(){
+        return selectedSong;
+    }
+
+    public ObservableList<PlaylistModel> getPlayLists() {
         return playListToBeViewed;
     }
 
@@ -48,19 +57,19 @@ public class ListModel {
         return playListSongsToBeViewed;
     }
 
-    public ObservableList<SongModel> getSongs() throws DALException {
-        songsToBeViewed = FXCollections.observableArrayList(songManager.getAllSongs().stream().map(song ->
-                new SongModel(song.getTitle(), song.getArtist(), song.getGenre(), song.getDuration())).toList());
+    public ObservableList<SongModel> getSongs() {
         return songsToBeViewed;
     }
 
-    public void addPlaylistToView(Playlist playlist){
-       playListToBeViewed.add(new PlaylistModel(playlist.getId(), playlist.getName(),playlist.getSongList().size(), String.valueOf(playlist.getTotalTime())));
+    public void addPlaylistToView(String playlistName) throws DALException {
+        Playlist playlist = playlistManager.createPlaylist(playlistName);
+        playListToBeViewed.add(new PlaylistModel(playlist.getId(), playlist.getName(),playlist.getSongList().size(), String.valueOf(playlist.getTotalTime())));
     }
 
     public void addSongToView(Song song) throws DALException, IOException {
-        songsToBeViewed.add(new SongModel(song.getTitle(), song.getArtist(), song.getGenre(), song.getDuration()));
+        songsToBeViewed.add(new SongModel(song.getId(), song.getTitle(), song.getArtist(), song.getGenre(), song.getDuration()));
     }
+
 
 
     /**
@@ -69,13 +78,15 @@ public class ListModel {
      * @param query the key word, to search for
      */
 
-    public void searchSong(String query) throws DALException {
+    public void searchSong(String query) {
         List<SongModel> searchResults = songManager.searchSong(query).stream().map(song ->
-                new SongModel(song.getTitle(), song.getArtist(), song.getGenre(), song.getDuration())).toList();
+                new SongModel(song.getId(), song.getTitle(), song.getArtist(), song.getGenre(), song.getDuration())).toList();
 
         songsToBeViewed.clear();
         songsToBeViewed.addAll((searchResults));
     }
 
-
+    public void addSongToPlatlist(int songId, int playlistId) throws DALException {
+        playlistManager.addSongToPLaylist(songId, playlistId);
+    }
 }

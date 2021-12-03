@@ -19,7 +19,7 @@ public class SongDAO implements ISongRepository {
     }
 
     @Override
-    public List<Song> getAllSongs() throws DALException {
+    public List<Song> getAllSongs()  {
         List<Song> allSongsList = new ArrayList<>();
 
         //Create a connection
@@ -37,13 +37,12 @@ public class SongDAO implements ISongRepository {
                     String genre = resultSet.getString("genre");
                     int duration = resultSet.getInt("duration");
                     String pathToFile = resultSet.getString("filePath");
-
                     Song song = new Song(id, title, artist, genre, duration, pathToFile);
                     allSongsList.add(song);
                 }
             }
         }  catch (SQLException SQLex) {
-           throw new DALException("Error Error Error Error", SQLex.getCause());
+           //throw new DALException("Error Error Error Error", SQLex.getCause());
         }
         return allSongsList;
     }
