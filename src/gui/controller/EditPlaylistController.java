@@ -1,29 +1,30 @@
 package gui.controller;
 
-import be.Playlist;
 import dal.DALException;
+import gui.App;
 import gui.model.PlaylistModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-import javax.xml.crypto.Data;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class EditPlaylistController {
+public class EditPlaylistController implements Initializable {
 
     @FXML
     private AnchorPane anchorPaneId;
     @FXML
     private TextField txtName;
     private PlaylistModel playlistModel;
-    private MainController mainController;
+
 
     public EditPlaylistController() throws IOException, DALException {
-        playlistModel = new PlaylistModel();
-        mainController = new MainController();
+
     }
 
     public void handleSaveBtn(ActionEvent actionEvent) throws DALException {
@@ -40,5 +41,18 @@ public class EditPlaylistController {
     public void closeStage(){
         Stage stage = (Stage) anchorPaneId.getScene().getWindow();
         stage.close();
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        MainController mainController = new App().getController();
+        txtName.setText(mainController.getPlaylist().getNameProperty().get());
+        try {
+            playlistModel = new PlaylistModel();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (DALException e) {
+            e.printStackTrace();
+        }
     }
 }
