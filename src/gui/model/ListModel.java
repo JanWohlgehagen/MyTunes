@@ -50,7 +50,7 @@ public class ListModel {
 
     public ObservableList<SongModel> getSongs() throws DALException {
         songsToBeViewed = FXCollections.observableArrayList(songManager.getAllSongs().stream().map(song ->
-                new SongModel(song.getTitle(), song.getArtist(), song.getGenre(), song.getDuration())).toList());
+                new SongModel(song.getId(), song.getTitle(), song.getArtist(), song.getGenre(), song.getDuration(), song.getPathToFile())).toList());
         return songsToBeViewed;
     }
 
@@ -59,7 +59,16 @@ public class ListModel {
     }
 
     public void addSongToView(Song song) throws DALException, IOException {
-        songsToBeViewed.add(new SongModel(song.getTitle(), song.getArtist(), song.getGenre(), song.getDuration()));
+        songsToBeViewed.add(new SongModel(song.getId(), song.getTitle(), song.getArtist(), song.getGenre(), song.getDuration(), song.getPathToFile()));
+    }
+
+    public void updateSong(Song song) {
+        for (SongModel sm: songsToBeViewed) {
+            if (sm.getIdProperty().get() == song.getId()){
+                songsToBeViewed.remove(sm);
+                break;
+            }
+        }
     }
 
 
@@ -71,11 +80,17 @@ public class ListModel {
 
     public void searchSong(String query) throws DALException {
         List<SongModel> searchResults = songManager.searchSong(query).stream().map(song ->
-                new SongModel(song.getTitle(), song.getArtist(), song.getGenre(), song.getDuration())).toList();
+                new SongModel(song.getId(), song.getTitle(), song.getArtist(), song.getGenre(), song.getDuration(), song.getPathToFile())).toList();
 
         songsToBeViewed.clear();
         songsToBeViewed.addAll((searchResults));
     }
 
 
+    public void deleteSong(Song song) {
+        songsToBeViewed.remove(song);
+    }
+
+    public void deletePlaylist(Playlist playlist) {playListToBeViewed.remove(playlist);
+    }
 }

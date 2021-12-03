@@ -1,5 +1,6 @@
 package gui.controller;
 
+import be.Playlist;
 import dal.DALException;
 import gui.model.PlaylistModel;
 import javafx.event.ActionEvent;
@@ -8,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+import javax.xml.crypto.Data;
 import java.io.IOException;
 
 public class EditPlaylistController {
@@ -26,7 +28,7 @@ public class EditPlaylistController {
 
     public void handleSaveBtn(ActionEvent actionEvent) throws DALException {
         if(!txtName.getText().isBlank()) {
-            //TODO
+            playlistModel.updatePlaylist(txtName.getText());
             closeStage();
         }
     }

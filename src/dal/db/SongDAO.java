@@ -108,6 +108,7 @@ public class SongDAO implements ISongRepository {
                 throw new DALException();
             }
         } catch (SQLException SQLex) {
+            SQLex.printStackTrace();
             throw new DALException("Error");
         }
     }

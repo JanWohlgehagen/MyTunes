@@ -16,16 +16,20 @@ public class SongModel {
     private StringProperty title = new SimpleStringProperty();
     private StringProperty artist = new SimpleStringProperty();
     private StringProperty genre = new SimpleStringProperty();
+    private StringProperty filePath = new SimpleStringProperty();
     private IntegerProperty duration = new SimpleIntegerProperty();
+    private IntegerProperty id = new SimpleIntegerProperty();
     private SongManager songManager;
     private ListModel listModel;
 
 
-    public SongModel(String title, String artist, String genre, int duration){
+    public SongModel(int id, String title, String artist, String genre, int duration, String filePath){
         this.getTitleProperty().set(title);
         this.getArtistProperty().set(artist);
         this.getGenreProperty().set(genre);
         this.getTimeProperty().set(duration);
+        this.getIdProperty().set(id);
+        this.getFilePathProperty().set(filePath);
     }
 
     public SongModel() throws DALException, IOException {
@@ -33,8 +37,14 @@ public class SongModel {
         listModel = new ListModel();
     }
 
+    public IntegerProperty getIdProperty(){return id;}
+
     public StringProperty getTitleProperty() {
         return title;
+    }
+
+    public StringProperty getFilePathProperty() {
+        return filePath;
     }
 
     public StringProperty getArtistProperty() {
@@ -51,5 +61,19 @@ public class SongModel {
 
     public void createSong(String title, String artist, String genre, int duration, String pathToFile) throws DALException, IOException {
         listModel.addSongToView(songManager.createSong(title, artist, genre, duration, pathToFile));
+    }
+
+    public void updateSong(Song song) throws DALException{
+        listModel.updateSong(song);
+    }
+
+    public void deleteSong(Song song) throws DALException{
+        listModel.deleteSong(song);
+        songManager.deleteSong(song);
+    }
+
+    public Song convertToSong(){
+        return new Song(this.getIdProperty().get(),this.getTitleProperty().get(), this.getTitleProperty().get(),
+                this.getGenreProperty().get(), this.getTimeProperty().get(), this.getFilePathProperty().get());
     }
 }

@@ -1,6 +1,7 @@
 package gui.controller;
 
 import be.Playlist;
+import com.sun.tools.javac.Main;
 import dal.DALException;
 import gui.model.ListModel;
 import gui.model.PlayListSongModel;
@@ -13,13 +14,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -77,7 +81,8 @@ public class MainController  implements Initializable {
     private Label lblCurrentSongPlaying;
 
 
-
+    private SongModel songModel;
+    private PlaylistModel playlistModel;
     private SceneSwapper sceneSwapper;
     private ListModel listModel;
     SongPlayer songPlayer = new SongPlayer("songs/bip.mp3");
@@ -87,6 +92,8 @@ public class MainController  implements Initializable {
         try {
             sceneSwapper = new SceneSwapper();
             listModel = new ListModel();
+            songModel = new SongModel();
+            playlistModel = new PlaylistModel();
         }catch (DALException DALex){
             displayError(DALex);
             System.exit(0);
@@ -192,14 +199,6 @@ public class MainController  implements Initializable {
         songPlayer.pauseMusic();
     }
 
-    /**
-     * adds a song to a certain playlist
-     * @param actionEvent runs when an action is performed on a button.
-     */
-    public void handleAddSongToPlaylistBtn(ActionEvent actionEvent) {
-
-
-    }
 
     /**
      * switch the scene to a different scene.
@@ -214,19 +213,26 @@ public class MainController  implements Initializable {
      * @param actionEvent runs when an action happens on a button.
      * @throws IOException if cant find stage.
      */
-    public void HandleEditPlaylistBtn(ActionEvent actionEvent) throws IOException {
-        sceneSwapper.sceneSwitch(new Stage(),"EditPlaylistView.fxml");
+    public void HandleEditPlaylistBtn(ActionEvent actionEvent) throws IOException, DALException {
+        sceneSwapper.sceneSwitch(new Stage(), "EditPlaylistView.fxml");
     }
 
     /**
      * deletes a playlist from the application
      * @param actionEvent runs when an action is performed on the button.
      */
-    public void HandleDeletePlaylistBtn(ActionEvent actionEvent) {
-        tvPlaylists.getItems().remove(tvPlaylists.getSelectionModel().getSelectedItem()); // fjerner kun sangen fra tableview
+    public void HandleDeletePlaylistBtn(ActionEvent actionEvent) throws DALException {
+        playlistModel.deletePlaylist(tvPlaylists.getSelectionModel().getSelectedItem().convertToPlaylist()); // Ask the model to remove remove a playlist
+        tvPlaylists.getItems().remove(tvPlaylists.getSelectionModel().getSelectedItem()); // remove song from view
     }
 
+    /**
+     * adds a song to a certain playlist
+     * @param actionEvent runs when an action is performed on a button.
+     */
+    public void handleAddSongToPlaylistBtn(ActionEvent actionEvent) throws DALException {
 
+    }
     /**
      * moves a song up by one in the tableview.
      * @param actionEvent runs when an action is called on the button
@@ -271,7 +277,9 @@ public class MainController  implements Initializable {
      * removes a song
      * @param actionEvent runs when an action is performed.
      */
-    public void HandleDeleteSongBtn(ActionEvent actionEvent) {
+    public void HandleDeleteSongBtn(ActionEvent actionEvent) throws DALException {
+        songModel.deleteSong(tvSongs.getSelectionModel().getSelectedItem().convertToSong());
+        tvSongs.getItems().remove(tvSongs.getSelectionModel().getSelectedItem());
     }
 
 

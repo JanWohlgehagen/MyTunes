@@ -1,5 +1,6 @@
 package gui.model;
 
+import be.Playlist;
 import bll.PlaylistManager;
 import dal.DALException;
 import javafx.beans.property.IntegerProperty;
@@ -51,5 +52,25 @@ public class PlaylistModel {
     public void createPlaylist(String name) throws DALException {
         listModel.addPlaylistToView(playlistManager.createPlaylist(name));
     }
+
+    public void updatePlaylist(String name) {
+
+    }
+
+    /**
+     * Ask the listModel to remove the play list from the view
+     * Ask the Playlist Manager to remove the playlist
+     * @param playlist
+     * @throws DALException
+     */
+    public void deletePlaylist(Playlist playlist) throws DALException {
+        listModel.deletePlaylist(playlist);
+        playlistManager.deletePlaylist(playlist);
+    }
+
+    public Playlist convertToPlaylist() {
+        return new Playlist(this.getIdProperty().get(), this.getNameProperty().get());
+    }
+
 
 }
