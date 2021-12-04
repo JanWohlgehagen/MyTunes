@@ -20,6 +20,10 @@ public class Playlist {
         return name;
     }
 
+    public void setName(String name) {
+        this.name=name;
+    }
+
     public List<Song> getSongList() {
         return songList;
     }
@@ -48,4 +52,6 @@ public class Playlist {
 
         return minutes + ":" + seconds;
     }
+
+
 }

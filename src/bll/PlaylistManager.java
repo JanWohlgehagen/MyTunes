@@ -13,8 +13,12 @@ public class PlaylistManager {
 
     private IPlaylistRepository playListDAO;
 
-    public PlaylistManager() throws IOException {
-        playListDAO = new PlaylistDAO();
+    public PlaylistManager()  {
+        try {
+            playListDAO = new PlaylistDAO();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

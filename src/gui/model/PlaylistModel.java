@@ -22,11 +22,12 @@ public class PlaylistModel {
     private ListModel listModel;
     private PlaylistManager playlistManager;
 
-    public PlaylistModel(int id, String name, Integer totalSongs, String time){
+    public PlaylistModel(int id, String name, Integer totalSongs, String time) {
         this.getIdProperty().set(id);
         this.getNameProperty().set(name);
         this.getTotalSongsProperty().set(totalSongs);
         this.getTimeProperty().set(time);
+        playlistManager = new PlaylistManager();
     }
 
     public PlaylistModel() throws IOException, DALException {
@@ -36,6 +37,10 @@ public class PlaylistModel {
 
     public StringProperty getNameProperty() {
         return name;
+    }
+
+    public void setNameProperty(String name) {
+        getNameProperty().set(name);
     }
 
     public IntegerProperty getTotalSongsProperty() {
@@ -51,8 +56,9 @@ public class PlaylistModel {
     }
 
 
-    public void updatePlaylist(String name) {
-
+    public void updatePlaylist(PlaylistModel playlistModel, String newName) throws DALException {
+        playlistModel.setNameProperty(newName);
+        playlistManager.updatePlaylist(playlistModel.convertToPlaylist());
     }
 
     /**

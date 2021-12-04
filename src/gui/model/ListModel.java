@@ -68,6 +68,11 @@ public class ListModel {
         playListToBeViewed.add(new PlaylistModel(playlist.getId(), playlist.getName(),playlist.getSongList().size(), String.valueOf(playlist.getTotalTime())));
     }
 
+    public void updatePlaylistToView(Playlist playlist) throws DALException {
+        playListToBeViewed.remove(playlist);
+        playListToBeViewed.add(new PlaylistModel(playlist.getId(), playlist.getName(),playlist.getSongList().size(), String.valueOf(playlist.getTotalTime())));
+    }
+
     public void addSongToView(String title, String artist, String genre, int duration, String filePath) throws DALException, IOException {
         Song song = songManager.createSong(title, artist, genre, duration, filePath);
 
