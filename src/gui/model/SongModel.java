@@ -63,35 +63,4 @@ public class SongModel {
     public List<Song> getSong(){
         return songManager.getAllSongs();
     }
-    public Song playCurrentSong(String songName){
-        List<Song> songs = getSong();
-        for (Song song : songs) {
-            if (songName.contains(song.getTitle())) {
-                return song;
-            }
-        }
-        return null;
-    }
-
-    public Song skipSong(Song currentSong){
-
-        List<Song> songs = getSong();
-        for (Song song : songs){
-            if(song.equals(currentSong)){
-                return songs.get(song.getId() + 1);
-            }
-        }
-        return null;
-    }
-
-    public Song previousSong(Song currentSong){
-
-        List<Song> songs = getSong();
-        for (Song song : songs){
-            if(song.equals(currentSong)){
-                return songs.get(song.getId() - 1);
-            }
-        }
-        return null;
-    }
 }

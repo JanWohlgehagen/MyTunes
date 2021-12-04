@@ -78,15 +78,14 @@ public class MainController  implements Initializable {
     private SceneSwapper sceneSwapper;
     private ListModel listModel;
     private SongPlayer songPlayer;
-    private Song currentlySong;
 
-    List<Song> songs;
-    SongModel songModel = new SongModel();
+    private Song currentlySong;
+    private int playListId;
+    PlayListSongModel playListSongModel = new PlayListSongModel(null);
 
 
     public MainController() throws DALException, IOException {
 
-        songs = songModel.getSong();
         try {
             sceneSwapper = new SceneSwapper();
             listModel = new ListModel();
@@ -156,9 +155,12 @@ public class MainController  implements Initializable {
      * skips current song to next song
      * @param actionEvent when an action is performed on button program will run
      */
-    public void handleNextSongBtn(ActionEvent actionEvent) {
+    public void handleNextSongBtn(ActionEvent actionEvent) throws DALException {
         songPlayer.pauseMusic();
-        songPlayer = new SongPlayer(songModel.skipSong(currentlySong).getPathToFile()) ;
+
+        currentlySong = playListSongModel.skipSong(currentlySong, playListId);
+        songPlayer = new SongPlayer(currentlySong.getPathToFile());
+
         songPlayer.playSong();
     }
 
@@ -166,9 +168,12 @@ public class MainController  implements Initializable {
      * goes back to previous song
      * @param actionEvent will run when an action is called on the button
      */
-    public void handlePreviousSongBtn(ActionEvent actionEvent) {
+    public void handlePreviousSongBtn(ActionEvent actionEvent) throws IOException, DALException {
         songPlayer.pauseMusic();
-        songPlayer = new SongPlayer(songModel.previousSong(currentlySong).getPathToFile()) ;
+
+        currentlySong = playListSongModel.previousSong(currentlySong, playListId);
+        songPlayer = new SongPlayer(currentlySong.getPathToFile());
+
         songPlayer.playSong();
     }
 
@@ -180,7 +185,9 @@ public class MainController  implements Initializable {
         btnPause.setVisible(true);
         btnPlay.setVisible(false);
 
-        currentlySong = songModel.playCurrentSong(tvSongs.getSelectionModel().getSelectedItem().getTitleProperty().getName());
+        playListId = tvPlaylists.getSelectionModel().getSelectedItem().getIdProperty().intValue();
+        currentlySong = playListSongModel.playCurrentSong(tvSongsOnPlaylist.getSelectionModel().getSelectedItem().getTitleProperty().toString(),playListId);
+
         songPlayer = new SongPlayer(currentlySong.getPathToFile());
         songPlayer.playSong();
     }
