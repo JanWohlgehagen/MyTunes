@@ -157,6 +157,9 @@ public class MainController  implements Initializable {
      * @param actionEvent when an action is performed on button program will run
      */
     public void handleNextSongBtn(ActionEvent actionEvent) {
+        songPlayer.pauseMusic();
+        songPlayer = new SongPlayer(songModel.skipSong(currentlySong).getPathToFile()) ;
+        songPlayer.playSong();
     }
 
     /**
@@ -164,6 +167,9 @@ public class MainController  implements Initializable {
      * @param actionEvent will run when an action is called on the button
      */
     public void handlePreviousSongBtn(ActionEvent actionEvent) {
+        songPlayer.pauseMusic();
+        songPlayer = new SongPlayer(songModel.previousSong(currentlySong).getPathToFile()) ;
+        songPlayer.playSong();
     }
 
     /**
@@ -174,13 +180,8 @@ public class MainController  implements Initializable {
         btnPause.setVisible(true);
         btnPlay.setVisible(false);
 
-        for (Song song : songs) {
-                if (tvSongsOnPlaylist.getSelectionModel().getSelectedItem().getTitleProperty().toString().contains(song.getTitle())) {
-                    songPlayer = new SongPlayer(song.getPathToFile());
-                    currentlySong = song;
-                    break;
-            }
-        }
+        currentlySong = songModel.playCurrentSong(tvSongs.getSelectionModel().getSelectedItem().getTitleProperty().getName());
+        songPlayer = new SongPlayer(currentlySong.getPathToFile());
         songPlayer.playSong();
     }
 
