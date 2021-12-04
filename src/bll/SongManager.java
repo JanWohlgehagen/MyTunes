@@ -19,9 +19,13 @@ public class SongManager {
     private ISearcher songSearcher;
     private ISongRepository songDAO;
 
-    public SongManager() throws DALException, IOException {
+    public SongManager(){
         songSearcher = new SongSearcher();
-        songDAO = new SongDAO();
+        try {
+            songDAO = new SongDAO();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
