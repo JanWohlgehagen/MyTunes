@@ -195,6 +195,7 @@ public class MainController  implements Initializable {
     public void handleAddSongToPlaylistBtn(ActionEvent actionEvent) throws DALException {
         SongModel songModel = listModel.getSelectedSong().getValue();
         PlaylistModel playlistModel = listModel.getSelectedPlayList().getValue();
+        listModel.SongsToPlaylist(null);
 
         listModel.addSongToPlatlist(songModel.getIdProperty().get(), playlistModel.getIdProperty().get());
 

@@ -19,7 +19,7 @@ public class PlaylistModel {
 
     private PlaylistManager playlistManager;
 
-    private ObservableList<Song> totalSongs;
+    private ObservableList<SongModel> totalSongs;
     private StringProperty name = new SimpleStringProperty();
     private StringProperty time = new SimpleStringProperty();
     private IntegerProperty id = new SimpleIntegerProperty();
@@ -41,6 +41,11 @@ public class PlaylistModel {
         return name;
     }
 
+    public int getTotalTime(){return  1;}
+
+    public String getDurationString(){return  null;}
+
+
     public IntegerProperty getTotalSongsProperty() {
         IntegerProperty size = new SimpleIntegerProperty();
         size.set(totalSongs.size());
@@ -56,6 +61,6 @@ public class PlaylistModel {
     }
 
     public void addSongToPlayList(List<Song> songs) {
-        this.totalSongs.addAll(songs);
+
     }
 }
