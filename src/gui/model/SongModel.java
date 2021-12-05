@@ -7,8 +7,11 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.io.IOException;
+import java.util.List;
 
 public class SongModel {
 
@@ -18,7 +21,7 @@ public class SongModel {
     private StringProperty duration = new SimpleStringProperty();
     private  IntegerProperty id = new SimpleIntegerProperty();
     private SongManager songManager;
-    private ListModel listModel;
+
 
 
     public SongModel(Song song) {
@@ -32,7 +35,10 @@ public class SongModel {
 
     public SongModel() throws DALException, IOException {
         songManager = new SongManager();
-        listModel = new ListModel();
+    }
+
+    public ObservableList<SongModel> convertSongToSongmodel(List<Song> songs){
+        return FXCollections.observableArrayList(songs.stream().map(song -> new SongModel(song)).toList());
     }
 
     public IntegerProperty getIdProperty() {
@@ -56,8 +62,10 @@ public class SongModel {
     }
 
 
-
+/*
     public void createSong(String title, String artist, String genre, int duration, String pathToFile) throws DALException, IOException {
         listModel.addSongToView(songManager.createSong(title, artist, genre, duration, pathToFile));
     }
+
+ */
 }

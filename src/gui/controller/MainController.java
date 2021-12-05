@@ -195,9 +195,10 @@ public class MainController  implements Initializable {
     public void handleAddSongToPlaylistBtn(ActionEvent actionEvent) throws DALException {
         SongModel songModel = listModel.getSelectedSong().getValue();
         PlaylistModel playlistModel = listModel.getSelectedPlayList().getValue();
-        listModel.SongsToPlaylist(null);
 
+        // skal laves om så sang ikke bliver tilføj, vis database fjel
         listModel.addSongToPlatlist(songModel.getIdProperty().get(), playlistModel.getIdProperty().get());
+        playlistModel.addSongToPlayList(songModel);
 
     }
 
@@ -276,7 +277,8 @@ public class MainController  implements Initializable {
 
 
     public void handleViewSongs(MouseEvent mouseEvent) throws DALException {
-        tvSongsOnPlaylist.setItems(listModel.getPlayListSongs());
+
+        tvSongsOnPlaylist.setItems(listModel.getSelectedPlayList().getValue().getListOfSongs());
         txtSongsInPlayList.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTitleProperty());
 
     }

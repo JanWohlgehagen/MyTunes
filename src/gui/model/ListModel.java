@@ -32,13 +32,10 @@ public class ListModel {
         selectedPlayList = new SimpleObjectProperty<>();
         selectedSong = new SimpleObjectProperty<>();
 
-
-
-
         playListToBeViewed = FXCollections.observableArrayList(playlistManager.getAllPlaylists().stream().map(playList -> {
             try {
                 return new PlaylistModel(playList);
-            } catch (IOException e) {
+            } catch (IOException | DALException e) {
                 e.printStackTrace();
             }
             return null;
@@ -46,7 +43,6 @@ public class ListModel {
 
         songsToBeViewed = FXCollections.observableArrayList(songManager.getAllSongs().stream().map(song -> new SongModel(song)).toList());
 
-        SongsToPlaylist(null);
     }
 
     public ObjectProperty<PlaylistModel> getSelectedPlayList(){
@@ -79,17 +75,16 @@ public class ListModel {
     public void addSongToView(Song song) throws DALException, IOException {
         songsToBeViewed.add(new SongModel(song));
     }
-
+/*
     public void SongsToPlaylist(SongModel pm) throws DALException {
-        if(pm == null){
-        for (PlaylistModel playlist: getPlayLists()) {
-            playlist.addSongToPlayList(playlistManager.getSongsFromPlaylist(playlist.getIdProperty().get()));
-            System.out.println("færasr");
-        }
-        }else{
-            System.out.println("færasrlkfjhsglfdsahga");
+        if(pm == null) {
+            for (PlaylistModel playlist : getPlayLists()) {
+                playlist.addSongToPlayList(playlistManager.getSongsFromPlaylist(playlist.getIdProperty().get()));
+            }
         }
     }
+
+ */
 
 
 

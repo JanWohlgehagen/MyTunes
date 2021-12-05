@@ -2,8 +2,8 @@ package gui.model;
 
 
 import be.Playlist;
-import be.Song;
 import bll.PlaylistManager;
+import dal.DALException;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -12,33 +12,34 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.IOException;
-import java.util.List;
+
 
 
 public class PlaylistModel {
 
-    private PlaylistManager playlistManager;
+    private SongModel songModel = new SongModel();
 
-    private ObservableList<SongModel> totalSongs;
+    private ObservableList<SongModel> allSongs = FXCollections.observableArrayList();
     private StringProperty name = new SimpleStringProperty();
     private StringProperty time = new SimpleStringProperty();
     private IntegerProperty id = new SimpleIntegerProperty();
-    private Playlist playlist;
+    private IntegerProperty totalSongs = new SimpleIntegerProperty();
 
-    public PlaylistModel(Playlist playlist) throws IOException {
-        this.playlist = playlist;
+    public PlaylistModel(Playlist playlist) throws IOException, DALException {
         this.getIdProperty().set(playlist.getId());
         this.getNameProperty().set(playlist.getName());
         this.getTotalTimeProperty().set(playlist.getDurationString());
-        this.totalSongs = FXCollections.observableArrayList();
+        this.allSongs.addAll(songModel.convertSongToSongmodel(playlist.getSongList()));
+        this.getTotalSongsProperty().set(allSongs.size());
 
-        playlistManager = new PlaylistManager();
     }
-
-
 
     public StringProperty getNameProperty() {
         return name;
+    }
+
+    public ObservableList<SongModel> getListOfSongs(){
+        return allSongs;
     }
 
     public int getTotalTime(){return  1;}
@@ -47,9 +48,7 @@ public class PlaylistModel {
 
 
     public IntegerProperty getTotalSongsProperty() {
-        IntegerProperty size = new SimpleIntegerProperty();
-        size.set(totalSongs.size());
-        return size;
+        return totalSongs;
     }
 
     public StringProperty getTotalTimeProperty() {
@@ -60,7 +59,8 @@ public class PlaylistModel {
         return id;
     }
 
-    public void addSongToPlayList(List<Song> songs) {
 
+    public void addSongToPlayList(SongModel song) {
+        allSongs.add(song);
     }
 }
