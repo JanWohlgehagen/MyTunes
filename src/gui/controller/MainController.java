@@ -334,5 +334,9 @@ public class MainController  implements Initializable {
     public void createSong(String title, String artist, String genre, int duration, String pathToFile) throws DALException {
         songListModel.createSong(title, artist, genre, duration,pathToFile);
     }
+
+    public SongModel getSelectedSong() {
+        return tvSongs.getSelectionModel().getSelectedItem();
+    }
 }
 

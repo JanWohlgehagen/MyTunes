@@ -69,6 +69,18 @@ public class SongModel {
         return duration;
     }
 
+    public void setTitleProperty(String title) {
+        getTitleProperty().set(title);
+    }
+
+    public void setArtistProperty(String artist) {
+        getArtistProperty().set(artist);
+    }
+
+    public void setGenreProperty(String genre) {
+        getGenreProperty().set(genre);
+    }
+
     public StringProperty getDurationString() {
         int minutes = duration.get() / 60; // divide by 60 to get the minutes from seconds.
         int seconds = duration.get() % 60; // remaining seconds

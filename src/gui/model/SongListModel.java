@@ -16,11 +16,7 @@ import java.util.List;
 public class SongListModel {
 
     private SongManager songManager;
-
-
     private ObservableList<SongModel> songsToBeViewed;
-
-
     private ObjectProperty<SongModel> selectedSong;
 
 
@@ -69,5 +65,12 @@ public class SongListModel {
     public void deleteSong(SongModel songModel) throws DALException {
         songManager.deleteSong(songModel.convertToSong());
         songsToBeViewed.remove(songModel);
+    }
+
+    public void updateSongToView(SongModel songModel, String title, String artist, String genre) throws DALException {
+        songModel.setTitleProperty(title);
+        songModel.setArtistProperty(artist);
+        songModel.setGenreProperty(genre);
+        songManager.updateSong(songModel.convertToSong());
     }
 }

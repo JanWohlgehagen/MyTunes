@@ -1,6 +1,9 @@
 package gui.controller;
 
 import dal.DALException;
+import gui.App;
+import gui.model.PlaylistListModel;
+import gui.model.SongListModel;
 import gui.model.SongModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -38,22 +41,35 @@ public class EditSongController implements Initializable {
 
     final FileChooser fileChooser;
     private SongModel songModel;
-    private File file;
-    private Media media;
-    private MediaPlayer mediaPlayer;
     private ObservableList<String> categories;
-    private String strDurInMinutes ="";
-
+    private MainController mainController;
+    SongListModel songListModel;
 
     public EditSongController() throws DALException, IOException {
         fileChooser = new FileChooser();
         categories = FXCollections.observableArrayList();
         cBoxCategory = new ComboBox();
         songModel = new SongModel();
+        songListModel = new SongListModel();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        MainController mainController = new App().getController();
+        songModel = mainController.getSelectedSong();
+        try {
+            SongListModel songListModel = new SongListModel();
+
+        } catch (DALException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        txtTitle.setText(songModel.getTitleProperty().get());
+        txtArtist.setText(songModel.getArtistProperty().get());
+        txtTime.setText(songModel.getDurationString().get());
+        txtFile.setText(songModel.getPathToFileProperty().get());
+        cBoxCategory.getSelectionModel().select(songModel.getGenreProperty().get());
         setData();
     }
 
@@ -61,9 +77,9 @@ public class EditSongController implements Initializable {
         //Browse should not be available when editing a song.
     }
 
-    public void handleSaveBtn(ActionEvent actionEvent) throws DALException, IOException {
-        if(!txtArtist.getText().isBlank() && !txtTime.getText().isBlank() && !txtFile.getText().isBlank() && !txtTitle.getText().isBlank() && cBoxCategory.getSelectionModel().getSelectedItem() != null){
-            //TODO
+    public void handleSaveBtn(ActionEvent actionEvent) throws DALException {
+        if(!txtArtist.getText().isBlank() && !txtTitle.getText().isBlank() && cBoxCategory.getSelectionModel().getSelectedItem() != null) {
+            songListModel.updateSongToView(songModel, txtTitle.getText(), txtArtist.getText(), cBoxCategory.getSelectionModel().getSelectedItem().toString());
             closeStage();
         }
     }
