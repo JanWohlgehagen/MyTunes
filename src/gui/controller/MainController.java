@@ -160,7 +160,7 @@ public class MainController  implements Initializable {
 
         currentlySong = playListSongModel.skipSong(currentlySong, playListId);
         songPlayer = new SongPlayer(currentlySong.getPathToFile());
-
+        lblCurrentSongPlaying.setText(currentlySong.getTitle() + ": is Playing" );
         songPlayer.playSong();
     }
 
@@ -173,6 +173,7 @@ public class MainController  implements Initializable {
 
         currentlySong = playListSongModel.previousSong(currentlySong, playListId);
         songPlayer = new SongPlayer(currentlySong.getPathToFile());
+        lblCurrentSongPlaying.setText(currentlySong.getTitle() + ": is Playing" );
 
         songPlayer.playSong();
     }
@@ -185,11 +186,15 @@ public class MainController  implements Initializable {
         btnPause.setVisible(true);
         btnPlay.setVisible(false);
 
+
+
         playListId = tvPlaylists.getSelectionModel().getSelectedItem().getIdProperty().intValue();
         currentlySong = playListSongModel.playCurrentSong(tvSongsOnPlaylist.getSelectionModel().getSelectedItem().getTitleProperty().toString(),playListId);
+        lblCurrentSongPlaying.setText(currentlySong.getTitle() + ": is Playing" );
 
         songPlayer = new SongPlayer(currentlySong.getPathToFile());
         songPlayer.playSong();
+
     }
 
     /**
@@ -199,7 +204,7 @@ public class MainController  implements Initializable {
     public void handlePauseBtn(ActionEvent actionEvent) {
         btnPlay.setVisible(true);
         btnPause.setVisible(false);
-
+        lblCurrentSongPlaying.setText(currentlySong.getTitle() + ": is Paused" );
         songPlayer.pauseMusic();
     }
 

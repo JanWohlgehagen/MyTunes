@@ -40,6 +40,7 @@ public class SongPlayer {
         else {
             mediaPlayer.setMute(false);
             mediaPlayer.setVolume(volume/100);
+
         }
     }
 
@@ -57,4 +58,10 @@ public class SongPlayer {
     public void pauseMusic(){
         mediaPlayer.pause();
     }
+
+    public boolean isPlaying(){
+        return mediaPlayer.getStatus().equals(MediaPlayer.Status.PLAYING);
+    }
+
+
 }

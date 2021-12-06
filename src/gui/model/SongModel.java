@@ -60,7 +60,4 @@ public class SongModel {
     public void createSong(String title, String artist, String genre, int duration, String pathToFile) throws DALException, IOException {
         listModel.addSongToView(songManager.createSong(title, artist, genre, duration, pathToFile));
     }
-    public List<Song> getSong(){
-        return songManager.getAllSongs();
-    }
 }
