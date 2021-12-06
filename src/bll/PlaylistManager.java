@@ -32,12 +32,13 @@ public class PlaylistManager {
 
     /**
      * Adds a song to a playlist in the relation table in the DB
-     * @param songId
-     * @param playlistId
+     * @param song
+     * @param playlist
      * @throws DALException
      */
-    public void addSongToPLaylist(int songId, int playlistId) throws DALException{
-        playListDAO.addSongToPLaylist(songId, playlistId);
+
+    public void addSongToPLaylist(Song song, Playlist playlist) throws DALException{
+        playListDAO.addSongToPLaylist(song, playlist);
     }
 
     public void removeSongFromPLaylist(int songId, int playlistId) throws DALException{

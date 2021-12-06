@@ -3,6 +3,8 @@ package gui.controller;
 import be.Song;
 import dal.DALException;
 import gui.App;
+
+import gui.model.SongListModel;
 import gui.model.SongModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -38,7 +40,7 @@ public class NewSongController implements Initializable {
     private ComboBox cBoxCategory;
 
     final FileChooser fileChooser;
-    private SongModel songModel;
+    private SongListModel songListModel;
     private File file;
     private Media media;
     private MediaPlayer mediaPlayer;
@@ -46,11 +48,12 @@ public class NewSongController implements Initializable {
     private String strDurInMinutes ="";
 
 
+
     public NewSongController() throws DALException, IOException {
         fileChooser = new FileChooser();
         categories = FXCollections.observableArrayList();
         cBoxCategory = new ComboBox();
-        songModel = new SongModel();
+        songListModel = new SongListModel();
     }
 
     @Override
@@ -90,9 +93,9 @@ public class NewSongController implements Initializable {
     }
 
     public void handleSaveBtn(ActionEvent actionEvent) throws DALException, IOException {
+        MainController mainController = new App().getController();
         if(!txtArtist.getText().isBlank() && !txtTime.getText().isBlank() && !txtFile.getText().isBlank() && !txtTitle.getText().isBlank() && cBoxCategory.getSelectionModel().getSelectedItem() != null){
-            MainController mainController = new App().getController();
-            mainController.addSong(txtTitle.getText(), txtArtist.getText(), cBoxCategory.getSelectionModel().getSelectedItem().toString(),  (int)media.getDuration().toSeconds(), txtFile.getText());
+            mainController.createSong(txtTitle.getText(), txtArtist.getText(), cBoxCategory.getSelectionModel().getSelectedItem().toString(),  (int)media.getDuration().toSeconds(), txtFile.getText());
             closeStage();
         }
     }

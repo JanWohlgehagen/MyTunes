@@ -4,72 +4,91 @@ import be.Playlist;
 import bll.PlaylistManager;
 import dal.DALException;
 
+import be.Playlist;
+import dal.DALException;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+import java.io.IOException;
 
 import java.io.IOException;
 
 
 public class PlaylistModel {
 
+    private SongModel songModel = new SongModel();
+
+    private ObservableList<SongModel> allSongs = FXCollections.observableArrayList();
     private StringProperty name = new SimpleStringProperty();
-    private IntegerProperty totalSongs = new SimpleIntegerProperty();
-    private StringProperty time = new SimpleStringProperty();
+    private IntegerProperty duration = new SimpleIntegerProperty();
     private IntegerProperty id = new SimpleIntegerProperty();
+    private IntegerProperty totalSongs = new SimpleIntegerProperty();
+    private StringProperty durationString = new SimpleStringProperty();
 
-    private ListModel listModel;
-    private PlaylistManager playlistManager;
+    public PlaylistModel(Playlist playlist) throws IOException, DALException {
+        this.getIdProperty().set(playlist.getId());
+        this.getNameProperty().set(playlist.getName());
+        this.getDurationProperty().set(getTotalTime());
+        this.allSongs.addAll(songModel.convertSongToSongmodel(playlist.getSongList()));
+        this.getTotalSongsProperty().set(allSongs.size());
+        this.getDurationStringProperty().set(getDurationString());
 
-    public PlaylistModel(int id, String name, Integer totalSongs, String time) {
-        this.getIdProperty().set(id);
-        this.getNameProperty().set(name);
-        this.getTotalSongsProperty().set(totalSongs);
-        this.getTimeProperty().set(time);
-        playlistManager = new PlaylistManager();
     }
-
-    public PlaylistModel() throws IOException, DALException {
-        listModel = new ListModel();
-        playlistManager = new PlaylistManager();
+    public StringProperty getDurationStringProperty() {
+        return durationString;
     }
 
     public StringProperty getNameProperty() {
         return name;
     }
 
-    public void setNameProperty(String name) {
-        getNameProperty().set(name);
+    public ObservableList<SongModel> getListOfSongs(){
+        return allSongs;
     }
 
     public IntegerProperty getTotalSongsProperty() {
         return totalSongs;
     }
 
-    public StringProperty getTimeProperty() {
-        return time;
+    public IntegerProperty getDurationProperty() {
+        return duration;
     }
 
     public IntegerProperty getIdProperty() {
         return id;
     }
 
-
-    public void updatePlaylist(PlaylistModel playlistModel, String newName) throws DALException {
-        playlistModel.setNameProperty(newName);
-        playlistManager.updatePlaylist(playlistModel.convertToPlaylist());
+    public void addSongToPlayList(SongModel song) {
+        allSongs.add(song);
+        getTotalSongsProperty().set(allSongs.size());
+        getDurationStringProperty().set(getDurationString());
     }
 
-    /**
-     * Ask the listModel to remove the play list from the view
-     * Ask the Playlist Manager to remove the playlist
-     * @param playlist
-     * @throws DALException
-     */
-    public void deletePlaylist(Playlist playlist) throws DALException {
-        listModel.deletePlaylist(playlist);
-        playlistManager.deletePlaylist(playlist);
+    public String getDurationString(){
+        int totalTime = getTotalTime();
+        int minutes = totalTime / 60; // divide by 60 to get the minutes from seconds.
+        int seconds = totalTime % 60; // remaining seconds
+        return minutes + ":" + seconds;
+    }
+
+    public int getTotalTime(){
+        int totalTime = 0;
+        for (SongModel songModel: allSongs) {
+            totalTime += songModel.getDurationProperty().get();
+        }
+        return totalTime;
+    }
+
+    public void updatePlaylist(PlaylistModel playlistModel, String newName) {
+        playlistModel.setNameProperty(newName);
+    }
+
+    public void setNameProperty(String name) {
+        getNameProperty().set(name);
     }
 
     public Playlist convertToPlaylist() {

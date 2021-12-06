@@ -21,26 +21,47 @@ public class PlaylistDAO implements IPlaylistRepository {
     @Override
     public List<Playlist> getAllPlaylists() throws DALException {
         List<Playlist> allPlaylists = new ArrayList<>();
+        List<Song> allsongs = new ArrayList<>();
 
         //Create a connection
         try(Connection connection = databaseConnector.getConnection()){
-            String sql = "SELECT * FROM Playlist;"; //sql command
-            Statement statement = connection.createStatement(); //Create statement
+            String sql = "SELECT * FROM Playlist;";
+            String sql1 = "SELECT * FROM Song FULL JOIN PlaylistSongs ON Song.id = songId WHERE  PlaylistSongs.playlistId = (?);"; //1. sql command
+            PreparedStatement preparedStatement1 = connection.prepareStatement(sql1); //Create statement
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
 
             //Extract data from DB
-            if(statement.execute(sql)){
-                ResultSet resultSet = statement.getResultSet();
+            if(preparedStatement.execute()){
+                ResultSet resultSet = preparedStatement.getResultSet();
                 while(resultSet.next()){
+                    allsongs.clear();
                     int id = resultSet.getInt("id");
                     String name = resultSet.getString("Name");
 
 
-                    Playlist playlist = new Playlist(id, name);
+                    preparedStatement1.setInt(1,id);
+                    if(preparedStatement1.execute()){
+                        ResultSet resultSet1 = preparedStatement1.getResultSet();
+                        while(resultSet1.next()) {
+                            int idSong = resultSet1.getInt("id");
+                            String title = resultSet1.getString("title");
+                            String artist = resultSet1.getString("artist");
+                            String genre = resultSet1.getString("genre");
+                            int duration = resultSet1.getInt("duration");
+                            String pathToFile = resultSet1.getString("filePath");
+                            allsongs.add(new Song(idSong, title, artist, genre, duration, pathToFile));
+                        }
+                    }
+                        Playlist playlist = new Playlist(id, name);
+                        playlist.addSongToPlayList(allsongs);
                     allPlaylists.add(playlist);
+
                 }
             }
         } catch (SQLException SQLex) {
-           throw new DALException("Error");
+            SQLex.printStackTrace();
+           throw new DALException("Error: Can not 'getAllPlaylist' in Databases");
         }
         return allPlaylists;
     }
@@ -66,28 +87,27 @@ public class PlaylistDAO implements IPlaylistRepository {
                     int duration = resultSet.getInt("duration");
                     String pathToFile = resultSet.getString("filePath");
 
-                    Song song = new Song(id, title, artist, genre, duration, pathToFile);
-                    songsInPlaylist.add(song);
+                    songsInPlaylist.add(new Song(id, title, artist, genre, duration, pathToFile));
                 }
             }
         } catch (SQLException SQLex) {
             SQLex.printStackTrace();
-            throw new DALException("Error");
+            throw new DALException("Error: Can not 'getSongsFromPlaylist' in Databases");
         }
         return songsInPlaylist;
     }
 
     @Override
-    public void addSongToPLaylist(int songId, int playlistId) throws DALException {
+    public void addSongToPLaylist(Song song, Playlist playlist) throws DALException {
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "INSERT INTO PlaylistSongs VALUES (?,?);";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setInt(1, songId);
-            preparedStatement.setInt(2, playlistId);
+            preparedStatement.setInt(1, song.getId());
+            preparedStatement.setInt(2, playlist.getId());
             preparedStatement.executeUpdate();
 
         } catch (SQLException SQLex) {
-            throw new DALException("Error");
+            throw new DALException("Error: Can not 'addSongToPLaylist' in Databases");
         }
     }
 
@@ -118,13 +138,12 @@ public class PlaylistDAO implements IPlaylistRepository {
                 ResultSet resultSet = preparedStatement.getGeneratedKeys();
                 if (resultSet.next()) {
                     int id = resultSet.getInt(1);
-                    Playlist playlist = new Playlist(id, name);
-                    //System.out.println(playlist.getName());
-                    return playlist;
+
+                    return new Playlist(id, name);
                 }
             }
         } catch (SQLException SQLex) {
-            throw new DALException("Error");
+            throw new DALException("Error: Can not 'createPlaylist' in Databases");
         }
         return null;
     }
@@ -140,10 +159,10 @@ public class PlaylistDAO implements IPlaylistRepository {
             int affectedRows = preparedStatement.executeUpdate();
 
             if(affectedRows != 1){
-                throw new DALException("Error");
+                throw new DALException("Error: There are too many rows affected");
             }
         } catch (SQLException SQLex) {
-            throw new DALException("Error");
+            throw new DALException("Error: Can not 'updatePlaylist' in Databases");
         }
     }
 
@@ -156,24 +175,32 @@ public class PlaylistDAO implements IPlaylistRepository {
             int affectedRows = preparedStatement.executeUpdate();
 
             if(affectedRows != 1){
-                throw new DALException("Error");
+                throw new DALException("Error: There are too many rows affected");
             }
         } catch (SQLException SQLex) {
-            throw new DALException("Error");
+            throw new DALException("Error: Can not 'deletePlaylist' in Databases");
         }
     }
 
-    /**
+
     public static void main(String[] args) throws IOException, DALException {
         PlaylistDAO playlistDao = new PlaylistDAO();
         List <Song> theList = playlistDao.getSongsFromPlaylist(1);
+        //System.out.println(playlistDao.test());
 
-        for (Song s: theList) {
-            System.out.println(s.getId() +": "+ s.getTitle());
+
+        for (Playlist playlist: playlistDao.getAllPlaylists()) {
+            System.out.println("new " + playlist.getName());
+            for (Song song: playlist.getSongList()) {
+                System.out.println(song.getTitle());
+            }
+
         }
+
+
         System.out.println("Done");
     }
-     */
+
 
 }
 

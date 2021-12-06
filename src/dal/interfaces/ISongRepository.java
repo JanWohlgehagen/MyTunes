@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ISongRepository {
 
-    public List<Song> getAllSongs() ;
+    public List<Song> getAllSongs() throws DALException;
 
     public Song createSong(String title, String artist, String genre, int duration, String pathToFile) throws DALException;
 

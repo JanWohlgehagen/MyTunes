@@ -2,9 +2,11 @@ package dal.db;
 
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
+import dal.DALException;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.Properties;
@@ -14,19 +16,21 @@ public class MyConnection {
     private SQLServerDataSource ds;
 
     public MyConnection() throws IOException {
-        Properties databaseProperties = new Properties();
-        databaseProperties.load(new FileInputStream(new File(PROP_FILE)));
 
-        String server = databaseProperties.getProperty("Server");
-        String database = databaseProperties.getProperty("Database");
-        String user = databaseProperties.getProperty("User");
-        String password = databaseProperties.getProperty("Password");
+            Properties databaseProperties = new Properties();
+            databaseProperties.load(new FileInputStream(PROP_FILE));
 
-        ds = new SQLServerDataSource();
-        ds.setServerName(server);
-        ds.setDatabaseName(database);
-        ds.setUser(user);
-        ds.setPassword(password);
+            String server = databaseProperties.getProperty("Server");
+            String database = databaseProperties.getProperty("Database");
+            String user = databaseProperties.getProperty("User");
+            String password = databaseProperties.getProperty("Password");
+
+            ds = new SQLServerDataSource();
+            ds.setServerName(server);
+            ds.setDatabaseName(database);
+            ds.setUser(user);
+            ds.setPassword(password);
+
     }
 
     public Connection getConnection() throws SQLServerException {
