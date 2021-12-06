@@ -1,6 +1,7 @@
 package gui.model;
 
 import be.Playlist;
+import be.Song;
 import bll.PlaylistManager;
 import dal.DALException;
 
@@ -60,6 +61,10 @@ public class PlaylistModel {
 
     public IntegerProperty getIdProperty() {
         return id;
+    }
+
+    public void removeSongFromList(SongModel song){
+        allSongs.remove(song);
     }
 
     public void addSongToPlayList(SongModel song) {

@@ -3,10 +3,7 @@ package gui.controller;
 
 import be.Song;
 import dal.DALException;
-import gui.model.SongListModel;
-import gui.model.PlaylistListModel;
-import gui.model.PlaylistModel;
-import gui.model.SongModel;
+import gui.model.*;
 import gui.util.SceneSwapper;
 import gui.util.SongPlayer;
 import javafx.application.Platform;
@@ -267,8 +264,7 @@ public class MainController  implements Initializable {
      */
 
     public void handleDeletePlaylistBtn(ActionEvent actionEvent) throws DALException {
-        playlistModel.deletePlaylist(tvPlaylists.getSelectionModel().getSelectedItem().convertToPlaylist()); // Ask the model to remove remove a playlist
-        tvPlaylists.getItems().remove(tvPlaylists.getSelectionModel().getSelectedItem()); // remove song from view
+        playlistListModel.deletePlaylist(playlistListModel.getSelectedPlayList().get()); // Ask the model to remove remove a playlist
     }
 
     /**
@@ -295,7 +291,7 @@ public class MainController  implements Initializable {
         SongModel songModel = tvSongsOnPlaylist.getSelectionModel().getSelectedItem();
         PlaylistModel playlistModel = playlistListModel.getSelectedPlayList().getValue();
 
-        playlistListModel.removeSongFromPlaylist(songModel, playlistModel.getIdProperty().get());
+        playlistListModel.removeSongFromPlaylist(songModel, playlistModel);
     }
 
     /**
@@ -320,8 +316,7 @@ public class MainController  implements Initializable {
      * @param actionEvent runs when an action is performed.
      */
     public void handleDeleteSongBtn(ActionEvent actionEvent) throws DALException {
-        songModel.deleteSong(tvSongs.getSelectionModel().getSelectedItem().convertToSong());
-        tvSongs.getItems().remove(tvSongs.getSelectionModel().getSelectedItem());
+        songListModel.deleteSong(songListModel.getSelectedSong().get());
     }
 
 
@@ -331,9 +326,6 @@ public class MainController  implements Initializable {
         txtSongsInPlayList.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTitleProperty());
     }
 
-    public void addPlaylist(String playlistName) throws DALException {
-        listModel.addPlaylistToView(playlistName);
-    }
 
     public PlaylistModel getSelectedPlaylist(){
         return tvPlaylists.getSelectionModel().getSelectedItem();

@@ -41,8 +41,8 @@ public class PlaylistManager {
         playListDAO.addSongToPLaylist(song, playlist);
     }
 
-    public void removeSongFromPLaylist(int songId, int playlistId) throws DALException{
-        playListDAO.removeSongFromPlaylist(songId, playlistId);
+    public void removeSongFromPLaylist(Song song, Playlist playlist) throws DALException{
+        playListDAO.removeSongFromPlaylist(song, playlist);
     }
 
     /**

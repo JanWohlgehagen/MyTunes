@@ -65,4 +65,9 @@ public class SongListModel {
     public void createSong(String title, String artist, String genre, int duration, String pathToFile) throws DALException {
         songsToBeViewed.add(new SongModel(songManager.createSong(title, artist, genre, duration, pathToFile)));
     }
+
+    public void deleteSong(SongModel songModel) throws DALException {
+        songManager.deleteSong(songModel.convertToSong());
+        songsToBeViewed.remove(songModel);
+    }
 }

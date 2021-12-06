@@ -11,7 +11,7 @@ public interface IPlaylistRepository {
 
     public void addSongToPLaylist(Song song, Playlist playlist) throws DALException;
 
-    public void removeSongFromPlaylist(int songId, int playlistId) throws DALException;
+    public void removeSongFromPlaylist(Song song, Playlist playlist) throws DALException;
 
     public List<Song> getSongsFromPlaylist (int playlistId) throws DALException;
 

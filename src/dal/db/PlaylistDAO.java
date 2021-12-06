@@ -112,12 +112,12 @@ public class PlaylistDAO implements IPlaylistRepository {
     }
 
     @Override
-    public void removeSongFromPlaylist(int songId, int playlistId) throws DALException {
+    public void removeSongFromPlaylist(Song song, Playlist playlist) throws DALException {
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "DELETE FROM PlaylistSongs WHERE songId = (?) AND playlistId = (?);";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setInt(1, songId);
-            preparedStatement.setInt(2, playlistId);
+            preparedStatement.setInt(1, song.getId());
+            preparedStatement.setInt(2, playlist.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException SQLex) {
             throw new DALException("Error");

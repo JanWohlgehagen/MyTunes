@@ -3,7 +3,6 @@ package gui.controller;
 
 import dal.DALException;
 import gui.App;
-import gui.model.ListModel;
 import gui.model.PlaylistListModel;
 import gui.model.PlaylistModel;
 import javafx.event.ActionEvent;
@@ -26,7 +25,6 @@ public class EditPlaylistController implements Initializable {
     private PlaylistModel playlistModel;
     private PlaylistListModel playlistListModel;
     private MainController mainController;
-    private ListModel listModel;
 
 
     public void handleSaveBtn(ActionEvent actionEvent) throws DALException {
