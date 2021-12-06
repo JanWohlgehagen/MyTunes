@@ -66,38 +66,6 @@ public class PlaylistDAO implements IPlaylistRepository {
         return allPlaylists;
     }
 
-    public Playlist test(){
-        try(Connection connection = databaseConnector.getConnection()) {
-            List<Song> allsongs = new ArrayList<>();
-            String sql1 = "SELECT * FROM Song FULL JOIN PlaylistSongs ON Song.id = songId WHERE  PlaylistSongs.playlistId = (?);"; //1. sql command
-            PreparedStatement preparedStatement1 = connection.prepareStatement(sql1);
-
-            preparedStatement1.setInt(1, 3);
-            if (preparedStatement1.execute()) {
-                ResultSet resultSet1 = preparedStatement1.getResultSet();
-                while (resultSet1.next()) {
-                    int idSong = resultSet1.getInt("id");
-                    String title = resultSet1.getString("title");
-                    String artist = resultSet1.getString("artist");
-                    String genre = resultSet1.getString("genre");
-                    int duration = resultSet1.getInt("duration");
-                    String pathToFile = resultSet1.getString("filePath");
-                    allsongs.add(new Song(idSong, title, artist, genre, duration, pathToFile));
-                }
-            }
-            Playlist playlist = new Playlist(1, "test");
-            playlist.addSongToPlayList(allsongs);
-            return playlist;
-
-        } catch (SQLServerException throwables) {
-            throwables.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-return null;
-    }
-
     @Override
     public List<Song> getSongsFromPlaylist(int playlistId) throws DALException {
         List<Song> songsInPlaylist = new ArrayList<>();
@@ -130,12 +98,12 @@ return null;
     }
 
     @Override
-    public void addSongToPLaylist(int songId, int playlistId) throws DALException {
+    public void addSongToPLaylist(Song song, Playlist playlist) throws DALException {
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "INSERT INTO PlaylistSongs VALUES (?,?);";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setInt(1, songId);
-            preparedStatement.setInt(2, playlistId);
+            preparedStatement.setInt(1, song.getId());
+            preparedStatement.setInt(2, playlist.getId());
             preparedStatement.executeUpdate();
 
         } catch (SQLException SQLex) {

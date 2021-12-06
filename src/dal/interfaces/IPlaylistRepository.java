@@ -9,7 +9,7 @@ import java.util.List;
 public interface IPlaylistRepository {
     public List<Playlist> getAllPlaylists() throws DALException;
 
-    public void addSongToPLaylist(int songId, int playlistId) throws DALException;
+    public void addSongToPLaylist(Song song, Playlist playlist) throws DALException;
 
     public List<Song> getSongsFromPlaylist (int playlistId) throws DALException;
 

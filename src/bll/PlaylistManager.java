@@ -21,8 +21,8 @@ public class PlaylistManager {
        return playListDAO.getAllPlaylists();
     }
 
-    public void addSongToPLaylist(int songId, int playlistId) throws DALException{
-        playListDAO.addSongToPLaylist(songId, playlistId);
+    public void addSongToPLaylist(Song song, Playlist playlist) throws DALException{
+        playListDAO.addSongToPLaylist(song, playlist);
     }
 
     public List<Song> getSongsFromPlaylist (int playlistId) throws DALException{

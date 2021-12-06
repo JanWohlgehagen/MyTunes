@@ -18,8 +18,9 @@ public class SongModel {
     private StringProperty title = new SimpleStringProperty();
     private StringProperty artist = new SimpleStringProperty();
     private StringProperty genre = new SimpleStringProperty();
-    private StringProperty duration = new SimpleStringProperty();
-    private  IntegerProperty id = new SimpleIntegerProperty();
+    private StringProperty pathToFile = new SimpleStringProperty();
+    private IntegerProperty duration = new SimpleIntegerProperty();
+    private IntegerProperty id = new SimpleIntegerProperty();
     private SongManager songManager;
 
 
@@ -29,7 +30,8 @@ public class SongModel {
         this.getTitleProperty().set(song.getTitle());
         this.getArtistProperty().set(song.getArtist());
         this.getGenreProperty().set(song.getGenre());
-        this.getDurationProperty().set(song.getDurationString());
+        this.getDurationProperty().set(song.getDuration());
+        this.getPathToFileProperty().set(song.getPathToFile());
 
     }
 
@@ -39,6 +41,14 @@ public class SongModel {
 
     public ObservableList<SongModel> convertSongToSongmodel(List<Song> songs){
         return FXCollections.observableArrayList(songs.stream().map(song -> new SongModel(song)).toList());
+    }
+
+    public Song convertToSong(){
+        return new Song(this.getIdProperty().get(),this.getTitleProperty().get(), this.getTitleProperty().get(),
+                this.getGenreProperty().get(), this.getDurationProperty().get(), this.getPathToFileProperty().get());
+    }
+    public StringProperty getPathToFileProperty(){
+        return pathToFile;
     }
 
     public IntegerProperty getIdProperty() {
@@ -57,7 +67,13 @@ public class SongModel {
         return genre;
     }
 
-    public StringProperty getDurationProperty() {
+    public IntegerProperty getDurationProperty() {
         return duration;
+    }
+
+    public StringProperty getDurationString() {
+        int minutes = duration.get() / 60; // divide by 60 to get the minutes from seconds.
+        int seconds = duration.get() % 60; // remaining seconds
+        return new SimpleStringProperty(minutes + ":" + seconds);
     }
 }

@@ -19,10 +19,8 @@ public class Song {
 
 
     }
-
-    public Song createSong(int id, String title, String artist, String genre, int duration, String pathToFile) {
-        return new Song(id, title, artist,genre, duration,pathToFile);
-        //listModel.addSongToView(songManager.createSong(title, artist, genre, duration, pathToFile));
+    public int getId() {
+        return id;
     }
 
     public String getTitle() {
@@ -43,17 +41,5 @@ public class Song {
 
     public String getPathToFile() {
         return pathToFile;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getDurationString() {
-        int minutes = duration / 60; // divide by 60 to get the minutes from seconds.
-        int seconds = duration % 60; // remaining seconds
-
-        return minutes + ":" + seconds;
-
     }
 }

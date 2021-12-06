@@ -2,7 +2,6 @@ package gui.model;
 
 
 import be.Playlist;
-import bll.PlaylistManager;
 import dal.DALException;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -21,17 +20,23 @@ public class PlaylistModel {
 
     private ObservableList<SongModel> allSongs = FXCollections.observableArrayList();
     private StringProperty name = new SimpleStringProperty();
-    private StringProperty time = new SimpleStringProperty();
+    private IntegerProperty duration = new SimpleIntegerProperty();
     private IntegerProperty id = new SimpleIntegerProperty();
     private IntegerProperty totalSongs = new SimpleIntegerProperty();
+    private StringProperty durationString = new SimpleStringProperty();
+
 
     public PlaylistModel(Playlist playlist) throws IOException, DALException {
         this.getIdProperty().set(playlist.getId());
         this.getNameProperty().set(playlist.getName());
-        this.getTotalTimeProperty().set(playlist.getDurationString());
+        this.getDurationProperty().set(getTotalTime());
         this.allSongs.addAll(songModel.convertSongToSongmodel(playlist.getSongList()));
         this.getTotalSongsProperty().set(allSongs.size());
+        this.getDurationStringProperty().set(getDurationString());
 
+    }
+    public StringProperty getDurationStringProperty() {
+        return durationString;
     }
 
     public StringProperty getNameProperty() {
@@ -42,17 +47,12 @@ public class PlaylistModel {
         return allSongs;
     }
 
-    public int getTotalTime(){return  1;}
-
-    public String getDurationString(){return  null;}
-
-
     public IntegerProperty getTotalSongsProperty() {
         return totalSongs;
     }
 
-    public StringProperty getTotalTimeProperty() {
-        return time;
+    public IntegerProperty getDurationProperty() {
+        return duration;
     }
 
     public IntegerProperty getIdProperty() {
@@ -62,5 +62,34 @@ public class PlaylistModel {
 
     public void addSongToPlayList(SongModel song) {
         allSongs.add(song);
+        getTotalSongsProperty().set(allSongs.size());
+        getDurationStringProperty().set(getDurationString());
+    }
+
+    public String getDurationString(){
+        int totalTime = getTotalTime();
+        int minutes = totalTime / 60; // divide by 60 to get the minutes from seconds.
+        int seconds = totalTime % 60; // remaining seconds
+        return minutes + ":" + seconds;
+    }
+
+    public int getTotalTime(){
+        int totalTime = 0;
+        for (SongModel songModel: allSongs) {
+            totalTime += songModel.getDurationProperty().get();
+        }
+        return totalTime;
+    }
+
+    public void updatePlaylist(PlaylistModel playlistModel, String newName) {
+        playlistModel.setNameProperty(newName);
+    }
+
+    public void setNameProperty(String name) {
+        getNameProperty().set(name);
+    }
+
+    public Playlist convertToPlaylist() {
+        return new Playlist(this.getIdProperty().get(), this.getNameProperty().get());
     }
 }

@@ -2,7 +2,8 @@ package gui.controller;
 
 
 import dal.DALException;
-import gui.model.ListModel;
+import gui.model.SongListModel;
+import gui.model.PlaylistListModel;
 import gui.model.PlaylistModel;
 import gui.model.SongModel;
 import gui.util.SceneSwapper;
@@ -73,14 +74,16 @@ public class MainController  implements Initializable {
 
 
     private SceneSwapper sceneSwapper;
-    private ListModel listModel;
+    private SongListModel songListModel;
+    private PlaylistListModel playlistListModel;
     SongPlayer songPlayer = new SongPlayer("songs/bip.mp3");
 
     public MainController() throws DALException, IOException {
 
         try {
             sceneSwapper = new SceneSwapper();
-            listModel = new ListModel();
+            songListModel = new SongListModel();
+            playlistListModel = new PlaylistListModel();
         }catch (DALException DALex){
             displayError(DALex);
             System.exit(0);
@@ -96,28 +99,28 @@ public class MainController  implements Initializable {
 
         tvSongsOnPlaylist.setPlaceholder(new Label("Select a playlist \n with songs"));
 
-        listModel.getSelectedPlayList().bind(tvPlaylists.getSelectionModel().selectedItemProperty());
+        playlistListModel.getSelectedPlayList().bind(tvPlaylists.getSelectionModel().selectedItemProperty());
         //tvSongs.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        listModel.getSelectedSong().bind(tvSongs.getSelectionModel().selectedItemProperty());
+        songListModel.getSelectedSong().bind(tvSongs.getSelectionModel().selectedItemProperty());
 
         // list of all songs
-        tvSongs.setItems(listModel.getSongs());
+        tvSongs.setItems(songListModel.getSongs());
         tcTitle.setCellValueFactory(addSongToList -> addSongToList.getValue().getTitleProperty());
         tcArtist.setCellValueFactory(addSongToList -> addSongToList.getValue().getArtistProperty());
         tcCategory.setCellValueFactory(addSongToList -> addSongToList.getValue().getGenreProperty());
-        tcTime.setCellValueFactory(addSongToList -> addSongToList.getValue().getDurationProperty());
+        tcTime.setCellValueFactory(addSongToList -> addSongToList.getValue().getDurationString());
 
         // list of all Playlists
 
-        tvPlaylists.setItems(listModel.getPlayLists());
+        tvPlaylists.setItems(playlistListModel.getPlayLists());
         txtName.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getNameProperty());
         txtSongs.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTotalSongsProperty().asObject());
-        txtTime.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTotalTimeProperty());
+        txtTime.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getDurationStringProperty());
 
         // Search in all songs
         txtSearch.textProperty().addListener((observableValue, oldValue, newValue) -> {
             try {
-                listModel.searchSong(newValue);
+                songListModel.searchSong(newValue);
             } catch (DALException e) {
                 e.printStackTrace();
                 displayError(new DALException("Error: Something went wrong in the search engine"));
@@ -127,7 +130,7 @@ public class MainController  implements Initializable {
     }
 
     public void addPlaylist(String playlistName) throws DALException, IOException {
-        listModel.addPlaylistToView(playlistName);
+        playlistListModel.addPlaylistToView(playlistName);
     }
 
     /**
@@ -192,11 +195,15 @@ public class MainController  implements Initializable {
      * @param actionEvent runs when an action is performed on a button.
      */
     public void handleAddSongToPlaylistBtn(ActionEvent actionEvent) throws DALException {
-        SongModel songModel = listModel.getSelectedSong().getValue();
-        PlaylistModel playlistModel = listModel.getSelectedPlayList().getValue();
+        SongModel songModel = songListModel.getSelectedSong().getValue();
+        PlaylistModel playlistModel = playlistListModel.getSelectedPlayList().getValue();
+        
+        try{
+            playlistListModel.addSongToPlaylist(songModel.convertToSong(), playlistModel.convertToPlaylist());
 
-        // skal laves om så sang ikke bliver tilføj, vis database fjel
-        listModel.addSongToPlaylist(songModel.getIdProperty().get(), playlistModel.getIdProperty().get());
+        }catch (DALException DALex){
+            throw new DALException("This song already exist in this playlist.");
+        }
         playlistModel.addSongToPlayList(songModel);
 
     }
@@ -277,11 +284,18 @@ public class MainController  implements Initializable {
 
     public void handleViewSongs(MouseEvent mouseEvent) throws DALException {
 
-        tvSongsOnPlaylist.setItems(listModel.getSelectedPlayList().getValue().getListOfSongs());
+        tvSongsOnPlaylist.setItems(playlistListModel.getSelectedPlayList().getValue().getListOfSongs());
         txtSongsInPlayList.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTitleProperty());
 
     }
 
+    public PlaylistModel getSelectedPlaylist(){
+        return tvPlaylists.getSelectionModel().getSelectedItem();
+    }
 
+
+    public void createSong(String title, String artist, String genre, int duration, String pathToFile) throws DALException {
+        songListModel.createSong(title, artist, genre, duration,pathToFile);
+    }
 }
 

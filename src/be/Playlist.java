@@ -40,20 +40,6 @@ public class Playlist {
         return new Playlist(id, name);
     }
 
-    public int getTotalTime(){
-        int totalTime = 0;
-        for (Song song: getSongList()) {
-            totalTime += song.getDuration();
-        }
-        return totalTime;
-    }
 
-    public String getDurationString(){
-        int totalTime = getTotalTime();
 
-        int minutes = totalTime  / 60; // divide by 60 to get the minutes from seconds.
-        int seconds = totalTime  % 60; // remaining seconds
-
-        return minutes + ":" + seconds;
-    }
 }
