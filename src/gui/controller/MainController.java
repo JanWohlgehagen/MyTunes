@@ -1,9 +1,7 @@
 package gui.controller;
 
 
-import be.Playlist;
-import com.sun.tools.javac.Main;
-
+import be.Song;
 import dal.DALException;
 import gui.model.ListModel;
 import gui.model.PlayListSongModel;
@@ -31,6 +29,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 
+import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -86,7 +85,12 @@ public class MainController  implements Initializable {
     private PlaylistModel playlistModel;
     private SceneSwapper sceneSwapper;
     private ListModel listModel;
-    SongPlayer songPlayer = new SongPlayer("songs/bip.mp3");
+    private SongPlayer songPlayer;
+
+    private Song currentlySong;
+    private int playListId;
+    PlayListSongModel playListSongModel = new PlayListSongModel(null);
+
 
     public MainController() throws DALException, IOException {
 
@@ -105,9 +109,6 @@ public class MainController  implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-        sldVolume.setValue(songPlayer.getVolume()*100);
-
         tvSongsOnPlaylist.setPlaceholder(new Label("Select a playlist \n with songs"));
 
         listModel.getSelectedPlayList().bind(tvPlaylists.getSelectionModel().selectedItemProperty());
@@ -161,24 +162,46 @@ public class MainController  implements Initializable {
      * skips current song to next song
      * @param actionEvent when an action is performed on button program will run
      */
-    public void handleNextSongBtn(ActionEvent actionEvent) {
+    public void handleNextSongBtn(ActionEvent actionEvent) throws DALException {
+        songPlayer.pauseMusic();
+
+        currentlySong = playListSongModel.skipSong(currentlySong, playListId);
+        songPlayer = new SongPlayer(currentlySong.getPathToFile());
+        lblCurrentSongPlaying.setText(currentlySong.getTitle() + ": is Playing" );
+        songPlayer.playSong();
     }
 
     /**
      * goes back to previous song
      * @param actionEvent will run when an action is called on the button
      */
-    public void handlePreviousSongBtn(ActionEvent actionEvent) {
+    public void handlePreviousSongBtn(ActionEvent actionEvent) throws IOException, DALException {
+        songPlayer.pauseMusic();
+
+        currentlySong = playListSongModel.previousSong(currentlySong, playListId);
+        songPlayer = new SongPlayer(currentlySong.getPathToFile());
+        lblCurrentSongPlaying.setText(currentlySong.getTitle() + ": is Playing" );
+
+        songPlayer.playSong();
     }
 
     /**
      * switches to picture of pause button
      * @param actionEvent runs when an action is performed on the button
      */
-    public void handlePlayBtn(ActionEvent actionEvent) {
+    public void handlePlayBtn(ActionEvent actionEvent) throws DALException, IOException {
         btnPause.setVisible(true);
         btnPlay.setVisible(false);
+
+
+
+        playListId = tvPlaylists.getSelectionModel().getSelectedItem().getIdProperty().intValue();
+        currentlySong = playListSongModel.playCurrentSong(tvSongsOnPlaylist.getSelectionModel().getSelectedItem().getTitleProperty().toString(),playListId);
+        lblCurrentSongPlaying.setText(currentlySong.getTitle() + ": is Playing" );
+
+        songPlayer = new SongPlayer(currentlySong.getPathToFile());
         songPlayer.playSong();
+
     }
 
     /**
@@ -188,6 +211,7 @@ public class MainController  implements Initializable {
     public void handlePauseBtn(ActionEvent actionEvent) {
         btnPlay.setVisible(true);
         btnPause.setVisible(false);
+        lblCurrentSongPlaying.setText(currentlySong.getTitle() + ": is Paused" );
         songPlayer.pauseMusic();
     }
 

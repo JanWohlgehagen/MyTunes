@@ -53,7 +53,16 @@ public class ListModel {
 
     public ObservableList<SongModel> getPlayListSongs() throws DALException {
         playListSongsToBeViewed = FXCollections.observableArrayList(playlistManager.getSongsFromPlaylist(selectedPlayList.get().getIdProperty().get()).stream().map(playListSongs ->
+
                 new SongModel(playListSongs.getId(), playListSongs.getTitle(), playListSongs.getArtist(), playListSongs.getGenre(), playListSongs.getDuration(), playListSongs.getPathToFile())).toList());
+        {
+            try {
+                return new PlayListSongModel(playListSongs.getTitle());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }).toList());
         return playListSongsToBeViewed;
     }
 

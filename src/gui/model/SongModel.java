@@ -4,12 +4,14 @@ import be.Song;
 import bll.PlaylistManager;
 import bll.SongManager;
 import dal.DALException;
+import gui.util.SongPlayer;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 import java.io.IOException;
+import java.util.List;
 
 public class SongModel {
 
