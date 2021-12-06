@@ -1,17 +1,14 @@
 package gui.model;
 
 import be.Song;
-import bll.PlaylistManager;
 import bll.SongManager;
 import dal.DALException;
-import gui.util.SongPlayer;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 import java.io.IOException;
-import java.util.List;
 
 public class SongModel {
 
@@ -22,7 +19,7 @@ public class SongModel {
     private IntegerProperty duration = new SimpleIntegerProperty();
     private IntegerProperty id = new SimpleIntegerProperty();
     private SongManager songManager;
-    private ListModel listModel;
+    private SongListModel songListModel;
 
 
 
@@ -37,7 +34,7 @@ public class SongModel {
 
     public SongModel() throws DALException, IOException {
         songManager = new SongManager();
-        listModel = new ListModel();
+        songListModel = new SongListModel();
     }
 
     public StringProperty getTitleProperty() {
@@ -65,15 +62,15 @@ public class SongModel {
     }
 
     public void createSong(String title, String artist, String genre, int duration, String pathToFile) throws DALException, IOException {
-        listModel.addSongToView(title, artist, genre, duration, pathToFile);
+        songListModel.addSongToView(title, artist, genre, duration, pathToFile);
     }
 
     public void updateSong(Song song) throws DALException{
-        listModel.updateSong(song);
+        songListModel.updateSong(song);
     }
 
     public void deleteSong(Song song) throws DALException{
-        listModel.deleteSong(song);
+        songListModel.deleteSong(song);
         songManager.deleteSong(song);
     }
 

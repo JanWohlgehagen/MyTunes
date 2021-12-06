@@ -1,9 +1,8 @@
 package gui.controller;
 
-import bll.PlaylistManager;
 import dal.DALException;
 import gui.App;
-import gui.model.ListModel;
+import gui.model.SongListModel;
 import gui.model.PlaylistModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,13 +23,13 @@ public class EditPlaylistController implements Initializable {
     private TextField txtName;
     private PlaylistModel playlistModel;
     private MainController mainController;
-    private ListModel listModel;
+    private SongListModel songListModel;
 
 
     public void handleSaveBtn(ActionEvent actionEvent) throws DALException {
         if(!txtName.getText().isBlank()) {
             playlistModel.updatePlaylist(playlistModel, txtName.getText());
-            listModel.updatePlaylistToView(playlistModel.convertToPlaylist());
+            songListModel.updatePlaylistToView(playlistModel.convertToPlaylist());
             closeStage();
         }
     }
@@ -49,7 +48,7 @@ public class EditPlaylistController implements Initializable {
         mainController = new App().getController();
         playlistModel = mainController.getPlaylist();
         try {
-            listModel = new ListModel();
+            songListModel = new SongListModel();
         } catch (DALException e) {
             e.printStackTrace();
         } catch (IOException e) {

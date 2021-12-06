@@ -3,33 +3,22 @@ package gui.controller;
 
 import be.Song;
 import dal.DALException;
-import gui.model.ListModel;
-import gui.model.PlayListSongModel;
-import gui.model.PlaylistModel;
-import gui.model.SongModel;
+import gui.model.*;
 import gui.util.SceneSwapper;
 import gui.util.SongPlayer;
 import javafx.application.Platform;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 
-import javafx.scene.layout.GridPane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 
-import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -84,7 +73,8 @@ public class MainController  implements Initializable {
     private SongModel songModel;
     private PlaylistModel playlistModel;
     private SceneSwapper sceneSwapper;
-    private ListModel listModel;
+    private SongListModel songListModel;
+    private PlaylistListModel playlistListModel;
     private SongPlayer songPlayer;
 
     private Song currentlySong;
@@ -96,7 +86,8 @@ public class MainController  implements Initializable {
 
         try {
             sceneSwapper = new SceneSwapper();
-            listModel = new ListModel();
+            playlistListModel = new PlaylistListModel();
+            songListModel = new SongListModel();
             songModel = new SongModel();
             playlistModel = new PlaylistModel();
         }catch (DALException DALex){
@@ -111,12 +102,12 @@ public class MainController  implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         tvSongsOnPlaylist.setPlaceholder(new Label("Select a playlist \n with songs"));
 
-        listModel.getSelectedPlayList().bind(tvPlaylists.getSelectionModel().selectedItemProperty());
+        playlistListModel.getSelectedPlayList().bind(tvPlaylists.getSelectionModel().selectedItemProperty());
         //tvSongs.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        listModel.getSelectedSong().bind(tvSongs.getSelectionModel().selectedItemProperty());
+        songListModel.getSelectedSong().bind(tvSongs.getSelectionModel().selectedItemProperty());
 
         // list of all songs
-        tvSongs.setItems(listModel.getSongs());
+        tvSongs.setItems(songListModel.getSongs());
         tcTitle.setCellValueFactory(addSongToList -> addSongToList.getValue().getTitleProperty());
         tcArtist.setCellValueFactory(addSongToList -> addSongToList.getValue().getArtistProperty());
         tcCategory.setCellValueFactory(addSongToList -> addSongToList.getValue().getGenreProperty());
@@ -124,13 +115,14 @@ public class MainController  implements Initializable {
 
         // list of all Playlists
 
-        tvPlaylists.setItems(listModel.getPlayLists());
+        tvPlaylists.setItems(playlistListModel.getPlayLists());
         txtName.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getNameProperty());
         txtSongs.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTotalSongsProperty().asObject());
         txtTime.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTimeProperty());
 
         // Search in all songs
-        txtSearch.textProperty().addListener((observableValue, oldValue, newValue) -> {listModel.searchSong(newValue);});
+        txtSearch.textProperty().addListener((observableValue, oldValue, newValue) -> {
+            songListModel.searchSong(newValue);});
 
     }
 
@@ -220,10 +212,10 @@ public class MainController  implements Initializable {
      * @param actionEvent runs when an action is performed on a button.
      */
     public void handleAddSongToPlaylistBtn(ActionEvent actionEvent) throws DALException {
-        SongModel songModel = listModel.getSelectedSong().getValue();
-        PlaylistModel playlistModel = listModel.getSelectedPlayList().getValue();
+        SongModel songModel = songListModel.getSelectedSong().getValue();
+        PlaylistModel playlistModel = playlistListModel.getSelectedPlayList().getValue();
 
-        listModel.addSongToPlaylist(songModel.getIdProperty().get(), playlistModel.getIdProperty().get());
+        playlistListModel.addSongToPlaylist(songModel.getIdProperty().get(), playlistModel.getIdProperty().get());
     }
 
 
@@ -277,9 +269,9 @@ public class MainController  implements Initializable {
      */
     public void handleDeleteSongInPlaylistBtn(ActionEvent actionEvent) throws DALException {
         SongModel songModel = tvSongsOnPlaylist.getSelectionModel().getSelectedItem();
-        PlaylistModel playlistModel = listModel.getSelectedPlayList().getValue();
+        PlaylistModel playlistModel = playlistListModel.getSelectedPlayList().getValue();
 
-        listModel.removeSongFromPlaylist(songModel, playlistModel.getIdProperty().get());
+        playlistListModel.removeSongFromPlaylist(songModel, playlistModel.getIdProperty().get());
     }
 
     /**
@@ -310,20 +302,20 @@ public class MainController  implements Initializable {
 
 
     public void handleViewSongs(MouseEvent mouseEvent) throws DALException {
-        tvSongsOnPlaylist.setItems(listModel.getPlayListSongs());
+        tvSongsOnPlaylist.setItems(playlistListModel.getPlayListSongs());
         txtSongsInPlayList.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTitleProperty());
     }
 
     public void addPlaylist(String playlistName) throws DALException {
-        listModel.addPlaylistToView(playlistName);
+        playlistListModel.addPlaylistToView(playlistName);
     }
 
     public void addSong(String title, String artist, String genre, int duration, String filePath) throws DALException, IOException {
-        listModel.addSongToView(title, artist, genre, duration, filePath);
+        songListModel.addSongToView(title, artist, genre, duration, filePath);
     }
 
     public PlaylistModel getPlaylist() {
-        return listModel.getSelectedPlayList().get();
+        return playlistListModel.getSelectedPlayList().get();
     }
 }
 

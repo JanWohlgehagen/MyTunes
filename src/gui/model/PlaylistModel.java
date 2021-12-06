@@ -19,7 +19,7 @@ public class PlaylistModel {
     private StringProperty time = new SimpleStringProperty();
     private IntegerProperty id = new SimpleIntegerProperty();
 
-    private ListModel listModel;
+    private SongListModel songListModel;
     private PlaylistManager playlistManager;
 
     public PlaylistModel(int id, String name, Integer totalSongs, String time) {
@@ -31,7 +31,7 @@ public class PlaylistModel {
     }
 
     public PlaylistModel() throws IOException, DALException {
-        listModel = new ListModel();
+        songListModel = new SongListModel();
         playlistManager = new PlaylistManager();
     }
 
@@ -68,7 +68,7 @@ public class PlaylistModel {
      * @throws DALException
      */
     public void deletePlaylist(Playlist playlist) throws DALException {
-        listModel.deletePlaylist(playlist);
+        songListModel.deletePlaylist(playlist);
         playlistManager.deletePlaylist(playlist);
     }
 
