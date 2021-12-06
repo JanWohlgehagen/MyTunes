@@ -3,7 +3,6 @@ package gui.controller;
 
 import dal.DALException;
 import gui.model.ListModel;
-import gui.model.PlayListSongModel;
 import gui.model.PlaylistModel;
 import gui.model.SongModel;
 import gui.util.SceneSwapper;
@@ -197,7 +196,7 @@ public class MainController  implements Initializable {
         PlaylistModel playlistModel = listModel.getSelectedPlayList().getValue();
 
         // skal laves om så sang ikke bliver tilføj, vis database fjel
-        listModel.addSongToPlatlist(songModel.getIdProperty().get(), playlistModel.getIdProperty().get());
+        listModel.addSongToPlaylist(songModel.getIdProperty().get(), playlistModel.getIdProperty().get());
         playlistModel.addSongToPlayList(songModel);
 
     }

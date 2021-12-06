@@ -60,12 +60,4 @@ public class SongModel {
     public StringProperty getDurationProperty() {
         return duration;
     }
-
-
-/*
-    public void createSong(String title, String artist, String genre, int duration, String pathToFile) throws DALException, IOException {
-        listModel.addSongToView(songManager.createSong(title, artist, genre, duration, pathToFile));
-    }
-
- */
 }

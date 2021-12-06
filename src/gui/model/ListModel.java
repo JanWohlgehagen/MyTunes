@@ -75,16 +75,6 @@ public class ListModel {
     public void addSongToView(Song song) throws DALException, IOException {
         songsToBeViewed.add(new SongModel(song));
     }
-/*
-    public void SongsToPlaylist(SongModel pm) throws DALException {
-        if(pm == null) {
-            for (PlaylistModel playlist : getPlayLists()) {
-                playlist.addSongToPlayList(playlistManager.getSongsFromPlaylist(playlist.getIdProperty().get()));
-            }
-        }
-    }
-
- */
 
 
 
@@ -102,7 +92,7 @@ public class ListModel {
         songsToBeViewed.addAll((searchResults));
     }
 
-    public void addSongToPlatlist(int songId, int playlistId) throws DALException {
+    public void addSongToPlaylist(int songId, int playlistId) throws DALException {
         playlistManager.addSongToPLaylist(songId, playlistId);
     }
 }
