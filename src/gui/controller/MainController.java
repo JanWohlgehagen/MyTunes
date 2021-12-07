@@ -113,7 +113,7 @@ public class MainController  implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         tvSongsOnPlaylist.setPlaceholder(new Label("Select a playlist \n with songs"));
-        System.out.println("test");
+
         playlistListModel.getSelectedPlayList().bind(tvPlaylists.getSelectionModel().selectedItemProperty());
         //tvSongs.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         songListModel.getSelectedSong().bind(tvSongs.getSelectionModel().selectedItemProperty());
