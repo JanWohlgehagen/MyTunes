@@ -10,6 +10,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static be.DisplayMessage.displayError;
+
 public class PlaylistDAO implements IPlaylistRepository {
 
     private MyConnection databaseConnector;
@@ -60,7 +62,9 @@ public class PlaylistDAO implements IPlaylistRepository {
                 }
             }
         } catch (SQLException SQLex) {
+            displayError(new DALException("Error: Can not 'getAllPlaylist' in Databases"));
             SQLex.printStackTrace();
+
            throw new DALException("Error: Can not 'getAllPlaylist' in Databases");
         }
         return allPlaylists;
@@ -107,7 +111,8 @@ public class PlaylistDAO implements IPlaylistRepository {
             preparedStatement.executeUpdate();
 
         } catch (SQLException SQLex) {
-            throw new DALException("Error: Can not 'addSongToPLaylist' in Databases");
+            displayError(new DALException("test"));
+            throw new DALException("Error: This song already exist in this playlist.");
         }
     }
 
