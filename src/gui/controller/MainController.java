@@ -30,6 +30,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import static be.DisplayMessage.displayError;
+import static be.DisplayMessage.displayWarning;
+
 
 public class MainController  implements Initializable {
 
@@ -132,8 +135,8 @@ public class MainController  implements Initializable {
         txtSearch.textProperty().addListener((observableValue, oldValue, newValue) -> {
             try {
                 songListModel.searchSong(newValue);
-            } catch (DALException e) {
-                e.printStackTrace();
+            } catch (DALException DALex) {
+                DALex.printStackTrace();
                 displayError(new DALException("Error: Something went wrong in the search engine"));
             }
         });
@@ -149,6 +152,7 @@ public class MainController  implements Initializable {
      *
      * @param ex The Exception
      */
+    /*
     private void displayError(Exception ex) {
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -157,6 +161,7 @@ public class MainController  implements Initializable {
             alert.showAndWait();
         });
     }
+    */
 
     /**
      * sets volume og the songs that will be played
@@ -235,6 +240,7 @@ public class MainController  implements Initializable {
         try{
             playlistListModel.addSongToPlaylist(songModel.convertToSong(), playlistModel.convertToPlaylist());
         }catch (DALException DALex){
+            displayError(DALex);
             throw new DALException("This song already exist in this playlist.");
         }
         playlistModel.addSongToPlayList(songModel);
@@ -268,6 +274,7 @@ public class MainController  implements Initializable {
         if (confirmationAlerter("This action will delete the playlist permanently.")){
             playlistListModel.deletePlaylist(playlistListModel.getSelectedPlayList().get()); // Ask the model to remove remove a playlist
         }
+
 
     }
 
