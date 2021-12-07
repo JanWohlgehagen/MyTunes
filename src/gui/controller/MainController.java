@@ -295,7 +295,6 @@ public class MainController  implements Initializable {
         if (confirmationAlerter("This action will delete the song from the playlist.")) {
             SongModel songModel = tvSongsOnPlaylist.getSelectionModel().getSelectedItem();
             PlaylistModel playlistModel = playlistListModel.getSelectedPlayList().getValue();
-
             playlistListModel.removeSongFromPlaylist(songModel, playlistModel);
         }
     }
