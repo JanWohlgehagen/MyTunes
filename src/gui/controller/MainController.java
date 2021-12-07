@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 
@@ -264,7 +265,10 @@ public class MainController  implements Initializable {
      */
 
     public void handleDeletePlaylistBtn(ActionEvent actionEvent) throws DALException {
-        playlistListModel.deletePlaylist(playlistListModel.getSelectedPlayList().get()); // Ask the model to remove remove a playlist
+        if (confirmationAlerter("This action will delete the playlist permanently.")){
+            playlistListModel.deletePlaylist(playlistListModel.getSelectedPlayList().get()); // Ask the model to remove remove a playlist
+        }
+
     }
 
     /**
@@ -288,10 +292,12 @@ public class MainController  implements Initializable {
      * @param actionEvent runs when an action is performed on the button.
      */
     public void handleDeleteSongInPlaylistBtn(ActionEvent actionEvent) throws DALException {
-        SongModel songModel = tvSongsOnPlaylist.getSelectionModel().getSelectedItem();
-        PlaylistModel playlistModel = playlistListModel.getSelectedPlayList().getValue();
+        if (confirmationAlerter("This action will delete the song from the playlist.")) {
+            SongModel songModel = tvSongsOnPlaylist.getSelectionModel().getSelectedItem();
+            PlaylistModel playlistModel = playlistListModel.getSelectedPlayList().getValue();
 
-        playlistListModel.removeSongFromPlaylist(songModel, playlistModel);
+            playlistListModel.removeSongFromPlaylist(songModel, playlistModel);
+        }
     }
 
     /**
@@ -316,7 +322,9 @@ public class MainController  implements Initializable {
      * @param actionEvent runs when an action is performed.
      */
     public void handleDeleteSongBtn(ActionEvent actionEvent) throws DALException {
-        songListModel.deleteSong(songListModel.getSelectedSong().get());
+        if (confirmationAlerter("This action will delete the song permanently.")) {
+            songListModel.deleteSong(songListModel.getSelectedSong().get());
+        }
     }
 
 
@@ -337,6 +345,20 @@ public class MainController  implements Initializable {
 
     public SongModel getSelectedSong() {
         return tvSongs.getSelectionModel().getSelectedItem();
+    }
+
+    private boolean confirmationAlerter (String msg){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText(msg);
+        alert.setContentText("Press OK to continue.");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            return true;
+        } else {
+            return false;
+        }
     }
 }
 
