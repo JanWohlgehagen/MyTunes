@@ -101,6 +101,7 @@ public class MainController  implements Initializable {
             sceneSwapper = new SceneSwapper();
             songListModel = new SongListModel();
             playlistListModel = new PlaylistListModel();
+
         }catch (DALException DALex){
             displayError(DALex);
             System.exit(0);
@@ -112,7 +113,7 @@ public class MainController  implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         tvSongsOnPlaylist.setPlaceholder(new Label("Select a playlist \n with songs"));
-
+        System.out.println("test");
         playlistListModel.getSelectedPlayList().bind(tvPlaylists.getSelectionModel().selectedItemProperty());
         //tvSongs.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         songListModel.getSelectedSong().bind(tvSongs.getSelectionModel().selectedItemProperty());
@@ -146,22 +147,6 @@ public class MainController  implements Initializable {
     public void addPlaylist(String playlistName) throws DALException, IOException {
         playlistListModel.addPlaylistToView(playlistName);
     }
-
-    /**
-     * Displays errormessages to the user.
-     *
-     * @param ex The Exception
-     */
-    /*
-    private void displayError(Exception ex) {
-        Platform.runLater(() -> {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Something went wrong");
-            alert.setHeaderText(ex.getMessage());
-            alert.showAndWait();
-        });
-    }
-    */
 
     /**
      * sets volume og the songs that will be played
@@ -271,7 +256,7 @@ public class MainController  implements Initializable {
      */
 
     public void handleDeletePlaylistBtn(ActionEvent actionEvent) throws DALException {
-        if (confirmationAlerter("This action will delete the playlist permanently.")){
+        if (displayWarning("This action will delete the playlist permanently.")){
             playlistListModel.deletePlaylist(playlistListModel.getSelectedPlayList().get()); // Ask the model to remove remove a playlist
         }
 
@@ -299,7 +284,7 @@ public class MainController  implements Initializable {
      * @param actionEvent runs when an action is performed on the button.
      */
     public void handleDeleteSongInPlaylistBtn(ActionEvent actionEvent) throws DALException {
-        if (confirmationAlerter("This action will delete the song from the playlist.")) {
+        if (displayWarning("This action will delete the song from the playlist.")) {
             SongModel songModel = tvSongsOnPlaylist.getSelectionModel().getSelectedItem();
             PlaylistModel playlistModel = playlistListModel.getSelectedPlayList().getValue();
 
@@ -329,7 +314,7 @@ public class MainController  implements Initializable {
      * @param actionEvent runs when an action is performed.
      */
     public void handleDeleteSongBtn(ActionEvent actionEvent) throws DALException {
-        if (confirmationAlerter("This action will delete the song permanently.")) {
+        if (displayWarning("This action will delete the song permanently.")) {
             songListModel.deleteSong(songListModel.getSelectedSong().get());
         }
     }
@@ -354,18 +339,6 @@ public class MainController  implements Initializable {
         return tvSongs.getSelectionModel().getSelectedItem();
     }
 
-    private boolean confirmationAlerter (String msg){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation Dialog");
-        alert.setHeaderText(msg);
-        alert.setContentText("Press OK to continue.");
 
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK){
-            return true;
-        } else {
-            return false;
-        }
-    }
 }
 
