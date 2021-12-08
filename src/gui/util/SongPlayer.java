@@ -19,8 +19,7 @@ public class SongPlayer {
      */
     public SongPlayer(SongModel songModel){
         this.songModel = songModel;
-        String path = songModel.getPathToFileProperty().get().toString();
-        //"c:/Users/Magnus Overgaard/Downloads/bip.mp3"
+        String path = songModel.getPathToFileProperty().get();
         File file = new File(path);
         String MEDIA_URL = file.toURI().toString();
         Media song = new Media(MEDIA_URL);
@@ -33,7 +32,7 @@ public class SongPlayer {
     }
 
     /**
-     * simply plays the song :D
+     * simply plays the song
      */
     public void playSong(){
         mediaPlayer.play();
@@ -53,14 +52,6 @@ public class SongPlayer {
     }
 
     /**
-     * returns the volume the song is currently played on.
-     * @return
-     */
-    public Double getVolume(){
-       return mediaPlayer.getVolume();
-    }
-
-    /**
      * pause the music
      */
     public void pauseMusic(){
@@ -68,7 +59,7 @@ public class SongPlayer {
     }
 
     public boolean isPlaying(){
-        return mediaPlayer.getStatus().equals(MediaPlayer.Status.PLAYING);
+        return mediaPlayer.getStatus().equals(MediaPlayer.Status.STOPPED);
     }
 
     public MediaPlayer getMediaPlayer(){
