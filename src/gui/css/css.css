@@ -1,37 +1,82 @@
+.button:hover {
+    -fx-border-width: 2;
+}
 
+.button{
+    -fx-background-color: transparent;
+    -fx-background-repeat: no-repeat;
+    -fx-border-color: black;
+    -fx-border-radius: 5;
+}
 
 #btnPlay {
     -fx-background-image: url("../images/play.png");
-    -fx-background-size: 25 25;
+    -fx-background-size: 45 45;
     -fx-background-position: center;
+    -fx-border-color: black;
+    -fx-border-radius: 45px;
+    -fx-opacity: 0.8;
 }
 #btnPause{
     -fx-background-image: url("../images/pausereal.PNG");
-    -fx-background-size: 25 25;
+    -fx-background-size: 45 45;
     -fx-background-position: center;
+    -fx-border-color: black;
+    -fx-border-radius: 45;
+    -fx-opacity: 0.8;
 }
 #btnSkipSong {
     -fx-background-image: url("../Images/skipsong.png");
-    -fx-background-size: 25 25;
+    -fx-background-size: 20 20;
+    -fx-border-color: black;
+    -fx-border-radius: 25;
     -fx-background-position: center;
+    -fx-opacity: 0.8;
 }
 #btnPreviousSong{
     -fx-background-image: url("../Images/goback.PNG");
-    -fx-background-size: 25 25;
+    -fx-background-size: 20 20;
+    -fx-border-color: black;
+    -fx-border-radius: 25;
     -fx-background-position: center;
+    -fx-opacity: 0.8;
 }
+
 #btnAddSongToPlaylist{
     -fx-background-image: url("../Images/leftarrow.png");
     -fx-background-size: 27 27;
     -fx-background-position: center;
+    -fx-opacity: 0.8;
+    -fx-border-color: transparent;
 }
+
+#btnAddSongToPlaylist:hover{
+    -fx-scale-x: 1.3;
+    -fx-scale-y: 1.3;
+}
+
 #btnAscendSongInPlaylist{
     -fx-background-image: url("../Images/arrowup.png");
     -fx-background-size: 27 27;
     -fx-background-position: center;
+    -fx-opacity: 0.8;
+    -fx-border-color: transparent;
 }
+
+#btnAscendSongInPlaylist:hover{
+    -fx-scale-x: 1.3;
+    -fx-scale-y: 1.3;
+}
+
 #btnDescendSongInPlaylist{
     -fx-background-image: url("../Images/arrowdown.png");
     -fx-background-size: 27 27;
     -fx-background-position: center;
+    -fx-opacity: 0.8;
+    -fx-border-color: transparent;
+}
+
+#btnDescendSongInPlaylist:hover{
+    -fx-scale-x: 1.3;
+    -fx-scale-y: 1.3;
 }

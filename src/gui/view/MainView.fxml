@@ -10,28 +10,36 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="461.0" prefWidth="729.0" styleClass="&quot;@css/css&quot;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.MainController">
    <top>
-      <AnchorPane prefHeight="90.0" prefWidth="730.0" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="121.0" prefWidth="729.0" BorderPane.alignment="CENTER">
          <children>
-            <Slider fx:id="sldVolume" layoutX="68.0" layoutY="47.0" onMouseReleased="#sldVolumeInput" prefHeight="12.0" prefWidth="131.0">
+            <Slider fx:id="sldVolume" blockIncrement="1.0" layoutX="68.0" layoutY="67.0" majorTickUnit="10.0" minorTickCount="10" onMouseReleased="#sldVolumeInput" prefHeight="12.0" prefWidth="131.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="50.0" AnchorPane.bottomAnchor="16.0">
                <cursor>
                   <Cursor fx:constant="SE_RESIZE" />
                </cursor>
             </Slider>
-            <Button fx:id="btnSkipSong" layoutX="157.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleNextSongBtn" prefWidth="28.0" />
-            <Button fx:id="btnPreviousSong" layoutX="83.0" layoutY="14.0" mnemonicParsing="false" onAction="#handlePreviousSongBtn" prefWidth="28.0" />
-            <Button fx:id="btnPlay" layoutX="118.0" layoutY="13.0" mnemonicParsing="false" onAction="#handlePlayBtn" prefHeight="28.0" prefWidth="32.0" styleClass="css" />
-            <Label layoutX="14.0" layoutY="46.0" text="Volume" />
-            <Label fx:id="lblCurrentSongPlaying" layoutX="311.0" layoutY="45.0" text="NONE ::: IS PLAYING" />
-            <Label layoutX="531.0" layoutY="45.0" text="Search" />
-            <TextField fx:id="txtSearch" layoutX="574.0" layoutY="41.0" />
-            <Label layoutX="13.0" layoutY="76.0" text="Playlists" />
-            <Label layoutX="255.0" layoutY="76.0" text="Songs in playlist" />
-            <Label layoutX="419.0" layoutY="76.0" text="Songs in Mytunes" />
-            <Button fx:id="btnPause" layoutX="116.0" layoutY="14.0" mnemonicParsing="false" onAction="#handlePauseBtn" prefHeight="22.0" prefWidth="34.0" text="." visible="false">
+            <Label layoutX="14.0" layoutY="64.0" text="Volume" AnchorPane.bottomAnchor="40.0" />
+            <Label fx:id="lblCurrentSongPlaying" alignment="CENTER" contentDisplay="CENTER" layoutX="252.0" layoutY="19.0" prefHeight="27.0" prefWidth="430.0" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="252.0" AnchorPane.rightAnchor="47.0">
+               <font>
+                  <Font size="24.0" />
+               </font></Label>
+            <Label layoutX="531.0" layoutY="82.0" text="Search" AnchorPane.bottomAnchor="22.0" />
+            <TextField fx:id="txtSearch" layoutX="574.0" layoutY="41.0" AnchorPane.bottomAnchor="18.0" />
+            <Label layoutX="13.0" layoutY="76.0" text="Playlists" AnchorPane.bottomAnchor="18.0" />
+            <Label layoutX="255.0" layoutY="76.0" text="Songs in playlist" AnchorPane.bottomAnchor="18.0" />
+            <Label layoutX="419.0" layoutY="76.0" text="Songs in Mytunes" AnchorPane.bottomAnchor="18.0" />
+            <HBox alignment="CENTER" layoutX="51.0" layoutY="6.0" prefHeight="62.0" prefWidth="166.0" spacing="15.0">
+               <children>
+                  <Button fx:id="btnPreviousSong" mnemonicParsing="false" onAction="#handlePreviousSongBtn" prefHeight="35.0" prefWidth="35.0" />
+                  <Button fx:id="btnPlay" mnemonicParsing="false" onAction="#handlePlayBtn" prefHeight="45.0" prefWidth="45.0" styleClass="css" />
+                  <Button fx:id="btnSkipSong" mnemonicParsing="false" onAction="#handleNextSongBtn" prefHeight="35.0" prefWidth="35.0" />
+               </children>
+            </HBox>
+            <Button fx:id="btnPause" mnemonicParsing="false" onAction="#handlePauseBtn" prefHeight="45.0" prefWidth="45.0" text="." visible="false" AnchorPane.leftAnchor="111.0" AnchorPane.topAnchor="14.0">
                <font>
                   <Font size="1.0" />
                </font>
@@ -79,15 +87,15 @@
    <bottom>
       <AnchorPane prefHeight="54.0" prefWidth="730.0" BorderPane.alignment="CENTER">
          <children>
-            <Button layoutX="14.0" layoutY="1.0" mnemonicParsing="false" onAction="#handleNewPlaylistBtn" text="New..." />
-            <Button layoutX="74.0" layoutY="1.0" mnemonicParsing="false" onAction="#handleEditPlaylistBtn" text="Edit..." />
-            <Button layoutX="176.0" layoutY="1.0" mnemonicParsing="false" onAction="#handleDeletePlaylistBtn" text="Remove" />
-            <Button fx:id="btnAscendSongInPlaylist" layoutX="261.0" layoutY="1.0" mnemonicParsing="false" onAction="#handleAscendSongInPlaylistBtn" />
-            <Button fx:id="btnDescendSongInPlaylist" layoutX="286.0" layoutY="1.0" mnemonicParsing="false" onAction="#handleDescendSongInPlaylistBtn" prefHeight="26.0" prefWidth="0.0" />
-            <Button layoutX="313.0" layoutY="1.0" mnemonicParsing="false" onAction="#handleDeleteSongInPlaylistBtn" text="Remove" />
-            <Button layoutX="412.0" layoutY="1.0" mnemonicParsing="false" onAction="#handleNewSongBtn" text="New..." />
-            <Button layoutX="477.0" layoutY="1.0" mnemonicParsing="false" onAction="#handleEditSongBtn" text="Edit..." />
-            <Button layoutX="534.0" layoutY="1.0" mnemonicParsing="false" onAction="#handleDeleteSongBtn" text="Remove" />
+            <Button layoutX="14.0" layoutY="1.0" mnemonicParsing="false" onAction="#handleNewPlaylistBtn" text="New..." AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" />
+            <Button layoutX="74.0" layoutY="1.0" mnemonicParsing="false" onAction="#handleEditPlaylistBtn" text="Edit..." AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="65.0" />
+            <Button layoutX="176.0" layoutY="1.0" mnemonicParsing="false" onAction="#handleDeletePlaylistBtn" text="Remove" AnchorPane.bottomAnchor="5.0" />
+            <Button fx:id="btnAscendSongInPlaylist" layoutX="261.0" layoutY="1.0" mnemonicParsing="false" onAction="#handleAscendSongInPlaylistBtn" AnchorPane.bottomAnchor="5.0" />
+            <Button fx:id="btnDescendSongInPlaylist" layoutX="286.0" layoutY="1.0" mnemonicParsing="false" onAction="#handleDescendSongInPlaylistBtn" prefHeight="26.0" prefWidth="0.0" AnchorPane.bottomAnchor="5.0" />
+            <Button layoutX="313.0" layoutY="1.0" mnemonicParsing="false" onAction="#handleDeleteSongInPlaylistBtn" text="Remove" AnchorPane.bottomAnchor="5.0" />
+            <Button layoutX="412.0" layoutY="1.0" mnemonicParsing="false" onAction="#handleNewSongBtn" text="New..." AnchorPane.bottomAnchor="5.0" />
+            <Button layoutX="477.0" layoutY="1.0" mnemonicParsing="false" onAction="#handleEditSongBtn" text="Edit..." AnchorPane.bottomAnchor="5.0" />
+            <Button layoutX="534.0" layoutY="1.0" mnemonicParsing="false" onAction="#handleDeleteSongBtn" text="Remove" AnchorPane.bottomAnchor="5.0" />
          </children></AnchorPane>
    </bottom>
    <stylesheets>
