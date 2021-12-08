@@ -113,13 +113,7 @@ public class MainController  implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        try {
-            currentlySong = new SongModel();
-        } catch (DALException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        currentlySong = new SongModel();
 
         tvSongsOnPlaylist.setPlaceholder(new Label("Select a playlist \n with songs"));
 
