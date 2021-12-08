@@ -17,7 +17,7 @@
    <top>
       <AnchorPane prefHeight="116.0" prefWidth="729.0" BorderPane.alignment="CENTER">
          <children>
-            <Slider fx:id="sldVolume" blockIncrement="1.0" layoutX="34.0" layoutY="65.0" majorTickUnit="10.0" minorTickCount="10" onMouseReleased="#sldVolumeInput" prefHeight="12.0" prefWidth="131.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="50.0" AnchorPane.bottomAnchor="13.0">
+            <Slider fx:id="sldVolume" blockIncrement="1.0" disable="true" layoutX="34.0" layoutY="65.0" majorTickUnit="10.0" minorTickCount="10" onMouseReleased="#sldVolumeInput" prefHeight="12.0" prefWidth="131.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="50.0" AnchorPane.bottomAnchor="13.0">
                <cursor>
                   <Cursor fx:constant="SE_RESIZE" />
                </cursor>
@@ -50,7 +50,9 @@
                   <Font size="1.0" />
                </font>
             </Button>
-            <Slider fx:id="progBar" layoutX="212.0" layoutY="65.0" prefHeight="14.0" prefWidth="470.0" />
+            <Slider fx:id="progBar" disable="true" layoutX="192.0" layoutY="68.0" onMousePressed="#handleProgBarPressed" onMouseReleased="#handleProgBarReleased" prefHeight="14.0" prefWidth="470.0" />
+            <Label fx:id="lblSongProgress" alignment="BOTTOM_LEFT" contentDisplay="CENTER" layoutX="199.0" layoutY="84.0" prefHeight="17.0" prefWidth="65.0" text="00:00" textAlignment="CENTER" AnchorPane.bottomAnchor="15.0" />
+            <Label fx:id="lblSongDuration" alignment="CENTER_RIGHT" contentDisplay="CENTER" layoutX="618.0" layoutY="84.0" prefHeight="17.0" prefWidth="40.0" text="00:00" textAlignment="CENTER" AnchorPane.bottomAnchor="15.0" />
          </children>
       </AnchorPane>
    </top>
