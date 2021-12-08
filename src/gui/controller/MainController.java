@@ -437,7 +437,6 @@ public class MainController implements Initializable {
                                 Duration newValue) {
                 progBar.setValue((newValue.toSeconds() / songPlayer.getMediaPlayer().getTotalDuration().toSeconds()) * 100);
                 lblSongProgress.setText(songPlayer.getSongModel().getDurationString(songPlayer.getMediaPlayer().getCurrentTime().toSeconds()));
-                System.out.println(progBar.getValue());
             }
         });
         lblSongDuration.setText(songPlayer.getSongModel().getDurationString().get());
