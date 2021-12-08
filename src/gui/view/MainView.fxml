@@ -22,7 +22,7 @@
                   <Cursor fx:constant="SE_RESIZE" />
                </cursor>
             </Slider>
-            <Label fx:id="lblCurrentSongPlaying" alignment="CENTER" contentDisplay="CENTER" layoutX="252.0" layoutY="19.0" prefHeight="63.0" prefWidth="430.0" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="252.0" AnchorPane.rightAnchor="47.0">
+            <Label fx:id="lblCurrentSongPlaying" alignment="CENTER" contentDisplay="CENTER" layoutX="232.0" layoutY="12.0" prefHeight="63.0" prefWidth="430.0" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="232.0" AnchorPane.rightAnchor="67.0">
                <font>
                   <Font size="24.0" />
                </font></Label>
@@ -50,6 +50,7 @@
                   <Font size="1.0" />
                </font>
             </Button>
+            <Slider fx:id="progBar" layoutX="212.0" layoutY="65.0" prefHeight="14.0" prefWidth="470.0" />
          </children>
       </AnchorPane>
    </top>

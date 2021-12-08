@@ -8,8 +8,11 @@ import gui.util.SceneSwapper;
 import gui.util.SongPlayer;
 import javafx.application.Platform;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -82,6 +85,8 @@ public class MainController  implements Initializable {
     private Slider sldVolume;
     @FXML
     private Label lblCurrentSongPlaying;
+    @FXML
+    private Slider progBar;
 
     private SceneSwapper sceneSwapper;
 
@@ -98,6 +103,7 @@ public class MainController  implements Initializable {
     public MainController() throws DALException, IOException {
 
         try {
+            progBar=new Slider();
             sceneSwapper = new SceneSwapper();
             songListModel = new SongListModel();
             playlistListModel = new PlaylistListModel();
@@ -166,11 +172,13 @@ public class MainController  implements Initializable {
      * @param actionEvent when an action is performed on button program will run
      */
     public void handleNextSongBtn(ActionEvent actionEvent) throws DALException {
+        MediaPlayer mediaPlayer = songPlayer.getMediaPlayer();
         songPlayer.pauseMusic();
             skipOrGOBackSong( 1);
         songPlayer = new SongPlayer(currentlySong.getPathToFileProperty().get());
         lblCurrentSongPlaying.setText(currentlySong.getTitleProperty().get() + ": is Playing" );
         songPlayer.playSong();
+        updateProgBar();
     }
 
     public void skipOrGOBackSong( int upOrDown){
@@ -204,6 +212,7 @@ public class MainController  implements Initializable {
         songPlayer = new SongPlayer(currentlySong.getPathToFileProperty().get());
         lblCurrentSongPlaying.setText(currentlySong.getTitleProperty().get()+ ": is Playing" );
         songPlayer.playSong();
+        updateProgBar();
     }
 
     /**
@@ -227,6 +236,7 @@ public class MainController  implements Initializable {
                 songPlayer.playSong();
             }
                 lblCurrentSongPlaying.setText(currentlySong.getTitleProperty().get() + ": is Playing" );
+            updateProgBar();
     }
 
     /**
@@ -379,6 +389,35 @@ public class MainController  implements Initializable {
     public void handleTvSongClicked(MouseEvent mouseEvent) {
         tvSongsOnPlaylist.getSelectionModel().clearSelection();
         lblCurrentSongPlaying.setText(getSelectedSong().getTitleProperty().get());
+    }
+
+    public void updateProgBar(){
+        songPlayer.getMediaPlayer().currentTimeProperty().addListener(new ChangeListener<Duration>() {
+
+            @Override
+            public void changed(ObservableValue<? extends Duration> observable, Duration oldValue,
+                                Duration newValue) {
+                progBar.setValue((newValue.toSeconds() / songPlayer.getMediaPlayer().getTotalDuration().toSeconds()) * 100);
+            }
+        });
+
+        progBar.setOnMousePressed(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                songPlayer.pauseMusic();
+            }
+        });
+
+        progBar.setOnMouseReleased(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                songPlayer.getMediaPlayer().seek(Duration.seconds((progBar.getValue() / 100) * songPlayer.getMediaPlayer().getTotalDuration().toSeconds()));
+                songPlayer.playSong();
+            }
+        });
+
     }
 }
 
