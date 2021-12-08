@@ -8,6 +8,7 @@ import gui.util.SceneSwapper;
 import gui.util.SongPlayer;
 import javafx.application.Platform;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,6 +23,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
@@ -85,12 +87,13 @@ public class MainController  implements Initializable {
 
     private SongPlayer songPlayer;
 
-    private Song currentlySong;
+    private SongModel currentlySong;
     private int playListId;
     PlayListSongModel playListSongModel = new PlayListSongModel(null);
     private SongListModel songListModel;
     private PlaylistListModel playlistListModel;
-
+    Duration timeLeft;
+    int tableviewindicator = -1;
 
     public MainController() throws DALException, IOException {
 
@@ -109,6 +112,15 @@ public class MainController  implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        try {
+            currentlySong = new SongModel();
+        } catch (DALException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         tvSongsOnPlaylist.setPlaceholder(new Label("Select a playlist \n with songs"));
 
         playlistListModel.getSelectedPlayList().bind(tvPlaylists.getSelectionModel().selectedItemProperty());
@@ -161,44 +173,66 @@ public class MainController  implements Initializable {
      */
     public void handleNextSongBtn(ActionEvent actionEvent) throws DALException {
         songPlayer.pauseMusic();
-
-        currentlySong = playListSongModel.skipSong(currentlySong, playListId);
-        songPlayer = new SongPlayer(currentlySong.getPathToFile());
-        lblCurrentSongPlaying.setText(currentlySong.getTitle() + ": is Playing" );
+            skipOrGOBackSong( 1);
+        songPlayer = new SongPlayer(currentlySong.getPathToFileProperty().get());
+        lblCurrentSongPlaying.setText(currentlySong.getTitleProperty().get() + ": is Playing" );
         songPlayer.playSong();
     }
 
+    public void skipOrGOBackSong( int upOrDown){
+        ObservableList<SongModel> tv = null;
+
+        if(tableviewindicator == 0){
+            tv = tvSongs.getItems();
+        }else if (tableviewindicator == 1){
+            tv = tvSongsOnPlaylist.getItems();
+        }
+
+        for(int i = 0; i < tv.size() ; i++ ){
+            if(tv.get(i).getIdProperty().equals(currentlySong.getIdProperty())){
+                if(i + upOrDown < tv.size() && i + upOrDown >= 0){
+                    currentlySong = tv.get(i + upOrDown);
+                }
+                else {
+                    currentlySong = tv.get(0);
+                }
+                break;
+            }
+        }
+    }
     /**
      * goes back to previous song
      * @param actionEvent will run when an action is called on the button
      */
     public void handlePreviousSongBtn(ActionEvent actionEvent) throws IOException, DALException {
         songPlayer.pauseMusic();
-
-        currentlySong = playListSongModel.previousSong(currentlySong, playListId);
-        songPlayer = new SongPlayer(currentlySong.getPathToFile());
-        lblCurrentSongPlaying.setText(currentlySong.getTitle() + ": is Playing" );
-
+        skipOrGOBackSong( -1);
+        songPlayer = new SongPlayer(currentlySong.getPathToFileProperty().get());
+        lblCurrentSongPlaying.setText(currentlySong.getTitleProperty().get()+ ": is Playing" );
         songPlayer.playSong();
     }
 
     /**
-     * switches to picture of pause button
+     * switches to picture of pause button and plays music either playing the old song or a new song.
      * @param actionEvent runs when an action is performed on the button
      */
     public void handlePlayBtn(ActionEvent actionEvent) throws DALException, IOException {
         btnPause.setVisible(true);
         btnPlay.setVisible(false);
 
+            SongModel oldSong = currentlySong;
 
-
-        playListId = tvPlaylists.getSelectionModel().getSelectedItem().getIdProperty().intValue();
-        currentlySong = playListSongModel.playCurrentSong(tvSongsOnPlaylist.getSelectionModel().getSelectedItem().getTitleProperty().toString(),playListId);
-        lblCurrentSongPlaying.setText(currentlySong.getTitle() + ": is Playing" );
-
-        songPlayer = new SongPlayer(currentlySong.getPathToFile());
-        songPlayer.playSong();
-
+            if(tvSongs.getSelectionModel().getSelectedItem() != null){ currentlySong = tvSongs.getSelectionModel().getSelectedItem(); tableviewindicator = 0;}
+            if(tvSongsOnPlaylist.getItems().size() != 0 && tvSongsOnPlaylist.getSelectionModel().getSelectedItem() != null){currentlySong = tvSongsOnPlaylist.getSelectionModel().getSelectedItem(); tableviewindicator = 1;}
+            
+            if(oldSong.getPathToFileProperty() == currentlySong.getPathToFileProperty()){
+                songPlayer.unPause(timeLeft);
+            }
+            else{
+                songPlayer = new SongPlayer(currentlySong.getPathToFileProperty().get());
+                songPlayer.playSong();
+            }
+                lblCurrentSongPlaying.setText(currentlySong.getTitleProperty().get() + ": is Playing" );
     }
 
     /**
@@ -208,8 +242,10 @@ public class MainController  implements Initializable {
     public void handlePauseBtn(ActionEvent actionEvent) {
         btnPlay.setVisible(true);
         btnPause.setVisible(false);
-        lblCurrentSongPlaying.setText(currentlySong.getTitle() + ": is Paused" );
+        lblCurrentSongPlaying.setText(currentlySong.getTitleProperty().get() + ": is Paused" );
+        timeLeft = songPlayer.getMediaPlayer().getCurrentTime();
         songPlayer.pauseMusic();
+
     }
 
     /**
@@ -341,5 +377,12 @@ public class MainController  implements Initializable {
     }
 
 
+    public void handleTvSongsInPlaylistClicked(MouseEvent mouseEvent) {
+    tvSongs.getSelectionModel().clearSelection();
+    }
+
+    public void handleTvSongClicked(MouseEvent mouseEvent) {
+        tvSongsOnPlaylist.getSelectionModel().clearSelection();
+    }
 }
 
