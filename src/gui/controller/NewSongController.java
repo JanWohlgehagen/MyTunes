@@ -1,11 +1,9 @@
 package gui.controller;
 
-import be.Song;
 import dal.DALException;
 import gui.App;
 
 import gui.model.SongListModel;
-import gui.model.SongModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -95,7 +93,7 @@ public class NewSongController implements Initializable {
     public void handleSaveBtn(ActionEvent actionEvent) throws DALException, IOException {
         MainController mainController = new App().getController();
         if(!txtArtist.getText().isBlank() && !txtTime.getText().isBlank() && !txtFile.getText().isBlank() && !txtTitle.getText().isBlank() && cBoxCategory.getSelectionModel().getSelectedItem() != null){
-            mainController.createSong(txtTitle.getText(), txtArtist.getText(), cBoxCategory.getSelectionModel().getSelectedItem().toString(),  (int)media.getDuration().toSeconds(), txtFile.getText());
+            mainController.infoToCreateSong(txtTitle.getText(), txtArtist.getText(), cBoxCategory.getSelectionModel().getSelectedItem().toString(),  (int)media.getDuration().toSeconds(), txtFile.getText());
             closeStage();
         }
     }

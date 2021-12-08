@@ -1,12 +1,10 @@
 package gui.controller;
 
 
-import be.Song;
 import dal.DALException;
 import gui.model.*;
 import gui.util.SceneSwapper;
 import gui.util.SongPlayer;
-import javafx.application.Platform;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -14,29 +12,20 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 
-import javafx.scene.layout.GridPane;
-import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
-import static be.DisplayMessage.displayError;
-import static be.DisplayMessage.displayWarning;
+import static be.DisplayMessage.*;
 
 
 public class MainController  implements Initializable {
@@ -103,14 +92,15 @@ public class MainController  implements Initializable {
     public MainController() throws DALException, IOException {
 
         try {
-            progBar=new Slider();
+            progBar = new Slider();
             sceneSwapper = new SceneSwapper();
             songListModel = new SongListModel();
             playlistListModel = new PlaylistListModel();
 
         }catch (DALException DALex){
-            displayError(DALex);
-            System.exit(0);
+            if(displayErrorSTOP(DALex)){
+                System.exit(0);
+            }
         }
 
 
@@ -123,10 +113,13 @@ public class MainController  implements Initializable {
 
         tvSongsOnPlaylist.setPlaceholder(new Label("Select a playlist \n with songs"));
 
-        playlistListModel.getSelectedPlayList().bind(tvPlaylists.getSelectionModel().selectedItemProperty());
         //tvSongs.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+        //{ de her kan slet nu
+        playlistListModel.getSelectedPlayList().bind(tvPlaylists.getSelectionModel().selectedItemProperty());
         songListModel.getSelectedSong().bind(tvSongs.getSelectionModel().selectedItemProperty());
         playlistListModel.getSelectedSongInPlaylist().bind(tvSongsOnPlaylist.getSelectionModel().selectedItemProperty());
+        //}
 
         // list of all songs
         tvSongs.setItems(songListModel.getSongs());
@@ -154,9 +147,172 @@ public class MainController  implements Initializable {
 
     }
 
-    public void addPlaylist(String playlistName) throws DALException, IOException {
-        playlistListModel.addPlaylistToView(playlistName);
+    /**
+     * switch the scene to a different scene.
+     * @param actionEvent runs when an action happens on a button.
+     * @throws IOException if cant find stage.
+     */
+    public void handleNewPlaylistBtn(ActionEvent actionEvent) throws IOException {
+        sceneSwapper.sceneSwitch(new Stage(), "NewPlaylistView.fxml");
     }
+
+    public void infoToNewPlaylist(String playlistName) throws DALException, IOException {
+        playlistListModel.createPlaylist(playlistName);
+    }
+
+    /**
+     * switch the scene to a different scene.
+     * @param actionEvent runs when an action happens on a button.
+     * @throws IOException if cant find stage.
+     */
+
+    public void handleEditPlaylistBtn(ActionEvent actionEvent) throws IOException, DALException {
+        if(getSelectedPlaylist() == null){
+            displayMessage("There is no playlist select, please select a playlist");
+        }else {
+            sceneSwapper.sceneSwitch(new Stage(), "EditPlaylistView.fxml");
+        }
+    }
+
+    /**
+     * deletes a playlist from the application
+     * @param actionEvent runs when an action is performed on the button.
+     */
+
+    public void handleDeletePlaylistBtn(ActionEvent actionEvent) throws DALException {
+        if(getSelectedPlaylist() == null){
+            displayMessage("There is no playlist select, please select a playlist");
+        }else {
+            if (displayWarning("This action will delete the playlist permanently.")) {
+                playlistListModel.deletePlaylist(getSelectedPlaylist()); // Ask the model to remove remove a playlist
+            }
+        }
+    }
+
+    /**
+     * moves a song up by one in the tableview.
+     * @param actionEvent runs when an action is called on the button
+     */
+    public void handleAscendSongInPlaylistBtn(ActionEvent actionEvent) {
+        if(getSelectedSongFromPlaylist() == null){
+            displayMessage("There is no song select, please select a song");
+        }else {
+            SongModel songModel = getSelectedSongFromPlaylist();
+            PlaylistModel playlistModel = getSelectedPlaylist();
+            playlistListModel.AscendSongInPlaylist(playlistModel, songModel);
+        }
+    }
+
+    /**
+     * moves a song down by one in the tableview.
+     * @param actionEvent runs when action is performed on the button.
+     */
+    public void handleDescendSongInPlaylistBtn(ActionEvent actionEvent) {
+        if(getSelectedSongFromPlaylist() == null){
+            displayMessage("There is no song select, please select a song");
+        }else {
+            SongModel songModel = getSelectedSongFromPlaylist();
+            PlaylistModel playlistModel = getSelectedPlaylist();
+            playlistListModel.DescendSongInPlaylist(playlistModel, songModel);
+        }
+    }
+
+    /**
+     * adds a song to a certain playlist
+     * @param actionEvent runs when an action is performed on a button.
+     */
+    public void handleAddSongToPlaylistBtn(ActionEvent actionEvent) throws DALException {
+        SongModel songModel = getSelectedSong();
+        PlaylistModel playlistModel = getSelectedPlaylist();
+
+        if(getSelectedSong() == null || getSelectedPlaylist() == null){
+            displayMessage("There is no song or playlist select, please select a song or playlist");
+        }else {
+            try {
+                playlistListModel.addSongToPlaylist(songModel.convertToSong(), playlistModel.convertToPlaylist());
+                playlistModel.addSongToPlayList(songModel);
+            } catch (DALException DALex) {
+                displayError(new DALException("This song already exist in this playlist."));
+            }
+        }
+    }
+
+    /**
+     * deletes a song from a playlist.
+     * @param actionEvent runs when an action is performed on the button.
+     */
+    public void handleDeleteSongInPlaylistBtn(ActionEvent actionEvent) throws DALException {
+        if(getSelectedSongFromPlaylist() == null || getSelectedPlaylist() == null){
+            displayMessage("There is no song or playlist select, please select a song or playlist");
+        }else{
+            if (displayWarning("This action will delete the song from the playlist.")) {
+                SongModel songModel = getSelectedSongFromPlaylist();
+                PlaylistModel playlistModel = getSelectedPlaylist();
+                playlistListModel.removeSongFromPlaylist(songModel, playlistModel);
+            }
+        }
+    }
+
+    public void handleViewSongs(MouseEvent mouseEvent) throws DALException {
+        tvSongsOnPlaylist.setItems(getSelectedPlaylist().getListOfSongs());
+        txtSongsInPlayList.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTitleProperty());
+    }
+
+    /**
+     *  switches the scene over to NewEditSongView.fxml.
+     * @param actionEvent runs when an action is performed on the button.
+     * @throws IOException if cant find stage.
+     */
+    public void handleNewSongBtn(ActionEvent actionEvent) throws IOException {
+        sceneSwapper.sceneSwitch(new Stage(), "NewSongView.fxml");
+    }
+
+    /**
+     *  switches the scene over to NewEditSongView.fxml.
+     * @param actionEvent runs when an action is performed on the button.
+     * @throws IOException if cant find the stage.
+     */
+    public void handleEditSongBtn(ActionEvent actionEvent) throws IOException {
+        if(getSelectedSong() == null){
+            displayMessage("There is no song select, please select a song");
+        }else {
+            sceneSwapper.sceneSwitch(new Stage(), "EditSongView.fxml");
+        }
+    }
+
+    /**
+     * removes a song
+     * @param actionEvent runs when an action is performed.
+     */
+    public void handleDeleteSongBtn(ActionEvent actionEvent) throws DALException {
+        if(getSelectedSong() == null){
+            displayMessage("There is no song select, please select a song");
+        }else{
+            if (displayWarning("This action will delete the song permanently.")) {
+                songListModel.deleteSong(getSelectedSong());
+            }
+        }
+    }
+
+    public PlaylistModel getSelectedPlaylist(){
+        return tvPlaylists.getSelectionModel().getSelectedItem();
+    }
+
+    public SongModel getSelectedSong() {
+        return tvSongs.getSelectionModel().getSelectedItem();
+    }
+
+    public SongModel getSelectedSongFromPlaylist(){
+        return tvSongsOnPlaylist.getSelectionModel().getSelectedItem();
+    }
+
+    public void infoToCreateSong(String title, String artist, String genre, int duration, String pathToFile) throws DALException {
+        songListModel.createSong(title, artist, genre, duration,pathToFile);
+    }
+
+
+
+//____________________________________mediaPlayer___________________________________________
 
     /**
      * sets volume og the songs that will be played
@@ -174,7 +330,7 @@ public class MainController  implements Initializable {
     public void handleNextSongBtn(ActionEvent actionEvent) throws DALException {
         MediaPlayer mediaPlayer = songPlayer.getMediaPlayer();
         songPlayer.pauseMusic();
-            skipOrGOBackSong( 1);
+        skipOrGOBackSong( 1);
         songPlayer = new SongPlayer(currentlySong.getPathToFileProperty().get());
         lblCurrentSongPlaying.setText(currentlySong.getTitleProperty().get() + ": is Playing" );
         songPlayer.playSong();
@@ -202,6 +358,7 @@ public class MainController  implements Initializable {
             }
         }
     }
+
     /**
      * goes back to previous song
      * @param actionEvent will run when an action is called on the button
@@ -223,20 +380,20 @@ public class MainController  implements Initializable {
         btnPause.setVisible(true);
         btnPlay.setVisible(false);
 
-            SongModel oldSong = currentlySong;
+        SongModel oldSong = currentlySong;
 
-            if(tvSongs.getSelectionModel().getSelectedItem() != null){ currentlySong = tvSongs.getSelectionModel().getSelectedItem(); tableviewindicator = 0;}
-            if(tvSongsOnPlaylist.getItems().size() != 0 && tvSongsOnPlaylist.getSelectionModel().getSelectedItem() != null){currentlySong = tvSongsOnPlaylist.getSelectionModel().getSelectedItem(); tableviewindicator = 1;}
-            
-            if(oldSong.getPathToFileProperty() == currentlySong.getPathToFileProperty()){
-                songPlayer.unPause(timeLeft);
-            }
-            else{
-                songPlayer = new SongPlayer(currentlySong.getPathToFileProperty().get());
-                songPlayer.playSong();
-            }
-                lblCurrentSongPlaying.setText(currentlySong.getTitleProperty().get() + ": is Playing" );
-            updateProgBar();
+        if(tvSongs.getSelectionModel().getSelectedItem() != null){ currentlySong = tvSongs.getSelectionModel().getSelectedItem(); tableviewindicator = 0;}
+        if(tvSongsOnPlaylist.getItems().size() != 0 && tvSongsOnPlaylist.getSelectionModel().getSelectedItem() != null){currentlySong = tvSongsOnPlaylist.getSelectionModel().getSelectedItem(); tableviewindicator = 1;}
+
+        if(oldSong.getPathToFileProperty() == currentlySong.getPathToFileProperty()){
+            songPlayer.unPause(timeLeft);
+        }
+        else{
+            songPlayer = new SongPlayer(currentlySong.getPathToFileProperty().get());
+            songPlayer.playSong();
+        }
+        lblCurrentSongPlaying.setText(currentlySong.getTitleProperty().get() + ": is Playing" );
+        updateProgBar();
     }
 
     /**
@@ -250,134 +407,6 @@ public class MainController  implements Initializable {
         timeLeft = songPlayer.getMediaPlayer().getCurrentTime();
         songPlayer.pauseMusic();
 
-    }
-
-    /**
-     * adds a song to a certain playlist
-     * @param actionEvent runs when an action is performed on a button.
-     */
-    public void handleAddSongToPlaylistBtn(ActionEvent actionEvent) throws DALException {
-        SongModel songModel = songListModel.getSelectedSong().getValue();
-        PlaylistModel playlistModel = playlistListModel.getSelectedPlayList().getValue();
-        
-        try{
-            playlistListModel.addSongToPlaylist(songModel.convertToSong(), playlistModel.convertToPlaylist());
-        }catch (DALException DALex){
-            displayError(DALex);
-            throw new DALException("This song already exist in this playlist.");
-        }
-        playlistModel.addSongToPlayList(songModel);
-    }
-
-
-    /**
-     * switch the scene to a different scene.
-     * @param actionEvent runs when an action happens on a button.
-     * @throws IOException if cant find stage.
-     */
-    public void handleNewPlaylistBtn(ActionEvent actionEvent) throws IOException {
-        sceneSwapper.sceneSwitch(new Stage(), "NewPlaylistView.fxml");
-    }
-    /**
-     * switch the scene to a different scene.
-     * @param actionEvent runs when an action happens on a button.
-     * @throws IOException if cant find stage.
-     */
-
-    public void handleEditPlaylistBtn(ActionEvent actionEvent) throws IOException, DALException {
-        sceneSwapper.sceneSwitch(new Stage(), "EditPlaylistView.fxml");
-    }
-
-    /**
-     * deletes a playlist from the application
-     * @param actionEvent runs when an action is performed on the button.
-     */
-
-    public void handleDeletePlaylistBtn(ActionEvent actionEvent) throws DALException {
-        if (displayWarning("This action will delete the playlist permanently.")){
-            playlistListModel.deletePlaylist(playlistListModel.getSelectedPlayList().get()); // Ask the model to remove remove a playlist
-        }
-
-
-    }
-
-    /**
-     * moves a song up by one in the tableview.
-     * @param actionEvent runs when an action is called on the button
-     */
-    public void handleAscendSongInPlaylistBtn(ActionEvent actionEvent) {
-        SongModel songModel = playlistListModel.getSelectedSongInPlaylist().getValue();
-        PlaylistModel playlistModel = playlistListModel.getSelectedPlayList().getValue();
-        playlistListModel.AscendSongInPlaylist(playlistModel, songModel);
-    }
-
-    /**
-     * moves a song down by one in the tableview.
-     * @param actionEvent runs when action is performed on the button.
-     */
-    public void handleDescendSongInPlaylistBtn(ActionEvent actionEvent) {
-        SongModel songModel = playlistListModel.getSelectedSongInPlaylist().getValue();
-        PlaylistModel playlistModel = playlistListModel.getSelectedPlayList().getValue();
-        playlistListModel.DescendSongInPlaylist(playlistModel, songModel);
-    }
-
-    /**
-     * deletes a song from a playlist.
-     * @param actionEvent runs when an action is performed on the button.
-     */
-    public void handleDeleteSongInPlaylistBtn(ActionEvent actionEvent) throws DALException {
-        if (displayWarning("This action will delete the song from the playlist.")) {
-            SongModel songModel = tvSongsOnPlaylist.getSelectionModel().getSelectedItem();
-            PlaylistModel playlistModel = playlistListModel.getSelectedPlayList().getValue();
-            playlistListModel.removeSongFromPlaylist(songModel, playlistModel);
-        }
-    }
-
-    /**
-     *  switches the scene over to NewEditSongView.fxml.
-     * @param actionEvent runs when an action is performed on the button.
-     * @throws IOException if cant find stage.
-     */
-    public void handleNewSongBtn(ActionEvent actionEvent) throws IOException {
-        sceneSwapper.sceneSwitch(new Stage(), "NewSongView.fxml");
-    }
-    /**
-     *  switches the scene over to NewEditSongView.fxml.
-     * @param actionEvent runs when an action is performed on the button.
-     * @throws IOException if cant find the stage.
-     */
-    public void handleEditSongBtn(ActionEvent actionEvent) throws IOException {
-        sceneSwapper.sceneSwitch(new Stage(), "EditSongView.fxml");
-    }
-
-    /**
-     * removes a song
-     * @param actionEvent runs when an action is performed.
-     */
-    public void handleDeleteSongBtn(ActionEvent actionEvent) throws DALException {
-        if (displayWarning("This action will delete the song permanently.")) {
-            songListModel.deleteSong(songListModel.getSelectedSong().get());
-        }
-    }
-
-
-    public void handleViewSongs(MouseEvent mouseEvent) throws DALException {
-
-        tvSongsOnPlaylist.setItems(playlistListModel.getSelectedPlayList().getValue().getListOfSongs());
-        txtSongsInPlayList.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTitleProperty());
-    }
-
-
-    public PlaylistModel getSelectedPlaylist(){
-        return  playlistListModel.getSelectedPlayList().get();
-    }
-
-    public void createSong(String title, String artist, String genre, int duration, String pathToFile) throws DALException {
-        songListModel.createSong(title, artist, genre, duration,pathToFile);
-    }
-
-    public SongModel getSelectedSong() {
-        return tvSongs.getSelectionModel().getSelectedItem();
     }
 
 

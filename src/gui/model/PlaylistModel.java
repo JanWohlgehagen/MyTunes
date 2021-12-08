@@ -88,8 +88,10 @@ public class PlaylistModel {
         return id;
     }
 
-    public void removeSongFromList(SongModel song){
-        allSongs.remove(song);
+    public void removeSongFromList(SongModel songModel){
+        allSongs.remove(songModel);
+        getTotalSongsProperty().set(allSongs.size());
+        getDurationStringProperty().set(getDurationString());
     }
 
     public void addSongToPlayList(SongModel song) {
@@ -111,10 +113,6 @@ public class PlaylistModel {
             totalTime += songModel.getDurationProperty().get();
         }
         return totalTime;
-    }
-
-    public void updatePlaylist(PlaylistModel playlistModel, String newName) {
-        playlistModel.setNameProperty(newName);
     }
 
     public void setNameProperty(String name) {

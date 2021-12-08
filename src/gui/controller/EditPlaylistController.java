@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static be.DisplayMessage.displayMessage;
+
 public class EditPlaylistController implements Initializable {
 
     @FXML
@@ -28,7 +30,9 @@ public class EditPlaylistController implements Initializable {
 
 
     public void handleSaveBtn(ActionEvent actionEvent) throws DALException {
-        if(!txtName.getText().isBlank()) {
+        if(txtName.getText().isBlank()) {
+            displayMessage("The name is empty");
+        }else{
             playlistListModel.updatePlaylistToView(playlistModel, txtName.getText());
             closeStage();
         }

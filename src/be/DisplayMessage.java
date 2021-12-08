@@ -22,6 +22,16 @@ public class DisplayMessage {
         });
     }
 
+    public static boolean displayErrorSTOP(Exception ex) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error: Something went wrong");
+        alert.setHeaderText(ex.getMessage());
+        alert.setContentText(String.valueOf(ex.getCause()));
+
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.get() == ButtonType.OK;
+    }
+
     public static boolean displayWarning (String message){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
@@ -29,17 +39,13 @@ public class DisplayMessage {
         alert.setContentText("Press OK to continue.");
 
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK){
-            return true;
-        } else {
-            return false;
-        }
+        return result.get() == ButtonType.OK;
     }
 
     public static void displayMessage(String message) {
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Message to the user");
+            alert.setTitle("Message");
             alert.setHeaderText(message);
             alert.showAndWait();
         });

@@ -47,7 +47,7 @@ public class PlaylistListModel {
     }
 
 
-    public void addPlaylistToView(String playlistName) throws DALException, IOException {
+    public void createPlaylist(String playlistName) throws DALException, IOException {
         Playlist playlist = playlistManager.createPlaylist(playlistName);
         playListToBeViewed.add(new PlaylistModel(playlist));
     }

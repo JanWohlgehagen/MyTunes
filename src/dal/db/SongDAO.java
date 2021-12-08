@@ -41,7 +41,7 @@ public class SongDAO implements ISongRepository {
                 }
             }
         }  catch (SQLException SQLex) {
-           throw new DALException("Error: Can not 'getAllSongs' in Databases", SQLex.getCause());
+           throw new DALException("Error: Can not access Databases", SQLex.getCause());
         }
         return allSongsList;
     }

@@ -2,10 +2,8 @@ package gui.controller;
 
 import dal.DALException;
 import gui.App;
-import gui.model.PlaylistModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -21,7 +19,7 @@ public class NewPlaylistController {
 
     public void handleSaveBtn(ActionEvent actionEvent) throws DALException, IOException {
         MainController mainController = new App().getController();
-        mainController.addPlaylist(txtName.getText());
+        mainController.infoToNewPlaylist(txtName.getText());
         closeStage();
     }
 

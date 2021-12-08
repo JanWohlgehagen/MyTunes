@@ -62,10 +62,8 @@ public class PlaylistDAO implements IPlaylistRepository {
                 }
             }
         } catch (SQLException SQLex) {
-            displayError(new DALException("Error: Can not 'getAllPlaylist' in Databases"));
             SQLex.printStackTrace();
-
-           throw new DALException("Error: Can not 'getAllPlaylist' in Databases");
+            throw new DALException("Error: Can not access Databases");
         }
         return allPlaylists;
     }
@@ -111,7 +109,6 @@ public class PlaylistDAO implements IPlaylistRepository {
             preparedStatement.executeUpdate();
 
         } catch (SQLException SQLex) {
-            displayError(new DALException("test"));
             throw new DALException("Error: This song already exist in this playlist.");
         }
     }

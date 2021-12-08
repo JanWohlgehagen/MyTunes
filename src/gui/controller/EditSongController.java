@@ -24,6 +24,8 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.ResourceBundle;
 
+import static be.DisplayMessage.displayMessage;
+
 public class EditSongController implements Initializable {
 
     @FXML
@@ -76,7 +78,9 @@ public class EditSongController implements Initializable {
     }
 
     public void handleSaveBtn(ActionEvent actionEvent) throws DALException {
-        if(!txtArtist.getText().isBlank() && !txtTitle.getText().isBlank() && cBoxCategory.getSelectionModel().getSelectedItem() != null) {
+        if(txtArtist.getText().isBlank() || txtArtist.getText().isBlank() || txtFile.getText().isBlank() || cBoxCategory.getSelectionModel().getSelectedItem() != null) {
+            displayMessage("One of field is empty");
+        }else{
             songListModel.updateSongToView(songModel, txtTitle.getText(), txtArtist.getText(), cBoxCategory.getSelectionModel().getSelectedItem().toString());
             closeStage();
         }
