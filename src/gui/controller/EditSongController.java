@@ -78,7 +78,7 @@ public class EditSongController implements Initializable {
     }
 
     public void handleSaveBtn(ActionEvent actionEvent) throws DALException {
-        if(txtArtist.getText().isBlank() || txtArtist.getText().isBlank() || txtFile.getText().isBlank() || cBoxCategory.getSelectionModel().getSelectedItem() != null) {
+        if(txtArtist.getText().isBlank() || txtTitle.getText().isBlank() || txtFile.getText().isBlank() || cBoxCategory.getSelectionModel().getSelectedItem() != null) {
             displayMessage("One of field is empty");
         }else{
             songListModel.updateSongToView(songModel, txtTitle.getText(), txtArtist.getText(), cBoxCategory.getSelectionModel().getSelectedItem().toString());
