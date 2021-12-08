@@ -88,4 +88,16 @@ public class SongModel {
         int seconds = duration.get() % 60; // remaining seconds
         return new SimpleStringProperty(minutes + ":" + seconds);
     }
+
+    public String getDurationString(double DurationInSeconds){
+        int minutes = (int)DurationInSeconds / 60; // divide by 60 to get the minutes from seconds.
+        int seconds = (int)DurationInSeconds % 60; // remaining seconds
+        String returnSeconds;
+
+        if(seconds<10)
+            returnSeconds = "0"+seconds;
+        else returnSeconds = String.valueOf(seconds);
+
+        return minutes + ":" + returnSeconds;
+    }
 }

@@ -11,20 +11,25 @@ import java.util.List;
 
 public class SongPlayer {
     MediaPlayer mediaPlayer;
+    SongModel songModel;
 
     /**
      * constructor for a song  creates a playable song
-     * @param songUrl gets the file location off song
+     * @param songModel
      */
-    public SongPlayer(String songUrl){
-
-        String path = songUrl.toString();
+    public SongPlayer(SongModel songModel){
+        this.songModel = songModel;
+        String path = songModel.getPathToFileProperty().get().toString();
         //"c:/Users/Magnus Overgaard/Downloads/bip.mp3"
-         File file = new File(path);
+        File file = new File(path);
         String MEDIA_URL = file.toURI().toString();
         Media song = new Media(MEDIA_URL);
         MediaPlayer mediaPlayer = new MediaPlayer(song);
         this.mediaPlayer = mediaPlayer;
+    }
+
+    public SongModel getSongModel(){
+        return this.songModel;
     }
 
     /**
