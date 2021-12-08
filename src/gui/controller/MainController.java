@@ -22,6 +22,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
@@ -93,7 +94,7 @@ public class MainController  implements Initializable {
     PlayListSongModel playListSongModel = new PlayListSongModel(null);
     private SongListModel songListModel;
     private PlaylistListModel playlistListModel;
-
+    Duration timeLeft;
 
     public MainController() throws DALException, IOException {
 
@@ -112,6 +113,8 @@ public class MainController  implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        currentlySong = new Song(99999999,"ff","ff","ff",32,"");
+
         tvSongsOnPlaylist.setPlaceholder(new Label("Select a playlist \n with songs"));
 
         playlistListModel.getSelectedPlayList().bind(tvPlaylists.getSelectionModel().selectedItemProperty());
@@ -192,15 +195,19 @@ public class MainController  implements Initializable {
         btnPause.setVisible(true);
         btnPlay.setVisible(false);
 
+            Song oldSong = currentlySong;
 
+            currentlySong = tvSongs.getFocusModel().getFocusedItem().convertToSong();
+            if(tvSongsOnPlaylist.getItems().size() != 0){currentlySong = tvSongsOnPlaylist.getFocusModel().getFocusedItem().convertToSong();}
 
-        playListId = tvPlaylists.getSelectionModel().getSelectedItem().getIdProperty().intValue();
-        currentlySong = playListSongModel.playCurrentSong(tvSongsOnPlaylist.getSelectionModel().getSelectedItem().getTitleProperty().toString(),playListId);
-        lblCurrentSongPlaying.setText(currentlySong.getTitle() + ": is Playing" );
-
-        songPlayer = new SongPlayer(currentlySong.getPathToFile());
-        songPlayer.playSong();
-
+            if(oldSong.getId() == currentlySong.getId()){
+                songPlayer.unPause(timeLeft);
+            }
+            else{
+                songPlayer = new SongPlayer(currentlySong.getPathToFile());
+                songPlayer.playSong();
+            }
+                lblCurrentSongPlaying.setText(currentlySong.getTitle() + ": is Playing" );
     }
 
     /**
@@ -211,7 +218,9 @@ public class MainController  implements Initializable {
         btnPlay.setVisible(true);
         btnPause.setVisible(false);
         lblCurrentSongPlaying.setText(currentlySong.getTitle() + ": is Paused" );
+        timeLeft = songPlayer.getMediaPlayer().getCurrentTime();
         songPlayer.pauseMusic();
+
     }
 
     /**

@@ -1,8 +1,8 @@
 package gui.util;
 
-import javafx.beans.property.StringProperty;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 
 import java.io.File;
 
@@ -63,5 +63,14 @@ public class SongPlayer {
         return mediaPlayer.getStatus().equals(MediaPlayer.Status.PLAYING);
     }
 
+    public MediaPlayer getMediaPlayer(){
+    return this.mediaPlayer;
+    }
+
+    public void unPause(Duration time){
+        mediaPlayer.setStartTime(time);
+        mediaPlayer.play();
+
+    }
 
 }
