@@ -10,6 +10,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+import static be.DisplayMessage.displayMessage;
+
 public class NewPlaylistController {
 
     @FXML
@@ -18,9 +20,13 @@ public class NewPlaylistController {
     private TextField txtName;
 
     public void handleSaveBtn(ActionEvent actionEvent) throws DALException, IOException {
-        MainController mainController = new App().getController();
-        mainController.infoToNewPlaylist(txtName.getText());
-        closeStage();
+        if(txtName.getText().isBlank()){
+            displayMessage("The name is empty, please add a name");
+        }else{
+            MainController mainController = new App().getController();
+            mainController.infoToNewPlaylist(txtName.getText());
+            closeStage();
+        }
     }
 
     public void handleCancelBtn(ActionEvent actionEvent) {

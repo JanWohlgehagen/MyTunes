@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
+import static be.DisplayMessage.displayMessage;
+
 public class NewSongController implements Initializable {
 
     @FXML
@@ -92,7 +94,9 @@ public class NewSongController implements Initializable {
 
     public void handleSaveBtn(ActionEvent actionEvent) throws DALException, IOException {
         MainController mainController = new App().getController();
-        if(!txtArtist.getText().isBlank() && !txtTime.getText().isBlank() && !txtFile.getText().isBlank() && !txtTitle.getText().isBlank() && cBoxCategory.getSelectionModel().getSelectedItem() != null){
+        if(txtArtist.getText().isBlank() || txtFile.getText().isBlank() || txtTitle.getText().isBlank() || cBoxCategory.getSelectionModel().getSelectedItem() == null){
+            displayMessage("One of the field are empty");
+        }else{
             mainController.infoToCreateSong(txtTitle.getText(), txtArtist.getText(), cBoxCategory.getSelectionModel().getSelectedItem().toString(),  (int)media.getDuration().toSeconds(), txtFile.getText());
             closeStage();
         }
