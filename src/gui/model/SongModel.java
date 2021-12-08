@@ -24,6 +24,7 @@ public class SongModel {
     private IntegerProperty id = new SimpleIntegerProperty();
     private SongManager songManager;
 
+
     public SongModel(Song song) {
         this.getIdProperty().set(song.getId());
         this.getTitleProperty().set(song.getTitle());
@@ -33,9 +34,10 @@ public class SongModel {
         this.getPathToFileProperty().set(song.getPathToFile());
     }
 
-    public SongModel() throws DALException, IOException {
+    public SongModel() {
         songManager = new SongManager();
     }
+
 
     public ObservableList<SongModel> convertSongToSongmodel(List<Song> songs){
         return FXCollections.observableArrayList(songs.stream().map(song -> new SongModel(song)).toList());

@@ -49,20 +49,18 @@ public class EditSongController implements Initializable {
         fileChooser = new FileChooser();
         categories = FXCollections.observableArrayList();
         cBoxCategory = new ComboBox();
-        songModel = new SongModel();
+        //songModel = new SongModel();
         songListModel = new SongListModel();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         MainController mainController = new App().getController();
-        songModel = mainController.getSelectedSong();
+        SongModel songModel = mainController.getSelectedSong();
         try {
             SongListModel songListModel = new SongListModel();
 
-        } catch (DALException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (DALException | IOException e) {
             e.printStackTrace();
         }
         txtTitle.setText(songModel.getTitleProperty().get());

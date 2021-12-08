@@ -81,9 +81,6 @@ public class MainController  implements Initializable {
     @FXML
     private Label lblCurrentSongPlaying;
 
-
-    private SongModel songModel;
-    private PlaylistModel playlistModel;
     private SceneSwapper sceneSwapper;
 
     private SongPlayer songPlayer;
@@ -117,6 +114,7 @@ public class MainController  implements Initializable {
         playlistListModel.getSelectedPlayList().bind(tvPlaylists.getSelectionModel().selectedItemProperty());
         //tvSongs.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         songListModel.getSelectedSong().bind(tvSongs.getSelectionModel().selectedItemProperty());
+        playlistListModel.getSelectedSongInPlaylist().bind(tvSongsOnPlaylist.getSelectionModel().selectedItemProperty());
 
         // list of all songs
         tvSongs.setItems(songListModel.getSongs());
@@ -268,7 +266,9 @@ public class MainController  implements Initializable {
      * @param actionEvent runs when an action is called on the button
      */
     public void handleAscendSongInPlaylistBtn(ActionEvent actionEvent) {
-     tvSongsOnPlaylist.getItems().set(tvSongsOnPlaylist.getSelectionModel().getSelectedIndex() + 1,tvSongsOnPlaylist.getSelectionModel().getSelectedItem());
+        SongModel songModel = playlistListModel.getSelectedSongInPlaylist().getValue();
+        PlaylistModel playlistModel = playlistListModel.getSelectedPlayList().getValue();
+        playlistListModel.AscendSongInPlaylist(playlistModel, songModel);
     }
 
     /**
@@ -276,7 +276,9 @@ public class MainController  implements Initializable {
      * @param actionEvent runs when action is performed on the button.
      */
     public void handleDescendSongInPlaylistBtn(ActionEvent actionEvent) {
-        tvSongsOnPlaylist.getItems().set(tvSongsOnPlaylist.getSelectionModel().getSelectedIndex() - 1,tvSongsOnPlaylist.getSelectionModel().getSelectedItem());
+        SongModel songModel = playlistListModel.getSelectedSongInPlaylist().getValue();
+        PlaylistModel playlistModel = playlistListModel.getSelectedPlayList().getValue();
+        playlistListModel.DescendSongInPlaylist(playlistModel, songModel);
     }
 
     /**
@@ -328,7 +330,7 @@ public class MainController  implements Initializable {
 
 
     public PlaylistModel getSelectedPlaylist(){
-        return tvPlaylists.getSelectionModel().getSelectedItem();
+        return  playlistListModel.getSelectedPlayList().get();
     }
 
     public void createSong(String title, String artist, String genre, int duration, String pathToFile) throws DALException {

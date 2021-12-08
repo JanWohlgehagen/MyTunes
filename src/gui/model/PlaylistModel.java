@@ -7,16 +7,15 @@ import dal.DALException;
 
 import be.Playlist;
 import dal.DALException;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.IOException;
 
 import java.io.IOException;
+
+import static be.DisplayMessage.displayMessage;
 
 
 public class PlaylistModel {
@@ -30,6 +29,7 @@ public class PlaylistModel {
     private IntegerProperty totalSongs = new SimpleIntegerProperty();
     private StringProperty durationString = new SimpleStringProperty();
 
+
     public PlaylistModel(Playlist playlist) throws IOException, DALException {
         this.getIdProperty().set(playlist.getId());
         this.getNameProperty().set(playlist.getName());
@@ -39,9 +39,11 @@ public class PlaylistModel {
         this.getDurationStringProperty().set(getDurationString());
 
     }
+
     public StringProperty getDurationStringProperty() {
         return durationString;
     }
+
 
     public StringProperty getNameProperty() {
         return name;
@@ -49,6 +51,29 @@ public class PlaylistModel {
 
     public ObservableList<SongModel> getListOfSongs(){
         return allSongs;
+    }
+
+    public void AscendSongInPlaylist(SongModel selectedSongModel){
+        int indexOfSelectedSongModel = allSongs.indexOf(selectedSongModel);
+        if(indexOfSelectedSongModel > 0 ){
+            int indexOfAboveSelectedSong = allSongs.indexOf(selectedSongModel) - 1;
+            SongModel songModelOfAboveSelectedSong = allSongs.get(indexOfAboveSelectedSong);
+
+            allSongs.set(indexOfAboveSelectedSong, selectedSongModel);
+            allSongs.set(indexOfSelectedSongModel, songModelOfAboveSelectedSong);
+        }else displayMessage("It is at the top");
+
+    }
+
+    public void DescendSongInPlaylist(SongModel selectedSongModel){
+        int indexOfSelectedSongModel = allSongs.indexOf(selectedSongModel);
+        if(indexOfSelectedSongModel < allSongs.size() - 1) {
+            int indexOfAboveSelectedSong = allSongs.indexOf(selectedSongModel) + 1;
+            SongModel songModelOfAboveSelectedSong = allSongs.get(indexOfAboveSelectedSong);
+
+            allSongs.set(indexOfAboveSelectedSong, selectedSongModel);
+            allSongs.set(indexOfSelectedSongModel, songModelOfAboveSelectedSong);
+        }else displayMessage("It is at the bottom");
     }
 
     public IntegerProperty getTotalSongsProperty() {

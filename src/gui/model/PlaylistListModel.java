@@ -15,12 +15,13 @@ public class PlaylistListModel {
 
     private PlaylistManager playlistManager;
     private ObservableList<PlaylistModel> playListToBeViewed;
-    private ObservableList<SongModel> playListSongsToBeViewed = FXCollections.observableArrayList();
     private ObjectProperty<PlaylistModel> selectedPlayList;
+    private ObjectProperty<SongModel> selectedSongInPlaylist;
 
     public PlaylistListModel() throws IOException, DALException {
         playlistManager = new PlaylistManager();
         selectedPlayList = new SimpleObjectProperty<>();
+        selectedSongInPlaylist = new SimpleObjectProperty<>();
 
         playListToBeViewed = FXCollections.observableArrayList(playlistManager.getAllPlaylists().stream().map(playList -> {
             try {
@@ -31,12 +32,14 @@ public class PlaylistListModel {
             return null;
         }).toList());
 
-
-
     }
 
     public ObjectProperty<PlaylistModel> getSelectedPlayList(){
         return selectedPlayList;
+    }
+
+    public ObjectProperty<SongModel> getSelectedSongInPlaylist(){
+        return selectedSongInPlaylist;
     }
 
     public ObservableList<PlaylistModel> getPlayLists() {
@@ -66,5 +69,14 @@ public class PlaylistListModel {
     public void deletePlaylist(PlaylistModel playlistModel) throws DALException {
         playlistManager.deletePlaylist(playlistModel.convertToPlaylist());
         playListToBeViewed.remove(playlistModel);
+    }
+
+    public void AscendSongInPlaylist(PlaylistModel playlistModel, SongModel songModel){
+        playlistModel.AscendSongInPlaylist(songModel);
+    }
+
+    public void DescendSongInPlaylist(PlaylistModel playlistModel, SongModel songModel){
+        playlistModel.DescendSongInPlaylist(songModel);
+
     }
 }

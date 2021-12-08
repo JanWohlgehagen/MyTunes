@@ -22,10 +22,10 @@ public class DisplayMessage {
         });
     }
 
-    public static boolean displayWarning (String Message){
+    public static boolean displayWarning (String message){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
-        alert.setHeaderText(Message);
+        alert.setHeaderText(message);
         alert.setContentText("Press OK to continue.");
 
         Optional<ButtonType> result = alert.showAndWait();
@@ -34,5 +34,14 @@ public class DisplayMessage {
         } else {
             return false;
         }
+    }
+
+    public static void displayMessage(String message) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Message to the user");
+            alert.setHeaderText(message);
+            alert.showAndWait();
+        });
     }
 }
