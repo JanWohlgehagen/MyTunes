@@ -8,6 +8,7 @@ import gui.util.SceneSwapper;
 import gui.util.SongPlayer;
 import javafx.application.Platform;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -89,7 +90,7 @@ public class MainController  implements Initializable {
 
     private SongPlayer songPlayer;
 
-    private Song currentlySong;
+    private SongModel currentlySong;
     private int playListId;
     PlayListSongModel playListSongModel = new PlayListSongModel(null);
     private SongListModel songListModel;
@@ -113,7 +114,14 @@ public class MainController  implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        currentlySong = new Song(99999999,"ff","ff","ff",32,"");
+
+        try {
+            currentlySong = new SongModel();
+        } catch (DALException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         tvSongsOnPlaylist.setPlaceholder(new Label("Select a playlist \n with songs"));
 
@@ -166,48 +174,58 @@ public class MainController  implements Initializable {
      */
     public void handleNextSongBtn(ActionEvent actionEvent) throws DALException {
         songPlayer.pauseMusic();
-
-        currentlySong = playListSongModel.skipSong(currentlySong, playListId);
-        songPlayer = new SongPlayer(currentlySong.getPathToFile());
-        lblCurrentSongPlaying.setText(currentlySong.getTitle() + ": is Playing" );
+            skipOrGOBackSong(tvSongsOnPlaylist.getItems(), 1);
+        songPlayer = new SongPlayer(currentlySong.getPathToFileProperty().get());
+        lblCurrentSongPlaying.setText(currentlySong.getTitleProperty().get() + ": is Playing" );
         songPlayer.playSong();
     }
 
+    public void skipOrGOBackSong(ObservableList<SongModel> tv, int upOrDown){
+        for(int i = 0; i < tv.size() ; i++ ){
+            if(tv.get(i).getIdProperty().equals(currentlySong.getIdProperty())){
+                if(i + upOrDown < tv.size() && i + upOrDown >= 0){
+                    currentlySong = tv.get(i + upOrDown);
+                }
+                else {
+                    currentlySong = tv.get(0);
+                }
+                break;
+            }
+        }
+    }
     /**
      * goes back to previous song
      * @param actionEvent will run when an action is called on the button
      */
     public void handlePreviousSongBtn(ActionEvent actionEvent) throws IOException, DALException {
         songPlayer.pauseMusic();
-
-        currentlySong = playListSongModel.previousSong(currentlySong, playListId);
-        songPlayer = new SongPlayer(currentlySong.getPathToFile());
-        lblCurrentSongPlaying.setText(currentlySong.getTitle() + ": is Playing" );
-
+        skipOrGOBackSong(tvSongsOnPlaylist.getItems(), -1);
+        songPlayer = new SongPlayer(currentlySong.getPathToFileProperty().get());
+        lblCurrentSongPlaying.setText(currentlySong.getTitleProperty().get()+ ": is Playing" );
         songPlayer.playSong();
     }
 
     /**
-     * switches to picture of pause button
+     * switches to picture of pause button and plays music either playing the old song or a new song.
      * @param actionEvent runs when an action is performed on the button
      */
     public void handlePlayBtn(ActionEvent actionEvent) throws DALException, IOException {
         btnPause.setVisible(true);
         btnPlay.setVisible(false);
 
-            Song oldSong = currentlySong;
+            SongModel oldSong = currentlySong;
 
-            currentlySong = tvSongs.getFocusModel().getFocusedItem().convertToSong();
-            if(tvSongsOnPlaylist.getItems().size() != 0){currentlySong = tvSongsOnPlaylist.getFocusModel().getFocusedItem().convertToSong();}
+            currentlySong = tvSongs.getFocusModel().getFocusedItem();
+            if(tvSongsOnPlaylist.getItems().size() != 0){currentlySong = tvSongsOnPlaylist.getFocusModel().getFocusedItem();}
 
-            if(oldSong.getId() == currentlySong.getId()){
+            if(oldSong.getIdProperty() == currentlySong.getIdProperty()){
                 songPlayer.unPause(timeLeft);
             }
             else{
-                songPlayer = new SongPlayer(currentlySong.getPathToFile());
+                songPlayer = new SongPlayer(currentlySong.getPathToFileProperty().get());
                 songPlayer.playSong();
             }
-                lblCurrentSongPlaying.setText(currentlySong.getTitle() + ": is Playing" );
+                lblCurrentSongPlaying.setText(currentlySong.getTitleProperty().get() + ": is Playing" );
     }
 
     /**
@@ -217,7 +235,7 @@ public class MainController  implements Initializable {
     public void handlePauseBtn(ActionEvent actionEvent) {
         btnPlay.setVisible(true);
         btnPause.setVisible(false);
-        lblCurrentSongPlaying.setText(currentlySong.getTitle() + ": is Paused" );
+        lblCurrentSongPlaying.setText(currentlySong.getTitleProperty().get() + ": is Paused" );
         timeLeft = songPlayer.getMediaPlayer().getCurrentTime();
         songPlayer.pauseMusic();
 

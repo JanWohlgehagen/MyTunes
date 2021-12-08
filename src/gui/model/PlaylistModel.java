@@ -100,4 +100,5 @@ public class PlaylistModel {
         return new Playlist(this.getIdProperty().get(), this.getNameProperty().get());
     }
 
+
 }

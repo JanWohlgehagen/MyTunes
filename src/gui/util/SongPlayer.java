@@ -1,10 +1,13 @@
 package gui.util;
 
+import be.Song;
+import gui.model.SongModel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
 import java.io.File;
+import java.util.List;
 
 public class SongPlayer {
     MediaPlayer mediaPlayer;
@@ -69,8 +72,6 @@ public class SongPlayer {
 
     public void unPause(Duration time){
         mediaPlayer.setStartTime(time);
-        mediaPlayer.play();
-
+        playSong();
     }
-
 }
