@@ -45,7 +45,7 @@
                   <Button fx:id="btnSkipSong" mnemonicParsing="false" onAction="#handleNextSongBtn" prefHeight="35.0" prefWidth="35.0" />
                </children>
             </HBox>
-            <Button fx:id="btnPause" mnemonicParsing="false" onAction="#handlePauseBtn" prefHeight="45.0" prefWidth="45.0" text="." visible="false" AnchorPane.leftAnchor="111.0" AnchorPane.topAnchor="14.0">
+            <Button fx:id="btnPause" mnemonicParsing="false" onAction="#handlePauseBtn" prefHeight="45.0" prefWidth="45.0" text="." visible="false" AnchorPane.leftAnchor="77.0" AnchorPane.topAnchor="12.0">
                <font>
                   <Font size="1.0" />
                </font>
@@ -68,7 +68,7 @@
    <center>
       <AnchorPane maxHeight="-Infinity" prefHeight="300.0" prefWidth="146.0" BorderPane.alignment="CENTER">
          <children>
-            <TableView fx:id="tvSongsOnPlaylist" layoutX="21.0" prefHeight="300.0" prefWidth="118.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="1.0">
+            <TableView fx:id="tvSongsOnPlaylist" layoutX="21.0" onMouseClicked="#handleTvSongsInPlaylistClicked" prefHeight="300.0" prefWidth="118.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="1.0">
               <columns>
                 <TableColumn fx:id="txtSongsInPlayList" prefWidth="117.59998741149903" text="Songs" />
               </columns>
@@ -83,7 +83,7 @@
    <right>
       <AnchorPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="300.0" prefWidth="316.0" BorderPane.alignment="CENTER">
          <children>
-            <TableView fx:id="tvSongs" layoutY="26.0" prefHeight="275.0" prefWidth="302.0" tableMenuButtonVisible="true" AnchorPane.topAnchor="26.0">
+            <TableView fx:id="tvSongs" layoutY="26.0" onMouseClicked="#handleTvSongClicked" prefHeight="275.0" prefWidth="302.0" tableMenuButtonVisible="true" AnchorPane.topAnchor="26.0">
               <columns>
                 <TableColumn fx:id="tcTitle" prefWidth="75.0" text="Title" />
                 <TableColumn fx:id="tcArtist" prefWidth="75.0" text="Artist" />

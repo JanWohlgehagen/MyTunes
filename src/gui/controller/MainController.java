@@ -372,11 +372,13 @@ public class MainController  implements Initializable {
 
 
     public void handleTvSongsInPlaylistClicked(MouseEvent mouseEvent) {
-    tvSongs.getSelectionModel().clearSelection();
+        tvSongs.getSelectionModel().clearSelection();
+        lblCurrentSongPlaying.setText(tvSongsOnPlaylist.getSelectionModel().getSelectedItem().getTitleProperty().get());
     }
 
     public void handleTvSongClicked(MouseEvent mouseEvent) {
         tvSongsOnPlaylist.getSelectionModel().clearSelection();
+        lblCurrentSongPlaying.setText(getSelectedSong().getTitleProperty().get());
     }
 }
 
