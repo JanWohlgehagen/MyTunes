@@ -96,6 +96,7 @@ public class MainController  implements Initializable {
     private SongListModel songListModel;
     private PlaylistListModel playlistListModel;
     Duration timeLeft;
+    int tableviewindicator = -1;
 
     public MainController() throws DALException, IOException {
 
@@ -174,13 +175,21 @@ public class MainController  implements Initializable {
      */
     public void handleNextSongBtn(ActionEvent actionEvent) throws DALException {
         songPlayer.pauseMusic();
-            skipOrGOBackSong(tvSongsOnPlaylist.getItems(), 1);
+            skipOrGOBackSong( 1);
         songPlayer = new SongPlayer(currentlySong.getPathToFileProperty().get());
         lblCurrentSongPlaying.setText(currentlySong.getTitleProperty().get() + ": is Playing" );
         songPlayer.playSong();
     }
 
-    public void skipOrGOBackSong(ObservableList<SongModel> tv, int upOrDown){
+    public void skipOrGOBackSong( int upOrDown){
+        ObservableList<SongModel> tv = null;
+
+        if(tableviewindicator == 0){
+            tv = tvSongs.getItems();
+        }else if (tableviewindicator == 1){
+            tv = tvSongsOnPlaylist.getItems();
+        }
+
         for(int i = 0; i < tv.size() ; i++ ){
             if(tv.get(i).getIdProperty().equals(currentlySong.getIdProperty())){
                 if(i + upOrDown < tv.size() && i + upOrDown >= 0){
@@ -199,7 +208,7 @@ public class MainController  implements Initializable {
      */
     public void handlePreviousSongBtn(ActionEvent actionEvent) throws IOException, DALException {
         songPlayer.pauseMusic();
-        skipOrGOBackSong(tvSongsOnPlaylist.getItems(), -1);
+        skipOrGOBackSong( -1);
         songPlayer = new SongPlayer(currentlySong.getPathToFileProperty().get());
         lblCurrentSongPlaying.setText(currentlySong.getTitleProperty().get()+ ": is Playing" );
         songPlayer.playSong();
@@ -215,10 +224,10 @@ public class MainController  implements Initializable {
 
             SongModel oldSong = currentlySong;
 
-            currentlySong = tvSongs.getFocusModel().getFocusedItem();
-            if(tvSongsOnPlaylist.getItems().size() != 0){currentlySong = tvSongsOnPlaylist.getFocusModel().getFocusedItem();}
-
-            if(oldSong.getIdProperty() == currentlySong.getIdProperty()){
+            if(tvSongs.getSelectionModel().getSelectedItem() != null){ currentlySong = tvSongs.getSelectionModel().getSelectedItem(); tableviewindicator = 0;}
+            if(tvSongsOnPlaylist.getItems().size() != 0 && tvSongsOnPlaylist.getSelectionModel().getSelectedItem() != null){currentlySong = tvSongsOnPlaylist.getSelectionModel().getSelectedItem(); tableviewindicator = 1;}
+            
+            if(oldSong.getPathToFileProperty() == currentlySong.getPathToFileProperty()){
                 songPlayer.unPause(timeLeft);
             }
             else{
@@ -367,5 +376,12 @@ public class MainController  implements Initializable {
     }
 
 
+    public void handleTvSongsInPlaylistClicked(MouseEvent mouseEvent) {
+    tvSongs.getSelectionModel().clearSelection();
+    }
+
+    public void handleTvSongClicked(MouseEvent mouseEvent) {
+        tvSongsOnPlaylist.getSelectionModel().clearSelection();
+    }
 }
 
