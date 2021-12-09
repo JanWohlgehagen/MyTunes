@@ -11,7 +11,4 @@ public interface ISearcher {
     public boolean compareToSongTitle(Song song, String query);
 
     public boolean compareToSongArtist(Song song, String query);
-
-    public boolean compareToSongGerne(Song song, String query);
-
 }
