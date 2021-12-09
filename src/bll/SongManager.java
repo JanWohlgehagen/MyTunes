@@ -33,7 +33,7 @@ public class SongManager {
         return songDAO.getAllSongs();
     }
 
-    public Song createSong(String title, String artist, String genre, int duration, String pathToFile) throws DALException{
+    public Song createSong(String title, String artist, String genre, double duration, String pathToFile) throws DALException{
         return  songDAO.createSong(title, artist, genre, duration, pathToFile);
     }
 

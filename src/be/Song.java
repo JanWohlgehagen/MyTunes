@@ -5,11 +5,11 @@ public class Song {
     private String title;
     private String artist;
     private String genre;
-    private int duration;
+    private double duration;
     private int id;
     private String pathToFile;
 
-    public Song(int id, String title, String artist, String genre, int duration, String pathToFile) {
+    public Song(int id, String title, String artist, String genre, double duration, String pathToFile) {
         this.id = id;
         this.title = title;
         this.artist = artist;
@@ -35,7 +35,7 @@ public class Song {
         return genre;
     }
 
-    public int getDuration() {
+    public double getDuration() {
         return duration;
     }
 

@@ -466,7 +466,7 @@ public class MainController implements Initializable {
 
     public void updateProgBar() {
         songPlayer.getMediaPlayer().currentTimeProperty().addListener(new ChangeListener<Duration>() {
-            int totalSongDuration = songPlayer.getSongModel().getDurationProperty().get();
+            double totalSongDuration = songPlayer.getSongModel().getDurationProperty().get();
             @Override
             public void changed(ObservableValue<? extends Duration> observable, Duration oldValue,
                                 Duration newValue) {

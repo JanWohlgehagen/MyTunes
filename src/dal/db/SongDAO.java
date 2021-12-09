@@ -34,7 +34,7 @@ public class SongDAO implements ISongRepository {
                     String title = resultSet.getString("title");
                     String artist = resultSet.getString("artist");
                     String genre = resultSet.getString("genre");
-                    int duration = resultSet.getInt("duration");
+                    double duration = resultSet.getDouble("duration");
                     String pathToFile = resultSet.getString("filePath");
 
                     allSongsList.add(new Song(id, title, artist, genre, duration, pathToFile));
@@ -47,7 +47,7 @@ public class SongDAO implements ISongRepository {
     }
 
     @Override
-    public Song createSong(String title, String artist, String genre, int duration, String pathToFile) throws DALException {
+    public Song createSong(String title, String artist, String genre, double duration, String pathToFile) throws DALException {
 
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "INSERT INTO Song VALUES (?,?,?,?,?);";
@@ -56,7 +56,7 @@ public class SongDAO implements ISongRepository {
             preparedStatement.setString(2, pathToFile);
             preparedStatement.setString(3, artist);
             preparedStatement.setString(4, genre);
-            preparedStatement.setInt(5, duration);
+            preparedStatement.setDouble(5, duration);
             int affectedRows = preparedStatement.executeUpdate();
 
             if (affectedRows == 1) {
@@ -82,7 +82,7 @@ public class SongDAO implements ISongRepository {
             preparedStatement.setString(2, song.getPathToFile());
             preparedStatement.setString(3, song.getArtist());
             preparedStatement.setString(4, song.getGenre());
-            preparedStatement.setInt(5, song.getDuration());
+            preparedStatement.setDouble(5, song.getDuration());
             preparedStatement.setInt(6, song.getId());
 
             int affectedRows = preparedStatement.executeUpdate();

@@ -9,7 +9,7 @@ public interface ISongRepository {
 
     public List<Song> getAllSongs() throws DALException;
 
-    public Song createSong(String title, String artist, String genre, int duration, String pathToFile) throws DALException;
+    public Song createSong(String title, String artist, String genre, double duration, String pathToFile) throws DALException;
 
     public void updateSong(Song song) throws DALException;
 

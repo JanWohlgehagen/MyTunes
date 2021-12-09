@@ -4,10 +4,7 @@ import be.Song;
 import bll.SongManager;
 import dal.DALException;
 import gui.util.SongPlayer;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -20,7 +17,7 @@ public class SongModel {
     private StringProperty artist = new SimpleStringProperty();
     private StringProperty genre = new SimpleStringProperty();
     private StringProperty pathToFile = new SimpleStringProperty();
-    private IntegerProperty duration = new SimpleIntegerProperty();
+    private DoubleProperty duration = new SimpleDoubleProperty();
     private IntegerProperty id = new SimpleIntegerProperty();
     private SongManager songManager;
 
@@ -67,7 +64,7 @@ public class SongModel {
         return genre;
     }
 
-    public IntegerProperty getDurationProperty() {
+    public DoubleProperty getDurationProperty() {
         return duration;
     }
 
@@ -84,14 +81,14 @@ public class SongModel {
     }
 
     public StringProperty getDurationString() {
-        int minutes = duration.get() / 60; // divide by 60 to get the minutes from seconds.
-        int seconds = duration.get() % 60; // remaining seconds
+        double minutes = duration.get() / 60; // divide by 60 to get the minutes from seconds.
+        double seconds = duration.get() % 60; // remaining seconds
         return new SimpleStringProperty(minutes + ":" + seconds);
     }
 
     public String getDurationString(double DurationInSeconds){
-        int minutes = (int)DurationInSeconds / 60; // divide by 60 to get the minutes from seconds.
-        int seconds = (int)DurationInSeconds % 60; // remaining seconds
+        double minutes = DurationInSeconds / 60; // divide by 60 to get the minutes from seconds.
+        double seconds = DurationInSeconds % 60; // remaining seconds
         String returnSeconds;
 
         if(seconds<10)
