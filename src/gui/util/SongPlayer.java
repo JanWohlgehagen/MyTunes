@@ -27,10 +27,6 @@ public class SongPlayer {
         mainController = new App().getController();
         snapshot = new Duration(0.0);
         initializeSong();
-
-        mediaPlayer.setOnEndOfMedia(() ->{
-            System.out.println("the song has ended");
-        });
     }
 
     public void play(int index){
@@ -56,14 +52,25 @@ public class SongPlayer {
     public void nextSong(){
         mediaPlayer.stop();
         setIndex(index+1);
+        snapshot = new Duration(0.0);
         initializeSong();
         play(getIndex());
 
     }
 
+    public void barDragStart(){
+        mediaPlayer.pause();
+    }
+
+    public void barDragEnd(){
+        mediaPlayer.seek(Duration.seconds((mainController.getProgBarValue() / 100) * mediaPlayer.getTotalDuration().toSeconds()));
+        mediaPlayer.play();
+    }
+
     public void previousSong(){
         mediaPlayer.stop();
         setIndex(index-1);
+        snapshot = new Duration(0.0);
         initializeSong();
         play(getIndex());
     }
@@ -88,6 +95,12 @@ public class SongPlayer {
         String MEDIA_URL = file.toURI().toString();
         Media song = new Media(MEDIA_URL);
         mediaPlayer = new MediaPlayer(song);
+
+        mediaPlayer.setOnEndOfMedia(() ->{
+            nextSong();
+            mainController.updateProgBar();
+            mainController.updateSelection();
+        });
     }
 
     public MediaPlayer getMediaPlayer(){

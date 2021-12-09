@@ -22,7 +22,7 @@
                   <Cursor fx:constant="SE_RESIZE" />
                </cursor>
             </Slider>
-            <Label fx:id="lblCurrentSongPlaying" alignment="CENTER" contentDisplay="CENTER" layoutX="232.0" layoutY="12.0" prefHeight="63.0" prefWidth="430.0" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="232.0" AnchorPane.rightAnchor="67.0">
+            <Label fx:id="lblCurrentSongPlaying" alignment="CENTER" contentDisplay="CENTER" layoutX="232.0" layoutY="12.0" prefHeight="63.0" prefWidth="430.0" text="Welcome to MyTunes!" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="232.0" AnchorPane.rightAnchor="67.0">
                <font>
                   <Font size="24.0" />
                </font></Label>
@@ -40,9 +40,9 @@
                </font></Label>
             <HBox alignment="CENTER" layoutX="16.0" layoutY="3.0" prefHeight="62.0" prefWidth="166.0" spacing="15.0">
                <children>
-                  <Button fx:id="btnPreviousSong" mnemonicParsing="false" onAction="#handlePreviousSongBtn" prefHeight="35.0" prefWidth="35.0" />
+                  <Button fx:id="btnPreviousSong" disable="true" mnemonicParsing="false" onAction="#handlePreviousSongBtn" prefHeight="35.0" prefWidth="35.0" />
                   <Button fx:id="btnPlay" mnemonicParsing="false" onAction="#handlePlayBtn" prefHeight="45.0" prefWidth="45.0" styleClass="css" />
-                  <Button fx:id="btnSkipSong" mnemonicParsing="false" onAction="#handleNextSongBtn" prefHeight="35.0" prefWidth="35.0" />
+                  <Button fx:id="btnSkipSong" disable="true" mnemonicParsing="false" onAction="#handleNextSongBtn" prefHeight="35.0" prefWidth="35.0" />
                </children>
             </HBox>
             <Button fx:id="btnPause" mnemonicParsing="false" onAction="#handlePauseBtn" prefHeight="45.0" prefWidth="45.0" text="." visible="false" AnchorPane.leftAnchor="77.0" AnchorPane.topAnchor="12.0">

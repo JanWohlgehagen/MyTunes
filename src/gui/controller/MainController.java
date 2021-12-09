@@ -349,13 +349,16 @@ public class MainController implements Initializable {
         lblCurrentSongPlaying.setText(getSelectedSong().getTitleProperty().get());
     }
 
+    public double getProgBarValue(){
+        return progBar.getValue();
+    }
+
     public void handleProgBarPressed(MouseEvent event) {
-        songPlayer.pause();
+        songPlayer.barDragStart();
     }
 
     public void handleProgBarReleased(MouseEvent event) {
-        songPlayer.getMediaPlayer().seek(Duration.seconds((progBar.getValue() / 100) * songPlayer.getMediaPlayer().getTotalDuration().toSeconds()));
-        songPlayer.play(tvSongsOnPlaylist.getSelectionModel().getSelectedIndex());
+        songPlayer.barDragEnd();
     }
 
     public void updateProgBar() {
@@ -384,8 +387,12 @@ public class MainController implements Initializable {
         btnPause.setVisible(true);
         btnPlay.setVisible(false);
         songPlayer.nextSong();
-        tvSongsOnPlaylist.getSelectionModel().select(songPlayer.getIndex());
+        updateSelection();
         updateProgBar();
+    }
+
+    public void updateSelection() {
+        tvSongsOnPlaylist.getSelectionModel().select(songPlayer.getIndex());
     }
 
     /**
@@ -406,19 +413,26 @@ public class MainController implements Initializable {
      *
      * @param actionEvent runs when an action is performed on the button
      */
-    public void handlePlayBtn(ActionEvent actionEvent) throws DALException, IOException {
-        if(songPlayer == null){
-            songPlayer = new SongPlayer(tvSongsOnPlaylist.getItems(), playlistModel.getIdProperty().get());
+    public void handlePlayBtn(ActionEvent actionEvent) throws DALException{
+        try{
+            if(songPlayer == null){
+                songPlayer = new SongPlayer(tvSongsOnPlaylist.getItems(), playlistModel.getIdProperty().get());
+            }
+            else if(tvPlaylists.getSelectionModel().getSelectedItem().getIdProperty().get() != songPlayer.getId()){
+                songPlayer = new SongPlayer(tvSongsOnPlaylist.getItems(), playlistModel.getIdProperty().get());
+            }
+            btnPreviousSong.setDisable(true);
+            btnSkipSong.setDisable(true);
+            btnPause.setVisible(true);
+            btnPlay.setVisible(false);
+            sldVolume.setDisable(false);
+            progBar.setDisable(false);
+            songPlayer.play(tvSongsOnPlaylist.getSelectionModel().getSelectedIndex());
+            updateProgBar();
+        } catch (Exception ex){
+            displayMessage("Nothing selected. Please select a playlist and a song.");
         }
-        else if(tvPlaylists.getSelectionModel().getSelectedItem().getIdProperty().get() != songPlayer.getId()){
-            songPlayer = new SongPlayer(tvSongsOnPlaylist.getItems(), playlistModel.getIdProperty().get());
-        }
-        btnPause.setVisible(true);
-        btnPlay.setVisible(false);
-        sldVolume.setDisable(false);
-        progBar.setDisable(false);
-        songPlayer.play(tvSongsOnPlaylist.getSelectionModel().getSelectedIndex());
-        updateProgBar();
+
     }
 
     /**

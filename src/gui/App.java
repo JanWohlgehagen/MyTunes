@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class App extends Application {
@@ -16,6 +17,9 @@ public class App extends Application {
 
         fxmlLoaderMain = new FXMLLoader((getClass().getResource("view/MainView.fxml")));
         stage.setScene(new Scene(fxmlLoaderMain.load()));
+        stage.setTitle("MyTunes");
+        Image image = new Image("/gui/Images/MyTunesLogo.png");
+        stage.getIcons().add(image);
         stage.show();
         stage.setResizable(false);
 
