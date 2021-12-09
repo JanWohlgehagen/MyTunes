@@ -8,6 +8,8 @@ import dal.interfaces.IPlaylistRepository;
 import java.io.IOException;
 import java.util.List;
 
+import static be.DisplayMessage.displayError;
+
 public class PlaylistManager {
 
     private IPlaylistRepository playListDAO;
@@ -16,7 +18,7 @@ public class PlaylistManager {
         try {
             playListDAO = new PlaylistDAO();
         } catch (IOException e) {
-            e.printStackTrace();
+            displayError(new MyTunesException(playListDAO.ERROR_STRING, e.fillInStackTrace()));
         }
     }
 

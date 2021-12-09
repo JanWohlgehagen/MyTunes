@@ -117,8 +117,7 @@ public class MainController implements Initializable {
             try {
                 songListModel.searchSong(newValue);
             } catch (MyTunesException DALex) {
-                DALex.printStackTrace();
-                displayError(new MyTunesException("Error: Something went wrong in the search engine"));
+                displayError(DALex);
             }
         });
 
@@ -142,25 +141,27 @@ public class MainController implements Initializable {
      * switch the scene to a different scene.
      *
      * @param actionEvent runs when an action happens on a button.
-     * @throws IOException if cant find stage.
      */
-    public void handleNewPlaylistBtn(ActionEvent actionEvent) throws IOException {
+    public void handleNewPlaylistBtn(ActionEvent actionEvent) {
         sceneSwapper.sceneSwitch(new Stage(), "NewPlaylistView.fxml");
     }
 
 
-    public void infoToNewPlaylist(String playlistName) throws MyTunesException, IOException {
-        playlistListModel.createPlaylist(playlistName);
+    public void infoToNewPlaylist(String playlistName) throws MyTunesException{
+        try {
+            playlistListModel.createPlaylist(playlistName);
+        }catch (MyTunesException MyTex){
+            displayError(MyTex);
+        }
     }
 
     /**
-     * switch the scene to a different scene.
+     * switch the scene to a EditPlaylistView.fxml scene.
      *
      * @param actionEvent runs when an action happens on a button.
-     * @throws IOException if cant find stage.
      */
 
-    public void handleEditPlaylistBtn(ActionEvent actionEvent) throws IOException, MyTunesException {
+    public void handleEditPlaylistBtn(ActionEvent actionEvent){
         if (getSelectedPlaylist() == null) {
             displayMessage("There is no playlist select, please select a playlist");
         } else {
@@ -173,12 +174,16 @@ public class MainController implements Initializable {
      *
      * @param actionEvent runs when an action is performed on the button.
      */
-    public void handleDeletePlaylistBtn(ActionEvent actionEvent) throws MyTunesException {
+    public void handleDeletePlaylistBtn(ActionEvent actionEvent) {
         if (getSelectedPlaylist() == null) {
             displayMessage("There is no playlist select, please select a playlist");
         } else {
             if (displayWarning("This action will delete the playlist permanently.")) {
-                playlistListModel.deletePlaylist(getSelectedPlaylist()); // Ask the model to remove remove a playlist
+                try {
+                    playlistListModel.deletePlaylist(getSelectedPlaylist()); // Ask the model to remove a playlist
+                }catch (MyTunesException MyTex){
+                    displayError(MyTex);
+                }
             }
         }
     }
@@ -218,7 +223,7 @@ public class MainController implements Initializable {
      *
      * @param actionEvent runs when an action is performed on a button.
      */
-    public void handleAddSongToPlaylistBtn(ActionEvent actionEvent) throws MyTunesException {
+    public void handleAddSongToPlaylistBtn(ActionEvent actionEvent) {
         SongModel songModel = getSelectedSong();
         PlaylistModel playlistModel = getSelectedPlaylist();
 
@@ -228,7 +233,7 @@ public class MainController implements Initializable {
             try {
                 playlistListModel.addSongToPlaylist(songModel.convertToSong(), playlistModel.convertToPlaylist());
                 playlistModel.addSongToPlayList(songModel);
-            } catch (MyTunesException DALex) {
+            } catch (MyTunesException MyTex) {
                 displayError(new MyTunesException("This song already exist in this playlist."));
             }
         }
@@ -239,19 +244,23 @@ public class MainController implements Initializable {
      *
      * @param actionEvent runs when an action is performed on the button.
      */
-    public void handleDeleteSongInPlaylistBtn(ActionEvent actionEvent) throws MyTunesException {
+    public void handleDeleteSongInPlaylistBtn(ActionEvent actionEvent) {
         if (getSelectedSongFromPlaylist() == null || getSelectedPlaylist() == null) {
             displayMessage("There is no song or playlist select, please select a song or playlist");
         } else {
             if (displayWarning("This action will delete the song from the playlist.")) {
-                SongModel songModel = getSelectedSongFromPlaylist();
-                PlaylistModel playlistModel = getSelectedPlaylist();
-                playlistListModel.removeSongFromPlaylist(songModel, playlistModel);
+                try {
+                    SongModel songModel = getSelectedSongFromPlaylist();
+                    PlaylistModel playlistModel = getSelectedPlaylist();
+                    playlistListModel.removeSongFromPlaylist(songModel, playlistModel);
+                }catch (MyTunesException MyTex){
+                    displayError(MyTex);
+                }
             }
         }
     }
 
-    public void handleViewSongs(MouseEvent mouseEvent) throws MyTunesException {
+    public void handleViewSongs(MouseEvent mouseEvent) {
         if (getSelectedPlaylist() != null) {
             tvSongsOnPlaylist.setItems(getSelectedPlaylist().getListOfSongs());
             txtSongsInPlayList.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTitleProperty());
@@ -260,22 +269,20 @@ public class MainController implements Initializable {
     }
 
     /**
-     * switches the scene over to NewEditSongView.fxml.
+     * switches the scene over to NewSongView.fxml.
      *
      * @param actionEvent runs when an action is performed on the button.
-     * @throws IOException if cant find stage.
      */
-    public void handleNewSongBtn(ActionEvent actionEvent) throws IOException {
+    public void handleNewSongBtn(ActionEvent actionEvent) {
         sceneSwapper.sceneSwitch(new Stage(), "NewSongView.fxml");
     }
 
     /**
-     * switches the scene over to NewEditSongView.fxml.
+     * switches the scene over to EditSongView.fxml.
      *
      * @param actionEvent runs when an action is performed on the button.
-     * @throws IOException if cant find the stage.
      */
-    public void handleEditSongBtn(ActionEvent actionEvent) throws IOException {
+    public void handleEditSongBtn(ActionEvent actionEvent) {
         if (getSelectedSong() == null) {
             displayMessage("There is no song select, please select a song");
         } else {
@@ -293,7 +300,11 @@ public class MainController implements Initializable {
             displayMessage("There is no song select, please select a song");
         } else {
             if (displayWarning("This action will delete the song permanently.")) {
-                songListModel.deleteSong(getSelectedSong());
+                try {
+                    songListModel.deleteSong(getSelectedSong());
+                }catch (MyTunesException MyTex){
+                    displayError(MyTex);
+                }
             }
         }
     }
@@ -311,7 +322,11 @@ public class MainController implements Initializable {
     }
 
     public void infoToCreateSong(String title, String artist, String genre, double duration, String pathToFile) throws MyTunesException {
-        songListModel.createSong(title, artist, genre, duration, pathToFile);
+        try {
+            songListModel.createSong(title, artist, genre, duration, pathToFile);
+        }catch (MyTunesException MyTex) {
+            displayError(MyTex);
+        }
     }
 
 //____________________________________mediaPlayer___________________________________________
@@ -370,7 +385,7 @@ public class MainController implements Initializable {
      *
      * @param actionEvent when an action is performed on button program will run
      */
-    public void handleNextSongBtn(ActionEvent actionEvent) throws MyTunesException {
+    public void handleNextSongBtn(ActionEvent actionEvent) {
         btnPause.setVisible(true);
         btnPlay.setVisible(false);
         songPlayer.nextSong();
@@ -387,7 +402,7 @@ public class MainController implements Initializable {
      *
      * @param actionEvent will run when an action is called on the button
      */
-    public void handlePreviousSongBtn(ActionEvent actionEvent) throws IOException, MyTunesException {
+    public void handlePreviousSongBtn(ActionEvent actionEvent){
         btnPause.setVisible(true);
         btnPlay.setVisible(false);
         songPlayer.previousSong();
@@ -400,7 +415,7 @@ public class MainController implements Initializable {
      *
      * @param actionEvent runs when an action is performed on the button
      */
-    public void handlePlayBtn(ActionEvent actionEvent) throws MyTunesException {
+    public void handlePlayBtn(ActionEvent actionEvent) {
         try {
             if (songPlayer == null) {
                 songPlayer = new SongPlayer(tvSongsOnPlaylist.getItems(), playlistModel.getIdProperty().get());

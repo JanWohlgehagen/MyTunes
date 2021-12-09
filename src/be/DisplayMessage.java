@@ -5,6 +5,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+
+import java.util.Arrays;
 import java.util.Optional;
 
 public class DisplayMessage {
@@ -19,6 +21,7 @@ public class DisplayMessage {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error: Something went wrong");
             alert.setHeaderText(ex.getMessage());
+            alert.setContentText(String.valueOf(ex.getCause()));
             Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
             Image image = new Image("/gui/Images/MyTunesLogo.png");
             stage.getIcons().add(image);

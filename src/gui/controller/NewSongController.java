@@ -89,7 +89,7 @@ public class NewSongController implements Initializable {
         }
     }
 
-    public void handleSaveBtn(ActionEvent actionEvent) throws MyTunesException, IOException {
+    public void handleSaveBtn(ActionEvent actionEvent) throws MyTunesException {
         saveSong();
     }
 

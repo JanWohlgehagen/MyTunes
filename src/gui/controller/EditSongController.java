@@ -22,6 +22,7 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.ResourceBundle;
 
+import static be.DisplayMessage.displayError;
 import static be.DisplayMessage.displayMessage;
 
 public class EditSongController implements Initializable {
@@ -40,29 +41,27 @@ public class EditSongController implements Initializable {
     private ComboBox cBoxCategory;
 
     final FileChooser fileChooser;
-    private SongModel songModel;
     private ObservableList<String> categories;
-    private MainController mainController;
     SongListModel songListModel;
+    SongModel songModel;
 
-    public EditSongController() throws MyTunesException, IOException {
+    public EditSongController() {
         fileChooser = new FileChooser();
         categories = FXCollections.observableArrayList();
         cBoxCategory = new ComboBox();
-        songModel = new SongModel();
-        songListModel = new SongListModel();
+
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        try {
+            songModel = new SongModel();
+            songListModel = new SongListModel();
+        }catch (Exception ex){
+            displayError(ex);
+        }
         MainController mainController = new App().getController();
         songModel = mainController.getSelectedSong();
-        try {
-            SongListModel songListModel = new SongListModel();
-
-        } catch (MyTunesException | IOException e) {
-            e.printStackTrace();
-        }
         txtTitle.setText(songModel.getTitleProperty().get());
         txtArtist.setText(songModel.getArtistProperty().get());
         txtTime.setText(songModel.getDurationString().get());
@@ -71,7 +70,7 @@ public class EditSongController implements Initializable {
         setData();
     }
 
-    public void handleSaveBtn(ActionEvent actionEvent) throws MyTunesException {
+    public void handleSaveBtn(ActionEvent actionEvent) {
         saveSong();
     }
 
@@ -80,18 +79,23 @@ public class EditSongController implements Initializable {
         closeStage();
     }
 
-    public void HandleEnterSave(KeyEvent keyEvent) throws MyTunesException {
+    public void HandleEnterSave(KeyEvent keyEvent) {
         if(keyEvent.getCode().equals(KeyCode.ENTER)){
             saveSong();
         }
     }
 
-    private void saveSong() throws MyTunesException {
+    private void saveSong() {
         if(txtArtist.getText().isBlank() || txtTitle.getText().isBlank() || txtFile.getText().isBlank() || cBoxCategory.getSelectionModel().getSelectedItem() == null) {
             displayMessage("One or more field is empty");
         }else{
-            songListModel.updateSongToView(songModel, txtTitle.getText(), txtArtist.getText(), cBoxCategory.getSelectionModel().getSelectedItem().toString());
-            closeStage();
+            try {
+                songListModel.updateSongToView(songModel, txtTitle.getText(), txtArtist.getText(), cBoxCategory.getSelectionModel().getSelectedItem().toString());
+                closeStage();
+            }catch (MyTunesException MyTex){
+                displayError(MyTex);
+                MyTex.printStackTrace();
+            }
         }
     }
 

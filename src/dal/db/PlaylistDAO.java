@@ -56,8 +56,7 @@ public class PlaylistDAO implements IPlaylistRepository {
                 }
             }
         } catch (SQLException SQLex) {
-            SQLex.printStackTrace();
-            throw new MyTunesException(ERROR_STRING);
+            throw new MyTunesException(ERROR_STRING, SQLex.fillInStackTrace());
         }
         return allPlaylists;
     }
@@ -87,8 +86,7 @@ public class PlaylistDAO implements IPlaylistRepository {
                 }
             }
         } catch (SQLException SQLex) {
-            SQLex.printStackTrace();
-            throw new MyTunesException(ERROR_STRING);
+            throw new MyTunesException(ERROR_STRING, SQLex.fillInStackTrace());
         }
         return songsInPlaylist;
     }
@@ -102,7 +100,7 @@ public class PlaylistDAO implements IPlaylistRepository {
             preparedStatement.setInt(2, playlist.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException SQLex) {
-            throw new MyTunesException(ERROR_STRING);
+            throw new MyTunesException(ERROR_STRING, SQLex.fillInStackTrace());
         }
     }
 
@@ -115,7 +113,7 @@ public class PlaylistDAO implements IPlaylistRepository {
             preparedStatement.setInt(2, playlist.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException SQLex) {
-            throw new MyTunesException(ERROR_STRING);
+            throw new MyTunesException(ERROR_STRING, SQLex.fillInStackTrace());
         }
     }
 
@@ -137,7 +135,7 @@ public class PlaylistDAO implements IPlaylistRepository {
                 }
             }
         } catch (SQLException SQLex) {
-            throw new MyTunesException(ERROR_STRING);
+            throw new MyTunesException(ERROR_STRING, SQLex.fillInStackTrace());
         }
         return null;
     }
@@ -156,7 +154,7 @@ public class PlaylistDAO implements IPlaylistRepository {
                 throw new MyTunesException(ERROR_STRING);
             }
         } catch (SQLException SQLex) {
-            throw new MyTunesException(ERROR_STRING);
+            throw new MyTunesException(ERROR_STRING, SQLex.fillInStackTrace());
         }
     }
 
@@ -172,7 +170,7 @@ public class PlaylistDAO implements IPlaylistRepository {
                 throw new MyTunesException(ERROR_STRING);
             }
         } catch (SQLException SQLex) {
-            throw new MyTunesException(ERROR_STRING);
+            throw new MyTunesException(ERROR_STRING, SQLex.fillInStackTrace());
         }
     }
 }

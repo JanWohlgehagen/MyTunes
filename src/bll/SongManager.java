@@ -9,6 +9,8 @@ import dal.interfaces.ISongRepository;
 import java.io.IOException;
 import java.util.List;
 
+import static be.DisplayMessage.displayError;
+
 public class SongManager {
 
     private ISearcher songSearcher;
@@ -19,7 +21,7 @@ public class SongManager {
         try {
             songDAO = new SongDAO();
         } catch (IOException e) {
-            e.printStackTrace();
+            displayError(new MyTunesException(songDAO.ERROR_STRING, e.fillInStackTrace()));
         }
     }
 

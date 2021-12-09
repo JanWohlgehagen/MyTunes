@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static be.DisplayMessage.displayError;
 import static be.DisplayMessage.displayMessage;
 
 public class EditPlaylistController implements Initializable {
@@ -31,7 +32,7 @@ public class EditPlaylistController implements Initializable {
     private MainController mainController;
 
 
-    public void handleSaveBtn(ActionEvent actionEvent) throws MyTunesException {
+    public void handleSaveBtn(ActionEvent actionEvent) {
         savePlaylist();
     }
 
@@ -51,26 +52,28 @@ public class EditPlaylistController implements Initializable {
         try {
             playlistListModel = new PlaylistListModel();
 
-        } catch (MyTunesException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (MyTunesException MyTex) {
+            displayError(MyTex);
         }
         txtName.setText(playlistModel.getNameProperty().get());
     }
 
-    public void HandleEnterSave(KeyEvent keyEvent) throws MyTunesException {
+    public void HandleEnterSave(KeyEvent keyEvent) {
         if(keyEvent.getCode().equals(KeyCode.ENTER)){
             savePlaylist();
         }
     }
 
-    private void savePlaylist() throws MyTunesException {
+    private void savePlaylist() {
         if(txtName.getText().isBlank()) {
             displayMessage("The name is empty");
         }else{
-            playlistListModel.updatePlaylistToView(playlistModel, txtName.getText());
-            closeStage();
+            try {
+                playlistListModel.updatePlaylistToView(playlistModel, txtName.getText());
+                closeStage();
+            }catch (MyTunesException MyTex){
+                displayError(MyTex);
+            }
         }
     }
 }

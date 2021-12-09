@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:sqlserver://10.176.111.31:1433;database=MyTunes_JTM</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="Microsoft SQL Server - MyTunes_JTM@10.176.111.31 [2]" uuid="33375012-4467-4218-8ecc-9fe24561b6bc">
+      <driver-ref>sqlserver.ms</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc-driver>
+      <jdbc-url>jdbc:sqlserver://10.176.111.31;database=MyTunes_JTM</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
