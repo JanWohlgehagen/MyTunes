@@ -12,6 +12,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -78,17 +80,27 @@ public class EditSongController implements Initializable {
     }
 
     public void handleSaveBtn(ActionEvent actionEvent) throws DALException {
-        if(txtArtist.getText().isBlank() || txtTitle.getText().isBlank() || txtFile.getText().isBlank() || cBoxCategory.getSelectionModel().getSelectedItem() != null) {
-            displayMessage("One of field is empty");
-        }else{
-            songListModel.updateSongToView(songModel, txtTitle.getText(), txtArtist.getText(), cBoxCategory.getSelectionModel().getSelectedItem().toString());
-            closeStage();
-        }
+        saveSong();
     }
 
     //closes the stage
     public void handleCancelBtn(ActionEvent actionEvent) {
         closeStage();
+    }
+
+    public void HandleEnterSave(KeyEvent keyEvent) throws DALException {
+        if(keyEvent.getCode().equals(KeyCode.ENTER)){
+            saveSong();
+        }
+    }
+
+    private void saveSong() throws DALException {
+        if(txtArtist.getText().isBlank() || txtTitle.getText().isBlank() || txtFile.getText().isBlank() || cBoxCategory.getSelectionModel().getSelectedItem() == null) {
+            displayMessage("One or more field is empty");
+        }else{
+            songListModel.updateSongToView(songModel, txtTitle.getText(), txtArtist.getText(), cBoxCategory.getSelectionModel().getSelectedItem().toString());
+            closeStage();
+        }
     }
 
     public void closeStage(){
@@ -118,5 +130,4 @@ public class EditSongController implements Initializable {
 
         cBoxCategory.getItems().setAll(categories);
     }
-
 }

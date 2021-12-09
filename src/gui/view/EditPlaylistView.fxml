@@ -5,11 +5,11 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="anchorPaneId" prefHeight="170.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.EditPlaylistController">
+<AnchorPane fx:id="anchorPaneId" onKeyPressed="#HandleEnterSave" prefHeight="170.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.EditPlaylistController">
    <children>
       <Label layoutX="54.0" layoutY="42.0" prefWidth="60.0" text="Name:" />
       <TextField fx:id="txtName" layoutX="104.0" layoutY="38.0" prefWidth="60.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="35.0" />
       <Button layoutX="313.0" layoutY="113.0" mnemonicParsing="false" onAction="#handleSaveBtn" prefWidth="60.0" text="Save" AnchorPane.rightAnchor="35.0" />
-      <Button layoutX="234.0" layoutY="113.0" mnemonicParsing="false" onAction="#handleCancelBtn" prefWidth="60.0" text="Cancel" />
+      <Button cancelButton="true" layoutX="234.0" layoutY="113.0" mnemonicParsing="false" onAction="#handleCancelBtn" prefWidth="60.0" text="Cancel" />
    </children>
 </AnchorPane>

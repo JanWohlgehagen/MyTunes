@@ -14,7 +14,6 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-
         fxmlLoaderMain = new FXMLLoader((getClass().getResource("view/MainView.fxml")));
         stage.setScene(new Scene(fxmlLoaderMain.load()));
         stage.setTitle("MyTunes");
@@ -22,10 +21,9 @@ public class App extends Application {
         stage.getIcons().add(image);
         stage.show();
         stage.setResizable(false);
-
     }
 
-    public MainController getController(){
+    public MainController getController() {
         return fxmlLoaderMain.getController();
     }
 

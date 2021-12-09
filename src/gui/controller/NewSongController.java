@@ -11,6 +11,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -91,15 +93,14 @@ public class NewSongController implements Initializable {
         }
 
     }
+    public void HandleEnterSave(KeyEvent keyEvent) throws DALException {
+        if(keyEvent.getCode().equals(KeyCode.ENTER)){
+            saveSong();
+        }
+    }
 
     public void handleSaveBtn(ActionEvent actionEvent) throws DALException, IOException {
-        MainController mainController = new App().getController();
-        if(txtArtist.getText().isBlank() || txtFile.getText().isBlank() || txtTitle.getText().isBlank() || cBoxCategory.getSelectionModel().getSelectedItem() == null){
-            displayMessage("One of the field are empty");
-        }else{
-            mainController.infoToCreateSong(txtTitle.getText(), txtArtist.getText(), cBoxCategory.getSelectionModel().getSelectedItem().toString(), media.getDuration().toMillis(), txtFile.getText());
-            closeStage();
-        }
+        saveSong();
     }
 
     //closes the stage
@@ -110,6 +111,16 @@ public class NewSongController implements Initializable {
     public void closeStage(){
         Stage stage = (Stage) gridPaneId.getScene().getWindow();
         stage.close();
+    }
+
+    private void saveSong() throws DALException {
+        MainController mainController = new App().getController();
+        if(txtArtist.getText().isBlank() || txtFile.getText().isBlank() || txtTitle.getText().isBlank() || cBoxCategory.getSelectionModel().getSelectedItem() == null){
+            displayMessage("One of the field are empty");
+        }else{
+            mainController.infoToCreateSong(txtTitle.getText(), txtArtist.getText(), cBoxCategory.getSelectionModel().getSelectedItem().toString(), media.getDuration().toMillis(), txtFile.getText());
+            closeStage();
+        }
     }
 
     private void setData() {
@@ -134,5 +145,4 @@ public class NewSongController implements Initializable {
 
         cBoxCategory.getItems().setAll(categories);
     }
-
 }

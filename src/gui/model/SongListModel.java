@@ -1,15 +1,11 @@
 package gui.model;
 
-import be.Playlist;
-import be.Song;
-import bll.PlaylistManager;
 import bll.SongManager;
 import dal.DALException;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -22,12 +18,8 @@ public class SongListModel {
 
     public SongListModel() throws DALException, IOException {
         songManager = new SongManager();
-
         selectedSong = new SimpleObjectProperty<>();
-
-
         songsToBeViewed = FXCollections.observableArrayList(songManager.getAllSongs().stream().map(song -> new SongModel(song)).toList());
-
     }
 
     public ObjectProperty<SongModel> getSelectedSong() {
@@ -37,11 +29,6 @@ public class SongListModel {
     public ObservableList<SongModel> getSongs() {
         return songsToBeViewed;
     }
-
-    public void addSongToView(Song song) throws DALException, IOException {
-        songsToBeViewed.add(new SongModel(song));
-    }
-
 
     /**
      * Searches through song list, to find a song that matches the key word
@@ -56,7 +43,6 @@ public class SongListModel {
         songsToBeViewed.clear();
         songsToBeViewed.addAll((searchResults));
     }
-
 
     public void createSong(String title, String artist, String genre, double duration, String pathToFile) throws DALException {
         songsToBeViewed.add(new SongModel(songManager.createSong(title, artist, genre, duration, pathToFile)));

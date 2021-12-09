@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="gridPaneId" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="280.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.EditSongController">
+<GridPane fx:id="gridPaneId" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#HandleEnterSave" prefHeight="280.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.EditSongController">
   <columnConstraints>
     <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="60.0" />
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="60.0" />
@@ -59,10 +59,10 @@
          </children>
       </AnchorPane>
       <TextField fx:id="txtTitle" GridPane.columnIndex="1" GridPane.columnSpan="2" />
-      <TextField fx:id="txtFile" editable="false" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4" />
-      <TextField fx:id="txtTime" editable="false" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
       <TextField fx:id="txtArtist" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
       <ComboBox fx:id="cBoxCategory" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <TextField fx:id="txtTime" editable="false" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+      <TextField fx:id="txtFile" editable="false" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4" />
    </children>
    <padding>
       <Insets bottom="15.0" right="15.0" top="15.0" />

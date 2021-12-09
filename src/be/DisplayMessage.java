@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
 import java.util.Optional;
 
@@ -19,6 +20,9 @@ public class DisplayMessage {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error: Something went wrong");
             alert.setHeaderText(ex.getMessage());
+            Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+            Image image = new Image("/gui/Images/MyTunesLogo.png");
+            stage.getIcons().add(image);
             alert.showAndWait();
         });
     }
@@ -28,7 +32,9 @@ public class DisplayMessage {
         alert.setTitle("Error: Something went wrong");
         alert.setHeaderText(ex.getMessage());
         alert.setContentText(String.valueOf(ex.getCause()));
-
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        Image image = new Image("/gui/Images/MyTunesLogo.png");
+        stage.getIcons().add(image);
         Optional<ButtonType> result = alert.showAndWait();
         return result.get() == ButtonType.OK;
     }
@@ -38,7 +44,9 @@ public class DisplayMessage {
         alert.setTitle("Confirmation Dialog");
         alert.setHeaderText(message);
         alert.setContentText("Press OK to continue.");
-
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        Image image = new Image("/gui/Images/MyTunesLogo.png");
+        stage.getIcons().add(image);
         Optional<ButtonType> result = alert.showAndWait();
         return result.get() == ButtonType.OK;
     }
@@ -47,6 +55,9 @@ public class DisplayMessage {
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Message");
+            Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+            Image image = new Image("/gui/Images/MyTunesLogo.png");
+            stage.getIcons().add(image);
             alert.setHeaderText(message);
             alert.showAndWait();
         });

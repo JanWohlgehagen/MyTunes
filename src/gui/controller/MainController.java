@@ -335,18 +335,17 @@ public class MainController implements Initializable {
      * @param dragEvent when you move the slider you change the volume
      */
     public void sldVolumeInput(MouseEvent dragEvent) {
-        songPlayer.setVolume(sldVolume.getValue());
-        System.out.println(sldVolume.getValue());
+        if (songPlayer != null){
+            songPlayer.setVolume(sldVolume.getValue());
+        }
     }
 
     public void handleTvSongsInPlaylistClicked(MouseEvent mouseEvent) {
         tvSongs.getSelectionModel().clearSelection();
-        lblCurrentSongPlaying.setText(tvSongsOnPlaylist.getSelectionModel().getSelectedItem().getTitleProperty().get());
     }
 
     public void handleTvSongClicked(MouseEvent mouseEvent) {
         tvSongsOnPlaylist.getSelectionModel().clearSelection();
-        lblCurrentSongPlaying.setText(getSelectedSong().getTitleProperty().get());
     }
 
     public double getProgBarValue(){
@@ -421,14 +420,15 @@ public class MainController implements Initializable {
             else if(tvPlaylists.getSelectionModel().getSelectedItem().getIdProperty().get() != songPlayer.getId()){
                 songPlayer = new SongPlayer(tvSongsOnPlaylist.getItems(), playlistModel.getIdProperty().get());
             }
-            btnPreviousSong.setDisable(true);
-            btnSkipSong.setDisable(true);
+            btnPreviousSong.setDisable(false);
+            btnSkipSong.setDisable(false);
             btnPause.setVisible(true);
             btnPlay.setVisible(false);
             sldVolume.setDisable(false);
             progBar.setDisable(false);
             songPlayer.play(tvSongsOnPlaylist.getSelectionModel().getSelectedIndex());
             updateProgBar();
+            songPlayer.setVolume(sldVolume.getValue());
         } catch (Exception ex){
             displayMessage("Nothing selected. Please select a playlist and a song.");
         }

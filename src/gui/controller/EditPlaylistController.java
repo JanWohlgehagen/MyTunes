@@ -9,6 +9,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -30,12 +32,7 @@ public class EditPlaylistController implements Initializable {
 
 
     public void handleSaveBtn(ActionEvent actionEvent) throws DALException {
-        if(txtName.getText().isBlank()) {
-            displayMessage("The name is empty");
-        }else{
-            playlistListModel.updatePlaylistToView(playlistModel, txtName.getText());
-            closeStage();
-        }
+        savePlaylist();
     }
 
     public void handleCancelBtn(ActionEvent actionEvent) {
@@ -60,5 +57,20 @@ public class EditPlaylistController implements Initializable {
             e.printStackTrace();
         }
         txtName.setText(playlistModel.getNameProperty().get());
+    }
+
+    public void HandleEnterSave(KeyEvent keyEvent) throws DALException {
+        if(keyEvent.getCode().equals(KeyCode.ENTER)){
+            savePlaylist();
+        }
+    }
+
+    private void savePlaylist() throws DALException {
+        if(txtName.getText().isBlank()) {
+            displayMessage("The name is empty");
+        }else{
+            playlistListModel.updatePlaylistToView(playlistModel, txtName.getText());
+            closeStage();
+        }
     }
 }

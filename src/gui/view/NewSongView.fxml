@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="gridPaneId" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="280.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.NewSongController">
+<GridPane fx:id="gridPaneId" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#HandleEnterSave" prefHeight="280.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.NewSongController">
   <columnConstraints>
     <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="60.0" />
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="60.0" />
@@ -26,6 +26,11 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
+      <TextField fx:id="txtTitle" GridPane.columnIndex="1" GridPane.columnSpan="2" />
+      <TextField fx:id="txtArtist" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+      <ComboBox fx:id="cBoxCategory" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <TextField fx:id="txtTime" editable="false" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+      <TextField fx:id="txtFile" editable="false" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4" />
       <Label text="Title:">
          <padding>
             <Insets right="10.0" />
@@ -58,11 +63,6 @@
             <Button cancelButton="true" layoutX="121.0" layoutY="25.0" mnemonicParsing="false" onAction="#handleCancelBtn" prefWidth="60.0" text="Cancel" AnchorPane.bottomAnchor="1.0" AnchorPane.rightAnchor="75.0" AnchorPane.topAnchor="25.0" />
          </children>
       </AnchorPane>
-      <TextField fx:id="txtTitle" GridPane.columnIndex="1" GridPane.columnSpan="2" />
-      <TextField fx:id="txtFile" editable="false" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4" />
-      <TextField fx:id="txtTime" editable="false" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-      <TextField fx:id="txtArtist" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
-      <ComboBox fx:id="cBoxCategory" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
    </children>
    <padding>
       <Insets bottom="15.0" right="15.0" top="15.0" />

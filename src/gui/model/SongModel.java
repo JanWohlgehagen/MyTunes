@@ -1,14 +1,10 @@
 package gui.model;
 
 import be.Song;
-import bll.SongManager;
-import dal.DALException;
-import gui.util.SongPlayer;
+import bll.SongManager;;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
-import java.io.IOException;
 import java.util.List;
 
 public class SongModel {
@@ -35,16 +31,16 @@ public class SongModel {
         songManager = new SongManager();
     }
 
-
-    public ObservableList<SongModel> convertSongToSongmodel(List<Song> songs){
+    public ObservableList<SongModel> convertSongToSongmodel(List<Song> songs) {
         return FXCollections.observableArrayList(songs.stream().map(song -> new SongModel(song)).toList());
     }
 
-    public Song convertToSong(){
-        return new Song(this.getIdProperty().get(),this.getTitleProperty().get(), this.getTitleProperty().get(),
+    public Song convertToSong() {
+        return new Song(this.getIdProperty().get(), this.getTitleProperty().get(), this.getTitleProperty().get(),
                 this.getGenreProperty().get(), this.getDurationProperty().get(), this.getPathToFileProperty().get());
     }
-    public StringProperty getPathToFileProperty(){
+
+    public StringProperty getPathToFileProperty() {
         return pathToFile;
     }
 
@@ -87,14 +83,14 @@ public class SongModel {
         return new SimpleStringProperty(minutes + ":" + seconds);
     }
 
-    public String getDurationString(double DurationInSeconds){
+    public String getDurationString(double DurationInSeconds) {
         int timeAsIntegerInSeconds = (int) DurationInSeconds / 1000;
         int minutes = timeAsIntegerInSeconds / 60; // divide by 60 to get the minutes from seconds.
         int seconds = timeAsIntegerInSeconds % 60; // remaining seconds
         String returnSeconds;
 
-        if(seconds<10)
-            returnSeconds = "0"+seconds;
+        if (seconds < 10)
+            returnSeconds = "0" + seconds;
         else returnSeconds = String.valueOf(seconds);
 
         return minutes + ":" + returnSeconds;

@@ -50,7 +50,7 @@
                   <Font size="1.0" />
                </font>
             </Button>
-            <Slider fx:id="progBar" layoutX="212.0" layoutY="65.0" onMousePressed="#handleProgBarPressed" onMouseReleased="#handleProgBarReleased" prefHeight="14.0" prefWidth="470.0" />
+            <Slider fx:id="progBar" disable="true" layoutX="212.0" layoutY="65.0" onMousePressed="#handleProgBarPressed" onMouseReleased="#handleProgBarReleased" prefHeight="14.0" prefWidth="470.0" />
             <Label fx:id="lblSongProgress" layoutX="212.0" layoutY="84.0" text="0:00" />
             <Label fx:id="lblSongDuration" alignment="CENTER_RIGHT" layoutX="655.0" layoutY="84.0" text="0:00" />
          </children>
