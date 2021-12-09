@@ -3,30 +3,22 @@ package gui.model;
 import be.Playlist;
 import be.Song;
 import bll.PlaylistManager;
-import dal.DALException;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import dal.MyTunesException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.io.IOException;
 
 public class PlaylistListModel {
-
     private PlaylistManager playlistManager;
     private ObservableList<PlaylistModel> playListToBeViewed;
-    private ObjectProperty<PlaylistModel> selectedPlayList;
-    private ObjectProperty<SongModel> selectedSongInPlaylist;
 
-    public PlaylistListModel() throws IOException, DALException {
+    public PlaylistListModel() throws IOException, MyTunesException {
         playlistManager = new PlaylistManager();
-        selectedPlayList = new SimpleObjectProperty<>();
-        selectedSongInPlaylist = new SimpleObjectProperty<>();
 
         playListToBeViewed = FXCollections.observableArrayList(playlistManager.getAllPlaylists().stream().map(playList -> {
             try {
                 return new PlaylistModel(playList);
-            } catch (IOException | DALException e) {
+            } catch (IOException | MyTunesException e) {
                 e.printStackTrace();
             }
             return null;
@@ -34,39 +26,30 @@ public class PlaylistListModel {
 
     }
 
-    public ObjectProperty<PlaylistModel> getSelectedPlayList(){
-        return selectedPlayList;
-    }
-
-    public ObjectProperty<SongModel> getSelectedSongInPlaylist(){
-        return selectedSongInPlaylist;
-    }
-
     public ObservableList<PlaylistModel> getPlayLists() {
         return playListToBeViewed;
     }
 
-
-    public void createPlaylist(String playlistName) throws DALException, IOException {
+    public void createPlaylist(String playlistName) throws MyTunesException, IOException {
         Playlist playlist = playlistManager.createPlaylist(playlistName);
         playListToBeViewed.add(new PlaylistModel(playlist));
     }
 
-    public void addSongToPlaylist(Song song, Playlist playlist) throws DALException {
+    public void addSongToPlaylist(Song song, Playlist playlist) throws MyTunesException {
         playlistManager.addSongToPLaylist(song, playlist);
     }
 
-    public void updatePlaylistToView(PlaylistModel playlistModel, String name) throws DALException {
+    public void updatePlaylistToView(PlaylistModel playlistModel, String name) throws MyTunesException {
         playlistModel.setNameProperty(name);
         playlistManager.updatePlaylist(playlistModel.convertToPlaylist());
     }
 
-    public void removeSongFromPlaylist(SongModel songModel, PlaylistModel playlistModel) throws DALException {
+    public void removeSongFromPlaylist(SongModel songModel, PlaylistModel playlistModel) throws MyTunesException {
         playlistManager.removeSongFromPLaylist(songModel.convertToSong(), playlistModel.convertToPlaylist());
         playlistModel.removeSongFromList(songModel);
     }
 
-    public void deletePlaylist(PlaylistModel playlistModel) throws DALException {
+    public void deletePlaylist(PlaylistModel playlistModel) throws MyTunesException {
         playlistManager.deletePlaylist(playlistModel.convertToPlaylist());
         playListToBeViewed.remove(playlistModel);
     }
@@ -77,6 +60,5 @@ public class PlaylistListModel {
 
     public void DescendSongInPlaylist(PlaylistModel playlistModel, SongModel songModel){
         playlistModel.DescendSongInPlaylist(songModel);
-
     }
 }

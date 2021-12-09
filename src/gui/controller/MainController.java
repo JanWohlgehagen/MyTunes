@@ -1,36 +1,27 @@
 package gui.controller;
 
-
-import be.Playlist;
-import be.Song;
-import dal.DALException;
-import gui.model.*;
+import dal.MyTunesException;
+import gui.model.PlaylistListModel;
+import gui.model.PlaylistModel;
+import gui.model.SongListModel;
+import gui.model.SongModel;
 import gui.util.SceneSwapper;
 import gui.util.SongPlayer;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.net.URL;
-
 import java.util.ResourceBundle;
 
 import static be.DisplayMessage.*;
-
 
 public class MainController implements Initializable {
 
@@ -67,12 +58,6 @@ public class MainController implements Initializable {
     @FXML
     private Button btnPreviousSong;
     @FXML
-    private Button btnAddSongToPlaylist;
-    @FXML
-    private Button btnAscendSongInPlaylist;
-    @FXML
-    private Button btnDescendSongInPlaylist;
-    @FXML
     private Button btnSkipSong;
     @FXML
     private Button btnPlay;
@@ -83,26 +68,25 @@ public class MainController implements Initializable {
     @FXML
     private Label lblCurrentSongPlaying;
     @FXML
-    private Slider progBar;
+    private Slider progressBar;
 
     private SceneSwapper sceneSwapper;
     private SongPlayer songPlayer;
-    private SongModel currentlySong;
     private PlaylistModel playlistModel;
     private SongListModel songListModel;
     private PlaylistListModel playlistListModel;
 
 
-    public MainController() throws DALException, IOException {
+    public MainController() throws IOException {
 
         try {
-            progBar = new Slider();
+            progressBar = new Slider();
             sceneSwapper = new SceneSwapper();
             songListModel = new SongListModel();
             playlistListModel = new PlaylistListModel();
 
-        }catch (DALException DALex){
-            if(displayErrorSTOP(DALex)){
+        } catch (MyTunesException DALex) {
+            if (displayErrorSTOP(DALex)) {
                 System.exit(0);
             }
         }
@@ -112,18 +96,7 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-        currentlySong = new SongModel();
-
         tvSongsOnPlaylist.setPlaceholder(new Label("Select a playlist \n with songs"));
-
-        //tvSongs.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
-        //{ de her kan slet nu
-        playlistListModel.getSelectedPlayList().bind(tvPlaylists.getSelectionModel().selectedItemProperty());
-        songListModel.getSelectedSong().bind(tvSongs.getSelectionModel().selectedItemProperty());
-        playlistListModel.getSelectedSongInPlaylist().bind(tvSongsOnPlaylist.getSelectionModel().selectedItemProperty());
-        //}
 
         // list of all songs
         tvSongs.setItems(songListModel.getSongs());
@@ -133,7 +106,6 @@ public class MainController implements Initializable {
         tcTime.setCellValueFactory(addSongToList -> addSongToList.getValue().getDurationString());
 
         // list of all Playlists
-
         tvPlaylists.setItems(playlistListModel.getPlayLists());
         txtName.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getNameProperty());
         txtSongs.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTotalSongsProperty().asObject());
@@ -143,9 +115,9 @@ public class MainController implements Initializable {
         txtSearch.textProperty().addListener((observableValue, oldValue, newValue) -> {
             try {
                 songListModel.searchSong(newValue);
-            } catch (DALException DALex) {
+            } catch (MyTunesException DALex) {
                 DALex.printStackTrace();
-                displayError(new DALException("Error: Something went wrong in the search engine"));
+                displayError(new MyTunesException("Error: Something went wrong in the search engine"));
             }
         });
 
@@ -163,7 +135,7 @@ public class MainController implements Initializable {
     }
 
 
-    public void infoToNewPlaylist(String playlistName) throws DALException, IOException {
+    public void infoToNewPlaylist(String playlistName) throws MyTunesException, IOException {
         playlistListModel.createPlaylist(playlistName);
     }
 
@@ -174,10 +146,10 @@ public class MainController implements Initializable {
      * @throws IOException if cant find stage.
      */
 
-    public void handleEditPlaylistBtn(ActionEvent actionEvent) throws IOException, DALException {
-        if(getSelectedPlaylist() == null){
+    public void handleEditPlaylistBtn(ActionEvent actionEvent) throws IOException, MyTunesException {
+        if (getSelectedPlaylist() == null) {
             displayMessage("There is no playlist select, please select a playlist");
-        }else {
+        } else {
             sceneSwapper.sceneSwitch(new Stage(), "EditPlaylistView.fxml");
         }
     }
@@ -187,11 +159,10 @@ public class MainController implements Initializable {
      *
      * @param actionEvent runs when an action is performed on the button.
      */
-
-    public void handleDeletePlaylistBtn(ActionEvent actionEvent) throws DALException {
-        if(getSelectedPlaylist() == null){
+    public void handleDeletePlaylistBtn(ActionEvent actionEvent) throws MyTunesException {
+        if (getSelectedPlaylist() == null) {
             displayMessage("There is no playlist select, please select a playlist");
-        }else {
+        } else {
             if (displayWarning("This action will delete the playlist permanently.")) {
                 playlistListModel.deletePlaylist(getSelectedPlaylist()); // Ask the model to remove remove a playlist
             }
@@ -204,9 +175,9 @@ public class MainController implements Initializable {
      * @param actionEvent runs when an action is called on the button
      */
     public void handleAscendSongInPlaylistBtn(ActionEvent actionEvent) {
-        if(getSelectedSongFromPlaylist() == null){
+        if (getSelectedSongFromPlaylist() == null) {
             displayMessage("There is no song select, please select a song");
-        }else {
+        } else {
             SongModel songModel = getSelectedSongFromPlaylist();
             PlaylistModel playlistModel = getSelectedPlaylist();
             playlistListModel.AscendSongInPlaylist(playlistModel, songModel);
@@ -219,9 +190,9 @@ public class MainController implements Initializable {
      * @param actionEvent runs when action is performed on the button.
      */
     public void handleDescendSongInPlaylistBtn(ActionEvent actionEvent) {
-        if(getSelectedSongFromPlaylist() == null){
+        if (getSelectedSongFromPlaylist() == null) {
             displayMessage("There is no song select, please select a song");
-        }else {
+        } else {
             SongModel songModel = getSelectedSongFromPlaylist();
             PlaylistModel playlistModel = getSelectedPlaylist();
             playlistListModel.DescendSongInPlaylist(playlistModel, songModel);
@@ -230,20 +201,21 @@ public class MainController implements Initializable {
 
     /**
      * adds a song to a certain playlist
+     *
      * @param actionEvent runs when an action is performed on a button.
      */
-    public void handleAddSongToPlaylistBtn(ActionEvent actionEvent) throws DALException {
+    public void handleAddSongToPlaylistBtn(ActionEvent actionEvent) throws MyTunesException {
         SongModel songModel = getSelectedSong();
         PlaylistModel playlistModel = getSelectedPlaylist();
 
-        if(getSelectedSong() == null || getSelectedPlaylist() == null){
+        if (getSelectedSong() == null || getSelectedPlaylist() == null) {
             displayMessage("There is no song or playlist select, please select a song or playlist");
-        }else {
+        } else {
             try {
                 playlistListModel.addSongToPlaylist(songModel.convertToSong(), playlistModel.convertToPlaylist());
                 playlistModel.addSongToPlayList(songModel);
-            } catch (DALException DALex) {
-                displayError(new DALException("This song already exist in this playlist."));
+            } catch (MyTunesException DALex) {
+                displayError(new MyTunesException("This song already exist in this playlist."));
             }
         }
     }
@@ -253,10 +225,10 @@ public class MainController implements Initializable {
      *
      * @param actionEvent runs when an action is performed on the button.
      */
-    public void handleDeleteSongInPlaylistBtn(ActionEvent actionEvent) throws DALException {
-        if(getSelectedSongFromPlaylist() == null || getSelectedPlaylist() == null){
+    public void handleDeleteSongInPlaylistBtn(ActionEvent actionEvent) throws MyTunesException {
+        if (getSelectedSongFromPlaylist() == null || getSelectedPlaylist() == null) {
             displayMessage("There is no song or playlist select, please select a song or playlist");
-        }else{
+        } else {
             if (displayWarning("This action will delete the song from the playlist.")) {
                 SongModel songModel = getSelectedSongFromPlaylist();
                 PlaylistModel playlistModel = getSelectedPlaylist();
@@ -265,8 +237,8 @@ public class MainController implements Initializable {
         }
     }
 
-    public void handleViewSongs(MouseEvent mouseEvent) throws DALException {
-        if(getSelectedPlaylist() != null) {
+    public void handleViewSongs(MouseEvent mouseEvent) throws MyTunesException {
+        if (getSelectedPlaylist() != null) {
             tvSongsOnPlaylist.setItems(getSelectedPlaylist().getListOfSongs());
             txtSongsInPlayList.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTitleProperty());
         }
@@ -290,9 +262,9 @@ public class MainController implements Initializable {
      * @throws IOException if cant find the stage.
      */
     public void handleEditSongBtn(ActionEvent actionEvent) throws IOException {
-        if(getSelectedSong() == null){
+        if (getSelectedSong() == null) {
             displayMessage("There is no song select, please select a song");
-        }else {
+        } else {
             sceneSwapper.sceneSwitch(new Stage(), "EditSongView.fxml");
         }
     }
@@ -302,17 +274,17 @@ public class MainController implements Initializable {
      *
      * @param actionEvent runs when an action is performed.
      */
-    public void handleDeleteSongBtn(ActionEvent actionEvent) throws DALException {
-        if(getSelectedSong() == null){
+    public void handleDeleteSongBtn(ActionEvent actionEvent) throws MyTunesException {
+        if (getSelectedSong() == null) {
             displayMessage("There is no song select, please select a song");
-        }else{
+        } else {
             if (displayWarning("This action will delete the song permanently.")) {
                 songListModel.deleteSong(getSelectedSong());
             }
         }
     }
 
-    public PlaylistModel getSelectedPlaylist(){
+    public PlaylistModel getSelectedPlaylist() {
         return tvPlaylists.getSelectionModel().getSelectedItem();
     }
 
@@ -320,22 +292,23 @@ public class MainController implements Initializable {
         return tvSongs.getSelectionModel().getSelectedItem();
     }
 
-    public SongModel getSelectedSongFromPlaylist(){
+    public SongModel getSelectedSongFromPlaylist() {
         return tvSongsOnPlaylist.getSelectionModel().getSelectedItem();
     }
 
-    public void infoToCreateSong(String title, String artist, String genre, double duration, String pathToFile) throws DALException {
-        songListModel.createSong(title, artist, genre, duration,pathToFile);
+    public void infoToCreateSong(String title, String artist, String genre, double duration, String pathToFile) throws MyTunesException {
+        songListModel.createSong(title, artist, genre, duration, pathToFile);
     }
 
 //____________________________________mediaPlayer___________________________________________
 
     /**
      * sets volume og the songs that will be played
+     *
      * @param dragEvent when you move the slider you change the volume
      */
     public void sldVolumeInput(MouseEvent dragEvent) {
-        if (songPlayer != null){
+        if (songPlayer != null) {
             songPlayer.setVolume(sldVolume.getValue());
         }
     }
@@ -348,8 +321,8 @@ public class MainController implements Initializable {
         tvSongsOnPlaylist.getSelectionModel().clearSelection();
     }
 
-    public double getProgBarValue(){
-        return progBar.getValue();
+    public double getProgBarValue() {
+        return progressBar.getValue();
     }
 
     public void handleProgBarPressed(MouseEvent event) {
@@ -363,10 +336,11 @@ public class MainController implements Initializable {
     public void updateProgBar() {
         songPlayer.getMediaPlayer().currentTimeProperty().addListener(new ChangeListener<Duration>() {
             double totalSongDuration = songPlayer.getSongModel().getDurationProperty().get();
+
             @Override
             public void changed(ObservableValue<? extends Duration> observable, Duration oldValue,
                                 Duration newValue) {
-                progBar.setValue((newValue.toSeconds() / songPlayer.getMediaPlayer().getTotalDuration().toSeconds()) * 100);
+                progressBar.setValue((newValue.toSeconds() / songPlayer.getMediaPlayer().getTotalDuration().toSeconds()) * 100);
                 lblSongProgress.setText(songPlayer.getSongModel().getDurationString(songPlayer.getMediaPlayer().getCurrentTime().toMillis()));
             }
         });
@@ -382,7 +356,7 @@ public class MainController implements Initializable {
      *
      * @param actionEvent when an action is performed on button program will run
      */
-    public void handleNextSongBtn(ActionEvent actionEvent) throws DALException {
+    public void handleNextSongBtn(ActionEvent actionEvent) throws MyTunesException {
         btnPause.setVisible(true);
         btnPlay.setVisible(false);
         songPlayer.nextSong();
@@ -399,7 +373,7 @@ public class MainController implements Initializable {
      *
      * @param actionEvent will run when an action is called on the button
      */
-    public void handlePreviousSongBtn(ActionEvent actionEvent) throws IOException, DALException {
+    public void handlePreviousSongBtn(ActionEvent actionEvent) throws IOException, MyTunesException {
         btnPause.setVisible(true);
         btnPlay.setVisible(false);
         songPlayer.previousSong();
@@ -412,12 +386,11 @@ public class MainController implements Initializable {
      *
      * @param actionEvent runs when an action is performed on the button
      */
-    public void handlePlayBtn(ActionEvent actionEvent) throws DALException{
-        try{
-            if(songPlayer == null){
+    public void handlePlayBtn(ActionEvent actionEvent) throws MyTunesException {
+        try {
+            if (songPlayer == null) {
                 songPlayer = new SongPlayer(tvSongsOnPlaylist.getItems(), playlistModel.getIdProperty().get());
-            }
-            else if(tvPlaylists.getSelectionModel().getSelectedItem().getIdProperty().get() != songPlayer.getId()){
+            } else if (tvPlaylists.getSelectionModel().getSelectedItem().getIdProperty().get() != songPlayer.getId()) {
                 songPlayer = new SongPlayer(tvSongsOnPlaylist.getItems(), playlistModel.getIdProperty().get());
             }
             btnPreviousSong.setDisable(false);
@@ -425,14 +398,13 @@ public class MainController implements Initializable {
             btnPause.setVisible(true);
             btnPlay.setVisible(false);
             sldVolume.setDisable(false);
-            progBar.setDisable(false);
+            progressBar.setDisable(false);
             songPlayer.play(tvSongsOnPlaylist.getSelectionModel().getSelectedIndex());
             updateProgBar();
             songPlayer.setVolume(sldVolume.getValue());
-        } catch (Exception ex){
+        } catch (Exception ex) {
             displayMessage("Nothing selected. Please select a playlist and a song.");
         }
-
     }
 
     /**
@@ -447,4 +419,3 @@ public class MainController implements Initializable {
         updateProgBar();
     }
 }
-

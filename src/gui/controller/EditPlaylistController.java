@@ -1,7 +1,7 @@
 package gui.controller;
 
 
-import dal.DALException;
+import dal.MyTunesException;
 import gui.App;
 import gui.model.PlaylistListModel;
 import gui.model.PlaylistModel;
@@ -31,7 +31,7 @@ public class EditPlaylistController implements Initializable {
     private MainController mainController;
 
 
-    public void handleSaveBtn(ActionEvent actionEvent) throws DALException {
+    public void handleSaveBtn(ActionEvent actionEvent) throws MyTunesException {
         savePlaylist();
     }
 
@@ -51,7 +51,7 @@ public class EditPlaylistController implements Initializable {
         try {
             playlistListModel = new PlaylistListModel();
 
-        } catch (DALException e) {
+        } catch (MyTunesException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
@@ -59,13 +59,13 @@ public class EditPlaylistController implements Initializable {
         txtName.setText(playlistModel.getNameProperty().get());
     }
 
-    public void HandleEnterSave(KeyEvent keyEvent) throws DALException {
+    public void HandleEnterSave(KeyEvent keyEvent) throws MyTunesException {
         if(keyEvent.getCode().equals(KeyCode.ENTER)){
             savePlaylist();
         }
     }
 
-    private void savePlaylist() throws DALException {
+    private void savePlaylist() throws MyTunesException {
         if(txtName.getText().isBlank()) {
             displayMessage("The name is empty");
         }else{

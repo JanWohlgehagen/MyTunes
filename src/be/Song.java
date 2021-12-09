@@ -16,8 +16,6 @@ public class Song {
         this.genre = genre;
         this.duration = duration;
         this.pathToFile = pathToFile;
-
-
     }
     public int getId() {
         return id;

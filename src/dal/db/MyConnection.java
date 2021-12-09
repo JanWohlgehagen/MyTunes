@@ -2,11 +2,7 @@ package dal.db;
 
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
-import dal.DALException;
-
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.Properties;
@@ -16,7 +12,6 @@ public class MyConnection {
     private SQLServerDataSource ds;
 
     public MyConnection() throws IOException {
-
             Properties databaseProperties = new Properties();
             databaseProperties.load(new FileInputStream(PROP_FILE));
 
@@ -30,21 +25,9 @@ public class MyConnection {
             ds.setDatabaseName(database);
             ds.setUser(user);
             ds.setPassword(password);
-
     }
 
     public Connection getConnection() throws SQLServerException {
         return ds.getConnection();
     }
-
-    /**
-    public static void main(String[] args) throws IOException, SQLException {
-        MyConnection myConnection = new MyConnection();
-
-        Connection connection = myConnection.getConnection();
-
-        System.out.println("Return false if the connection is open. Return true if there is no connection to the database.");
-        System.out.print(connection.isClosed());
-    }
-     */
 }

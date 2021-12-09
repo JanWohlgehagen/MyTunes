@@ -1,9 +1,7 @@
 package gui.model;
 
 import bll.SongManager;
-import dal.DALException;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import dal.MyTunesException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.io.IOException;
@@ -13,17 +11,11 @@ public class SongListModel {
 
     private SongManager songManager;
     private ObservableList<SongModel> songsToBeViewed;
-    private ObjectProperty<SongModel> selectedSong;
 
 
-    public SongListModel() throws DALException, IOException {
+    public SongListModel() throws MyTunesException, IOException {
         songManager = new SongManager();
-        selectedSong = new SimpleObjectProperty<>();
         songsToBeViewed = FXCollections.observableArrayList(songManager.getAllSongs().stream().map(song -> new SongModel(song)).toList());
-    }
-
-    public ObjectProperty<SongModel> getSelectedSong() {
-        return selectedSong;
     }
 
     public ObservableList<SongModel> getSongs() {
@@ -36,7 +28,7 @@ public class SongListModel {
      * @param query the key word, to search for
      */
 
-    public void searchSong(String query) throws DALException {
+    public void searchSong(String query) throws MyTunesException {
         List<SongModel> searchResults = songManager.searchSong(query).stream().map(song ->
                 new SongModel(song)).toList();
 
@@ -44,16 +36,16 @@ public class SongListModel {
         songsToBeViewed.addAll((searchResults));
     }
 
-    public void createSong(String title, String artist, String genre, double duration, String pathToFile) throws DALException {
+    public void createSong(String title, String artist, String genre, double duration, String pathToFile) throws MyTunesException {
         songsToBeViewed.add(new SongModel(songManager.createSong(title, artist, genre, duration, pathToFile)));
     }
 
-    public void deleteSong(SongModel songModel) throws DALException {
+    public void deleteSong(SongModel songModel) throws MyTunesException {
         songManager.deleteSong(songModel.convertToSong());
         songsToBeViewed.remove(songModel);
     }
 
-    public void updateSongToView(SongModel songModel, String title, String artist, String genre) throws DALException {
+    public void updateSongToView(SongModel songModel, String title, String artist, String genre) throws MyTunesException {
         songModel.setTitleProperty(title);
         songModel.setArtistProperty(artist);
         songModel.setGenreProperty(genre);

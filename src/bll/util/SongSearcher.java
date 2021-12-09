@@ -24,7 +24,6 @@ public class SongSearcher implements ISearcher {
                 searchResult.add(song);
             }
         }
-
         return searchResult;
     }
 

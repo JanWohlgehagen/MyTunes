@@ -1,9 +1,8 @@
 package dal.db;
 
 import be.Song;
-import dal.DALException;
+import dal.MyTunesException;
 import dal.interfaces.ISongRepository;
-
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ public class SongDAO implements ISongRepository {
     }
 
     @Override
-    public List<Song> getAllSongs() throws DALException {
+    public List<Song> getAllSongs() throws MyTunesException {
         List<Song> allSongsList = new ArrayList<>();
 
         //Create a connection
@@ -41,13 +40,13 @@ public class SongDAO implements ISongRepository {
                 }
             }
         }  catch (SQLException SQLex) {
-           throw new DALException("Error: Can not access Databases", SQLex.getCause());
+           throw new MyTunesException(ERROR_STRING, SQLex.getCause());
         }
         return allSongsList;
     }
 
     @Override
-    public Song createSong(String title, String artist, String genre, double duration, String pathToFile) throws DALException {
+    public Song createSong(String title, String artist, String genre, double duration, String pathToFile) throws MyTunesException {
 
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "INSERT INTO Song VALUES (?,?,?,?,?);";
@@ -68,13 +67,13 @@ public class SongDAO implements ISongRepository {
                 }
             }
         } catch (SQLException SQLex) {
-            throw new DALException("Error: Can not 'createSong' in Databases", SQLex.getCause());
+            throw new MyTunesException(ERROR_STRING, SQLex.getCause());
         }
         return null;
     }
 
     @Override
-    public void updateSong(Song song) throws DALException {
+    public void updateSong(Song song) throws MyTunesException {
         try(Connection connection = databaseConnector.getConnection()){
             String sql = "UPDATE Song SET title = ?, filePath=?, artist=?, genre=?, duration=? WHERE Id=?;";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -88,15 +87,15 @@ public class SongDAO implements ISongRepository {
             int affectedRows = preparedStatement.executeUpdate();
 
             if(affectedRows != 1){
-                throw new DALException();
+                throw new MyTunesException();
             }
         } catch (SQLException SQLex) {
-            throw new DALException("Error: Can not 'updateSong' in Databases", SQLex.getCause());
+            throw new MyTunesException(ERROR_STRING, SQLex.getCause());
         }
     }
 
     @Override
-    public void deleteSong(Song song) throws DALException {
+    public void deleteSong(Song song) throws MyTunesException {
         try(Connection connection = databaseConnector.getConnection()){
             String sql = "DELETE FROM Song WHERE Id=?;";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -104,12 +103,10 @@ public class SongDAO implements ISongRepository {
             int affectedRows = preparedStatement.executeUpdate();
 
             if(affectedRows != 1){
-                throw new DALException();
+                throw new MyTunesException();
             }
         } catch (SQLException SQLex) {
-            throw new DALException("Error: Can not 'deleteSong' in Databases", SQLex.getCause());
+            throw new MyTunesException(ERROR_STRING, SQLex.getCause());
         }
     }
 }
-
-

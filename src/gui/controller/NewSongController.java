@@ -1,8 +1,7 @@
 package gui.controller;
 
-import dal.DALException;
+import dal.MyTunesException;
 import gui.App;
-
 import gui.model.SongListModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,7 +17,6 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -51,7 +49,7 @@ public class NewSongController implements Initializable {
 
 
 
-    public NewSongController() throws DALException, IOException {
+    public NewSongController() throws MyTunesException, IOException {
         fileChooser = new FileChooser();
         categories = FXCollections.observableArrayList();
         cBoxCategory = new ComboBox();
@@ -65,15 +63,9 @@ public class NewSongController implements Initializable {
 
     public void handleChooseBtn(ActionEvent actionEvent) {
         Stage stage = (Stage) gridPaneId.getScene().getWindow();
-
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Music file", "*.mp3", "*.wav", "*.wave"));
-
-        try {
-            file = fileChooser.showOpenDialog(stage); // assigns the chosen file to the file
-            fileChooser.setInitialDirectory(file.getParentFile()); //sets the initial file when the fileChooser is opened to the last known directory
-        } catch (Exception ex){
-           // TODO
-        }
+        file = fileChooser.showOpenDialog(stage); // assigns the chosen file to the file
+        fileChooser.setInitialDirectory(file.getParentFile()); //sets the initial file when the fileChooser is opened to the last known directory
 
         if(file != null){ //DirectoryChooser returns null if the user closes the browse window
             txtFile.setText(file.getAbsolutePath().replace("\\", "/"));
@@ -86,20 +78,18 @@ public class NewSongController implements Initializable {
                 int seconds = (int) durInSeconds % 60; // remaining seconds
 
                 strDurInMinutes = minutes + ":" + seconds;
-
                 txtTime.setText(strDurInMinutes);
             });
-
         }
-
     }
-    public void HandleEnterSave(KeyEvent keyEvent) throws DALException {
+
+    public void HandleEnterSave(KeyEvent keyEvent) throws MyTunesException {
         if(keyEvent.getCode().equals(KeyCode.ENTER)){
             saveSong();
         }
     }
 
-    public void handleSaveBtn(ActionEvent actionEvent) throws DALException, IOException {
+    public void handleSaveBtn(ActionEvent actionEvent) throws MyTunesException, IOException {
         saveSong();
     }
 
@@ -113,7 +103,7 @@ public class NewSongController implements Initializable {
         stage.close();
     }
 
-    private void saveSong() throws DALException {
+    private void saveSong() throws MyTunesException {
         MainController mainController = new App().getController();
         if(txtArtist.getText().isBlank() || txtFile.getText().isBlank() || txtTitle.getText().isBlank() || cBoxCategory.getSelectionModel().getSelectedItem() == null){
             displayMessage("One of the field are empty");

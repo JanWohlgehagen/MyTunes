@@ -1,6 +1,6 @@
 package gui.controller;
 
-import dal.DALException;
+import dal.MyTunesException;
 import gui.App;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,7 +9,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
 import static be.DisplayMessage.displayMessage;
@@ -21,7 +20,7 @@ public class NewPlaylistController {
     @FXML
     private TextField txtName;
 
-    public void handleSaveBtn(ActionEvent actionEvent) throws DALException, IOException {
+    public void handleSaveBtn(ActionEvent actionEvent) throws MyTunesException, IOException {
         savePlaylist();
     }
 
@@ -34,13 +33,13 @@ public class NewPlaylistController {
         stage.close();
     }
 
-    public void HandleEnterSave(KeyEvent keyEvent) throws DALException, IOException {
+    public void HandleEnterSave(KeyEvent keyEvent) throws MyTunesException, IOException {
         if(keyEvent.getCode().equals(KeyCode.ENTER)){
             savePlaylist();
         }
     }
 
-    private void savePlaylist() throws DALException, IOException {
+    private void savePlaylist() throws MyTunesException, IOException {
         if(txtName.getText().isBlank()){
             displayMessage("The name is empty, please add a name");
         }else{

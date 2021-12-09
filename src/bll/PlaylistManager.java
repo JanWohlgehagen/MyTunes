@@ -2,10 +2,9 @@ package bll;
 
 import be.Playlist;
 import be.Song;
-import dal.DALException;
+import dal.MyTunesException;
 import dal.db.PlaylistDAO;
 import dal.interfaces.IPlaylistRepository;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -24,9 +23,9 @@ public class PlaylistManager {
     /**
      * Returns all playlists from the DB
      * @return
-     * @throws DALException
+     * @throws MyTunesException
      */
-    public List<Playlist> getAllPlaylists() throws DALException{
+    public List<Playlist> getAllPlaylists() throws MyTunesException {
        return playListDAO.getAllPlaylists();
     }
 
@@ -34,14 +33,14 @@ public class PlaylistManager {
      * Adds a song to a playlist in the relation table in the DB
      * @param song
      * @param playlist
-     * @throws DALException
+     * @throws MyTunesException
      */
 
-    public void addSongToPLaylist(Song song, Playlist playlist) throws DALException{
+    public void addSongToPLaylist(Song song, Playlist playlist) throws MyTunesException {
         playListDAO.addSongToPLaylist(song, playlist);
     }
 
-    public void removeSongFromPLaylist(Song song, Playlist playlist) throws DALException{
+    public void removeSongFromPLaylist(Song song, Playlist playlist) throws MyTunesException {
         playListDAO.removeSongFromPlaylist(song, playlist);
     }
 
@@ -49,9 +48,9 @@ public class PlaylistManager {
      * Returns all songs in a given playlist from the DB
      * @param playlistId
      * @return
-     * @throws DALException
+     * @throws MyTunesException
      */
-    public List<Song> getSongsFromPlaylist (int playlistId) throws DALException{
+    public List<Song> getSongsFromPlaylist (int playlistId) throws MyTunesException {
         return playListDAO.getSongsFromPlaylist(playlistId);
     }
 
@@ -59,27 +58,27 @@ public class PlaylistManager {
      * Creates the playlist in DB
      * @param name
      * @return
-     * @throws DALException
+     * @throws MyTunesException
      */
-    public Playlist createPlaylist(String name) throws DALException{
+    public Playlist createPlaylist(String name) throws MyTunesException {
         return playListDAO.createPlaylist(name);
     }
 
     /**
      * Updates the playlist in the DB
      * @param playlist
-     * @throws DALException
+     * @throws MyTunesException
      */
-    public void updatePlaylist(Playlist playlist) throws DALException{
+    public void updatePlaylist(Playlist playlist) throws MyTunesException {
         playListDAO.updatePlaylist(playlist);
     }
 
     /**
      * Remove the playlist from DB
      * @param playlist
-     * @throws DALException
+     * @throws MyTunesException
      */
-    public void deletePlaylist(Playlist playlist) throws DALException{
+    public void deletePlaylist(Playlist playlist) throws MyTunesException {
         playListDAO.deletePlaylist(playlist);
     }
 }

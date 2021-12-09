@@ -1,17 +1,18 @@
 package dal.interfaces;
 
 import be.Song;
-import dal.DALException;
-
+import dal.MyTunesException;
 import java.util.List;
 
 public interface ISongRepository {
 
-    public List<Song> getAllSongs() throws DALException;
+    String ERROR_STRING = "Error: Cannot access database.";
 
-    public Song createSong(String title, String artist, String genre, double duration, String pathToFile) throws DALException;
+    public List<Song> getAllSongs() throws MyTunesException;
 
-    public void updateSong(Song song) throws DALException;
+    public Song createSong(String title, String artist, String genre, double duration, String pathToFile) throws MyTunesException;
 
-    public void deleteSong(Song song) throws DALException;
+    public void updateSong(Song song) throws MyTunesException;
+
+    public void deleteSong(Song song) throws MyTunesException;
 }

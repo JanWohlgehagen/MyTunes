@@ -1,22 +1,14 @@
 package gui.model;
 
 import be.Playlist;
-import be.Song;
-import bll.PlaylistManager;
-import dal.DALException;
-
-import be.Playlist;
-import dal.DALException;
+import dal.MyTunesException;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.IOException;
 
-import java.io.IOException;
-
 import static be.DisplayMessage.displayMessage;
-
 
 public class PlaylistModel {
 
@@ -30,7 +22,7 @@ public class PlaylistModel {
     private StringProperty durationString = new SimpleStringProperty();
 
 
-    public PlaylistModel(Playlist playlist) throws IOException, DALException {
+    public PlaylistModel(Playlist playlist) throws IOException, MyTunesException {
         this.getIdProperty().set(playlist.getId());
         this.getNameProperty().set(playlist.getName());
         this.getDurationProperty().set(getTotalTime());
@@ -49,31 +41,31 @@ public class PlaylistModel {
         return name;
     }
 
-    public ObservableList<SongModel> getListOfSongs(){
+    public ObservableList<SongModel> getListOfSongs() {
         return allSongs;
     }
 
-    public void AscendSongInPlaylist(SongModel selectedSongModel){
+    public void AscendSongInPlaylist(SongModel selectedSongModel) {
         int indexOfSelectedSongModel = allSongs.indexOf(selectedSongModel);
-        if(indexOfSelectedSongModel > 0 ){
+        if (indexOfSelectedSongModel > 0) {
             int indexOfAboveSelectedSong = allSongs.indexOf(selectedSongModel) - 1;
             SongModel songModelOfAboveSelectedSong = allSongs.get(indexOfAboveSelectedSong);
 
             allSongs.set(indexOfAboveSelectedSong, selectedSongModel);
             allSongs.set(indexOfSelectedSongModel, songModelOfAboveSelectedSong);
-        }else displayMessage("It is at the top");
+        } else displayMessage("It is at the top");
 
     }
 
-    public void DescendSongInPlaylist(SongModel selectedSongModel){
+    public void DescendSongInPlaylist(SongModel selectedSongModel) {
         int indexOfSelectedSongModel = allSongs.indexOf(selectedSongModel);
-        if(indexOfSelectedSongModel < allSongs.size() - 1) {
+        if (indexOfSelectedSongModel < allSongs.size() - 1) {
             int indexOfAboveSelectedSong = allSongs.indexOf(selectedSongModel) + 1;
             SongModel songModelOfAboveSelectedSong = allSongs.get(indexOfAboveSelectedSong);
 
             allSongs.set(indexOfAboveSelectedSong, selectedSongModel);
             allSongs.set(indexOfSelectedSongModel, songModelOfAboveSelectedSong);
-        }else displayMessage("It is at the bottom");
+        } else displayMessage("It is at the bottom");
     }
 
     public IntegerProperty getTotalSongsProperty() {
@@ -88,7 +80,7 @@ public class PlaylistModel {
         return id;
     }
 
-    public void removeSongFromList(SongModel songModel){
+    public void removeSongFromList(SongModel songModel) {
         allSongs.remove(songModel);
         getTotalSongsProperty().set(allSongs.size());
         getDurationStringProperty().set(getDurationString());
@@ -100,7 +92,7 @@ public class PlaylistModel {
         getDurationStringProperty().set(getDurationString());
     }
 
-    public String getDurationString(){
+    public String getDurationString() {
         double totalTime = getTotalTime();
         int timeAsIntegerInSeconds = (int) totalTime / 1000;
         int minutes = timeAsIntegerInSeconds / 60; // divide by 60 to get the minutes from seconds.
@@ -108,9 +100,9 @@ public class PlaylistModel {
         return minutes + ":" + seconds;
     }
 
-    public double getTotalTime(){
+    public double getTotalTime() {
         double totalTime = 0;
-        for (SongModel songModel: allSongs) {
+        for (SongModel songModel : allSongs) {
             totalTime += songModel.getDurationProperty().get();
         }
         return totalTime;
@@ -123,6 +115,4 @@ public class PlaylistModel {
     public Playlist convertToPlaylist() {
         return new Playlist(this.getIdProperty().get(), this.getNameProperty().get());
     }
-
-
 }

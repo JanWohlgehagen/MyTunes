@@ -1,8 +1,7 @@
 package gui.controller;
 
-import dal.DALException;
+import dal.MyTunesException;
 import gui.App;
-import gui.model.PlaylistListModel;
 import gui.model.SongListModel;
 import gui.model.SongModel;
 import javafx.collections.FXCollections;
@@ -15,12 +14,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
@@ -49,7 +45,7 @@ public class EditSongController implements Initializable {
     private MainController mainController;
     SongListModel songListModel;
 
-    public EditSongController() throws DALException, IOException {
+    public EditSongController() throws MyTunesException, IOException {
         fileChooser = new FileChooser();
         categories = FXCollections.observableArrayList();
         cBoxCategory = new ComboBox();
@@ -64,7 +60,7 @@ public class EditSongController implements Initializable {
         try {
             SongListModel songListModel = new SongListModel();
 
-        } catch (DALException | IOException e) {
+        } catch (MyTunesException | IOException e) {
             e.printStackTrace();
         }
         txtTitle.setText(songModel.getTitleProperty().get());
@@ -75,11 +71,7 @@ public class EditSongController implements Initializable {
         setData();
     }
 
-    public void handleChooseBtn(ActionEvent actionEvent) {
-        //Browse should not be available when editing a song.
-    }
-
-    public void handleSaveBtn(ActionEvent actionEvent) throws DALException {
+    public void handleSaveBtn(ActionEvent actionEvent) throws MyTunesException {
         saveSong();
     }
 
@@ -88,13 +80,13 @@ public class EditSongController implements Initializable {
         closeStage();
     }
 
-    public void HandleEnterSave(KeyEvent keyEvent) throws DALException {
+    public void HandleEnterSave(KeyEvent keyEvent) throws MyTunesException {
         if(keyEvent.getCode().equals(KeyCode.ENTER)){
             saveSong();
         }
     }
 
-    private void saveSong() throws DALException {
+    private void saveSong() throws MyTunesException {
         if(txtArtist.getText().isBlank() || txtTitle.getText().isBlank() || txtFile.getText().isBlank() || cBoxCategory.getSelectionModel().getSelectedItem() == null) {
             displayMessage("One or more field is empty");
         }else{
