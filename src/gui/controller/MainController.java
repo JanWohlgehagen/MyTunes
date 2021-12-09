@@ -7,6 +7,7 @@ import gui.model.SongListModel;
 import gui.model.SongModel;
 import gui.util.SceneSwapper;
 import gui.util.SongPlayer;
+import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -121,6 +122,19 @@ public class MainController implements Initializable {
             }
         });
 
+        progressBar.styleProperty().bind(Bindings.createStringBinding(() -> {
+            double percentage = (progressBar.getValue() - progressBar.getMin()) / (progressBar.getMax() - progressBar.getMin()) * 100.0 ;
+            return String.format("-slider-track-color: linear-gradient(to right, -slider-filled-track-color 0%%, "
+                            + "-slider-filled-track-color %f%%, -fx-base %f%%, -fx-base 100%%);",
+                    percentage, percentage);
+        }, progressBar.valueProperty(), progressBar.minProperty(), progressBar.maxProperty()));
+        
+        sldVolume.styleProperty().bind(Bindings.createStringBinding(() -> {
+            double percentage = (sldVolume.getValue() - sldVolume.getMin()) / (sldVolume.getMax() - sldVolume.getMin()) * 100.0 ;
+            return String.format("-slider-track-color: linear-gradient(to right, -slider-filled-track-color 0%%, "
+                            + "-slider-filled-track-color %f%%, -fx-base %f%%, -fx-base 100%%);",
+                    percentage, percentage);
+        }, sldVolume.valueProperty(), sldVolume.minProperty(), sldVolume.maxProperty()));
     }
 
 
