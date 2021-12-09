@@ -24,7 +24,7 @@ public class PlaylistModel {
 
     private ObservableList<SongModel> allSongs = FXCollections.observableArrayList();
     private StringProperty name = new SimpleStringProperty();
-    private IntegerProperty duration = new SimpleIntegerProperty();
+    private DoubleProperty duration = new SimpleDoubleProperty();
     private IntegerProperty id = new SimpleIntegerProperty();
     private IntegerProperty totalSongs = new SimpleIntegerProperty();
     private StringProperty durationString = new SimpleStringProperty();
@@ -80,7 +80,7 @@ public class PlaylistModel {
         return totalSongs;
     }
 
-    public IntegerProperty getDurationProperty() {
+    public DoubleProperty getDurationProperty() {
         return duration;
     }
 
@@ -101,14 +101,15 @@ public class PlaylistModel {
     }
 
     public String getDurationString(){
-        int totalTime = getTotalTime();
-        int minutes = totalTime / 60; // divide by 60 to get the minutes from seconds.
-        int seconds = totalTime % 60; // remaining seconds
+        double totalTime = getTotalTime();
+        int timeAsIntegerInSeconds = (int) totalTime / 1000;
+        int minutes = timeAsIntegerInSeconds / 60; // divide by 60 to get the minutes from seconds.
+        int seconds = timeAsIntegerInSeconds % 60; // remaining seconds
         return minutes + ":" + seconds;
     }
 
-    public int getTotalTime(){
-        int totalTime = 0;
+    public double getTotalTime(){
+        double totalTime = 0;
         for (SongModel songModel: allSongs) {
             totalTime += songModel.getDurationProperty().get();
         }

@@ -97,7 +97,7 @@ public class NewSongController implements Initializable {
         if(txtArtist.getText().isBlank() || txtFile.getText().isBlank() || txtTitle.getText().isBlank() || cBoxCategory.getSelectionModel().getSelectedItem() == null){
             displayMessage("One of the field are empty");
         }else{
-            mainController.infoToCreateSong(txtTitle.getText(), txtArtist.getText(), cBoxCategory.getSelectionModel().getSelectedItem().toString(),  (int)media.getDuration().toSeconds(), txtFile.getText());
+            mainController.infoToCreateSong(txtTitle.getText(), txtArtist.getText(), cBoxCategory.getSelectionModel().getSelectedItem().toString(), media.getDuration().toMillis(), txtFile.getText());
             closeStage();
         }
     }

@@ -81,14 +81,16 @@ public class SongModel {
     }
 
     public StringProperty getDurationString() {
-        double minutes = duration.get() / 60; // divide by 60 to get the minutes from seconds.
-        double seconds = duration.get() % 60; // remaining seconds
+        int timeAsIntegerInSeconds = (int) duration.get() / 1000;
+        int minutes = timeAsIntegerInSeconds / 60; // divide by 60 to get the minutes from seconds.
+        int seconds = timeAsIntegerInSeconds % 60; // remaining seconds
         return new SimpleStringProperty(minutes + ":" + seconds);
     }
 
     public String getDurationString(double DurationInSeconds){
-        double minutes = DurationInSeconds / 60; // divide by 60 to get the minutes from seconds.
-        double seconds = DurationInSeconds % 60; // remaining seconds
+        int timeAsIntegerInSeconds = (int) DurationInSeconds / 1000;
+        int minutes = timeAsIntegerInSeconds / 60; // divide by 60 to get the minutes from seconds.
+        int seconds = timeAsIntegerInSeconds % 60; // remaining seconds
         String returnSeconds;
 
         if(seconds<10)

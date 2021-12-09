@@ -1,6 +1,6 @@
 package gui.util;
-
-import be.Song;
+import gui.App;
+import gui.controller.MainController;
 import gui.model.SongModel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -10,33 +10,64 @@ import java.io.File;
 import java.util.List;
 
 public class SongPlayer {
-    MediaPlayer mediaPlayer;
-    SongModel songModel;
+    private MediaPlayer mediaPlayer;
+    private int index;
+    private List <SongModel> songModels;
+    private Duration snapshot;
+    private int id = -1;
+    MainController mainController;
 
     /**
      * constructor for a song  creates a playable song
-     * @param songModel
+     * @param songModels
      */
-    public SongPlayer(SongModel songModel){
-        this.songModel = songModel;
-        String path = songModel.getPathToFileProperty().get();
-        File file = new File(path);
-        String MEDIA_URL = file.toURI().toString();
-        Media song = new Media(MEDIA_URL);
-        MediaPlayer mediaPlayer = new MediaPlayer(song);
-        this.mediaPlayer = mediaPlayer;
+    public SongPlayer(List<SongModel> songModels, int id){
+        this.songModels = songModels;
+        this.id = id;
+        mainController = new App().getController();
+        snapshot = new Duration(0.0);
+        initializeSong();
+
+        mediaPlayer.setOnEndOfMedia(() ->{
+            System.out.println("the song has ended");
+        });
     }
 
-    public SongModel getSongModel(){
-        return this.songModel;
-    }
+    public void play(int index){
+        if(index != this.index){
+            setIndex(index);
+            initializeSong();
+            System.out.println("Du har intialiseret en ny sang.");
+        } else{
+            System.out.println("Du har ramt et else statement. Tide er: " + snapshot.toSeconds());
+            mediaPlayer.setStartTime(snapshot);
+        }
 
-    /**
-     * simply plays the song
-     */
-    public void playSong(){
+        mainController.updateIsPlayingLabel(songModels.get(index).getTitleProperty().get());
         mediaPlayer.play();
     }
+
+    public void pause(){
+        snapshot = mediaPlayer.getCurrentTime();
+        mediaPlayer.pause();
+        System.out.println(snapshot.toSeconds());
+    }
+
+    public void nextSong(){
+        mediaPlayer.stop();
+        setIndex(index+1);
+        initializeSong();
+        play(getIndex());
+
+    }
+
+    public void previousSong(){
+        mediaPlayer.stop();
+        setIndex(index-1);
+        initializeSong();
+        play(getIndex());
+    }
+
 
     /**
      * set the volume of the song
@@ -51,23 +82,36 @@ public class SongPlayer {
         }
     }
 
-    /**
-     * pause the music
-     */
-    public void pauseMusic(){
-        mediaPlayer.pause();
-    }
-
-    public boolean isPlaying(){
-        return mediaPlayer.getStatus().equals(MediaPlayer.Status.STOPPED);
+    private void initializeSong() {
+        String path = songModels.get(index).getPathToFileProperty().get();
+        File file = new File(path);
+        String MEDIA_URL = file.toURI().toString();
+        Media song = new Media(MEDIA_URL);
+        mediaPlayer = new MediaPlayer(song);
     }
 
     public MediaPlayer getMediaPlayer(){
-    return this.mediaPlayer;
+        return this.mediaPlayer;
     }
 
-    public void unPause(Duration time){
-        mediaPlayer.setStartTime(time);
-        playSong();
+    public boolean setIndex(int index){
+        if (index >= 0 && index < songModels.size()){
+            this.index = index;
+            return  true;
+        }
+        else setIndex(0);
+        return false;
+    }
+
+    public int getIndex(){
+        return index;
+    }
+
+    public SongModel getSongModel() {
+       return songModels.get(index);
+    }
+
+    public int getId() {
+        return id;
     }
 }
