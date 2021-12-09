@@ -2,7 +2,7 @@ package dal.interfaces;
 
 import be.Playlist;
 import be.Song;
-import dal.MyTunesException;
+import be.MyTunesException;
 import java.util.List;
 
 public interface IPlaylistRepository {

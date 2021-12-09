@@ -1,7 +1,7 @@
 package dal.interfaces;
 
 import be.Song;
-import dal.MyTunesException;
+import be.MyTunesException;
 import java.util.List;
 
 public interface ISongRepository {

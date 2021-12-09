@@ -2,7 +2,7 @@ package bll;
 
 import be.Playlist;
 import be.Song;
-import dal.MyTunesException;
+import be.MyTunesException;
 import dal.db.PlaylistDAO;
 import dal.interfaces.IPlaylistRepository;
 import java.io.IOException;

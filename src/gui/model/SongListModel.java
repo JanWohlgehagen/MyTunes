@@ -1,7 +1,7 @@
 package gui.model;
 
 import bll.SongManager;
-import dal.MyTunesException;
+import be.MyTunesException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.io.IOException;

@@ -1,6 +1,6 @@
 package gui.controller;
 
-import dal.MyTunesException;
+import be.MyTunesException;
 import gui.App;
 import gui.model.SongListModel;
 import javafx.collections.FXCollections;

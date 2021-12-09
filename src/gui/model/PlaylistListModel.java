@@ -3,7 +3,7 @@ package gui.model;
 import be.Playlist;
 import be.Song;
 import bll.PlaylistManager;
-import dal.MyTunesException;
+import be.MyTunesException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.io.IOException;

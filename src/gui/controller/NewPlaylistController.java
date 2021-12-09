@@ -1,6 +1,6 @@
 package gui.controller;
 
-import dal.MyTunesException;
+import be.MyTunesException;
 import gui.App;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

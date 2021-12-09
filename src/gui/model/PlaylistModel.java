@@ -1,7 +1,7 @@
 package gui.model;
 
 import be.Playlist;
-import dal.MyTunesException;
+import be.MyTunesException;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

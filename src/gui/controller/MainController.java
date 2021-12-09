@@ -1,6 +1,6 @@
 package gui.controller;
 
-import dal.MyTunesException;
+import be.MyTunesException;
 import gui.model.PlaylistListModel;
 import gui.model.PlaylistModel;
 import gui.model.SongListModel;
