@@ -14,6 +14,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -122,6 +124,54 @@ public class MainController implements Initializable {
         });
     }
 
+    /** =======================================================================================================
+        =============================================== BUTTONS ===============================================
+        ======================================================================================================= */
+
+    /**
+     * switches to picture of pause button and plays music either playing the old song or a new song.
+     *
+     * @param actionEvent runs when an action is performed on the button
+     */
+    public void handlePlayBtn(ActionEvent actionEvent) {
+        playSong();
+    }
+
+    private  void playSong(){
+        try {
+            if (songPlayer == null) {
+                songPlayer = new SongPlayer(tvSongsOnPlaylist.getItems(), playlistModel.getIdProperty().get());
+            } else if (tvPlaylists.getSelectionModel().getSelectedItem().getIdProperty().get() != songPlayer.getId()) {
+                songPlayer = new SongPlayer(tvSongsOnPlaylist.getItems(), playlistModel.getIdProperty().get());
+            }
+            btnPreviousSong.setDisable(false);
+            btnSkipSong.setDisable(false);
+            btnPause.setVisible(true);
+            btnPlay.setVisible(false);
+            sldVolume.setDisable(false);
+            progressBar.setDisable(false);
+            songPlayer.play(tvSongsOnPlaylist.getSelectionModel().getSelectedIndex());
+            updateProgBar();
+            songPlayer.setVolume(sldVolume.getValue());
+        } catch (Exception ex) {
+            displayMessage("Nothing selected. Please select a playlist and a song.");
+        }
+    }
+
+    /**
+     * switches to the play button picture
+     * @param actionEvent
+     */
+    public void handlePauseBtn(ActionEvent actionEvent) {
+        pauseSong();
+    }
+
+    private void pauseSong(){
+        btnPlay.setVisible(true);
+        btnPause.setVisible(false);
+        songPlayer.pause();
+        updateProgBar();
+    }
 
     /**
      * switch the scene to a different scene.
@@ -129,16 +179,7 @@ public class MainController implements Initializable {
      * @param actionEvent runs when an action happens on a button.
      */
     public void handleNewPlaylistBtn(ActionEvent actionEvent) {
-        sceneSwapper.sceneSwitch(new Stage(), "NewPlaylistVieww.fxml");
-    }
-
-
-    public void infoToNewPlaylist(String playlistName) throws MyTunesException{
-        try {
-            playlistListModel.createPlaylist(playlistName);
-        }catch (MyTunesException MyTex){
-            displayError(MyTex);
-        }
+        sceneSwapper.sceneSwitch(new Stage(), "NewPlaylistView.fxml");
     }
 
     /**
@@ -161,6 +202,10 @@ public class MainController implements Initializable {
      * @param actionEvent runs when an action is performed on the button.
      */
     public void handleDeletePlaylistBtn(ActionEvent actionEvent) {
+        deletePlaylist();
+    }
+
+    private void deletePlaylist(){
         if (getSelectedPlaylist() == null) {
             displayMessage("There is no playlist select, please select a playlist");
         } else {
@@ -180,6 +225,10 @@ public class MainController implements Initializable {
      * @param actionEvent runs when an action is called on the button
      */
     public void handleAscendSongInPlaylistBtn(ActionEvent actionEvent) {
+        ascendSong();
+    }
+
+    private void ascendSong(){
         if (getSelectedSongFromPlaylist() == null) {
             displayMessage("There is no song select, please select a song");
         } else {
@@ -195,6 +244,10 @@ public class MainController implements Initializable {
      * @param actionEvent runs when action is performed on the button.
      */
     public void handleDescendSongInPlaylistBtn(ActionEvent actionEvent) {
+        descendSong();
+    }
+
+    private void descendSong(){
         if (getSelectedSongFromPlaylist() == null) {
             displayMessage("There is no song select, please select a song");
         } else {
@@ -210,6 +263,10 @@ public class MainController implements Initializable {
      * @param actionEvent runs when an action is performed on a button.
      */
     public void handleAddSongToPlaylistBtn(ActionEvent actionEvent) {
+        addSongToPlaylist();
+    }
+
+    private void addSongToPlaylist(){
         SongModel songModel = getSelectedSong();
         PlaylistModel playlistModel = getSelectedPlaylist();
 
@@ -231,6 +288,10 @@ public class MainController implements Initializable {
      * @param actionEvent runs when an action is performed on the button.
      */
     public void handleDeleteSongInPlaylistBtn(ActionEvent actionEvent) {
+        deleteSongFromPlaylist();
+    }
+
+    private void deleteSongFromPlaylist(){
         if (getSelectedSongFromPlaylist() == null || getSelectedPlaylist() == null) {
             displayMessage("There is no song or playlist select, please select a song or playlist");
         } else {
@@ -244,14 +305,6 @@ public class MainController implements Initializable {
                 }
             }
         }
-    }
-
-    public void handleViewSongs(MouseEvent mouseEvent) {
-        if (getSelectedPlaylist() != null) {
-            tvSongsOnPlaylist.setItems(getSelectedPlaylist().getListOfSongs());
-            txtSongsInPlayList.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTitleProperty());
-        }
-        playlistModel = tvPlaylists.getSelectionModel().getSelectedItem();
     }
 
     /**
@@ -282,6 +335,10 @@ public class MainController implements Initializable {
      * @param actionEvent runs when an action is performed.
      */
     public void handleDeleteSongBtn(ActionEvent actionEvent) throws MyTunesException {
+        deleteSong();
+    }
+
+    private void deleteSong(){
         if (getSelectedSong() == null) {
             displayMessage("There is no song select, please select a song");
         } else {
@@ -293,6 +350,112 @@ public class MainController implements Initializable {
                 }
             }
         }
+    }
+
+    /**
+     * skips current song to next song
+     *
+     * @param actionEvent when an action is performed on button program will run
+     */
+    public void handleNextSongBtn(ActionEvent actionEvent) {
+        nextSong();
+    }
+
+    private void nextSong(){
+        btnPause.setVisible(true);
+        btnPlay.setVisible(false);
+        songPlayer.nextSong();
+        updateSelection();
+        updateProgBar();
+    }
+
+    /**
+     * goes back to previous song
+     *
+     * @param actionEvent will run when an action is called on the button
+     */
+    public void handlePreviousSongBtn(ActionEvent actionEvent){
+        previousSong();
+    }
+
+    private void previousSong(){
+        btnPause.setVisible(true);
+        btnPlay.setVisible(false);
+        songPlayer.previousSong();
+        tvSongsOnPlaylist.getSelectionModel().select(songPlayer.getIndex());
+        updateProgBar();
+    }
+
+
+
+
+    /** =======================================================================================================
+        ============================================ KEYBOARD INPUT ===========================================
+        ======================================================================================================= */
+
+    /**
+     * Takes input from the keyboard when the MainView (root BorderPane) is in focus.
+     * @param keyEvent
+     * @throws MyTunesException
+     */
+    public void HandleKeyboardInput(KeyEvent keyEvent) throws MyTunesException {
+        KeyCode keyCode = keyEvent.getCode(); //A key from the keyboard
+
+        switch (keyCode){
+            case F7 :
+            case SPACE :
+            case ENTER :
+                if (btnPause.isVisible()) //is the pause button is not visible it means play was pressed last
+                    pauseSong();
+                else
+                    playSong();
+                break;
+            case F6 :
+                if(!btnPreviousSong.isDisabled())
+                previousSong();
+                break;
+            case F8 :
+                if(!btnSkipSong.isDisabled())
+                nextSong();
+                break;
+            case PLUS :
+                addSongToPlaylist();
+                break;
+            case BACK_SPACE :
+            case DELETE :
+                if(tvPlaylists.isFocused())
+                    deletePlaylist();
+                else if(tvSongsOnPlaylist.isFocused())
+                    deleteSongFromPlaylist();
+                else if(tvSongs.isFocused())
+                    deleteSong();
+                break;
+        }
+    }
+
+
+    /** =======================================================================================================
+        ============================================== TABLEVIEWS =============================================
+        ======================================================================================================= */
+
+
+    public void infoToNewPlaylist(String playlistName) throws MyTunesException{
+        try {
+            playlistListModel.createPlaylist(playlistName);
+        }catch (MyTunesException MyTex){
+            displayError(MyTex);
+        }
+    }
+
+    /**
+     * Displays the songs of the playlist that is clicked in the tableview of playlists
+     */
+    public void handleViewSongs(MouseEvent mouseEvent) {
+        if (getSelectedPlaylist() != null) {
+            tvSongsOnPlaylist.setItems(getSelectedPlaylist().getListOfSongs());
+            txtSongsInPlayList.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTitleProperty());
+        }
+        playlistModel = tvPlaylists.getSelectionModel().getSelectedItem();
     }
 
     public PlaylistModel getSelectedPlaylist() {
@@ -307,6 +470,21 @@ public class MainController implements Initializable {
         return tvSongsOnPlaylist.getSelectionModel().getSelectedItem();
     }
 
+    public void handleTvSongsInPlaylistClicked(MouseEvent mouseEvent) {
+        tvSongs.getSelectionModel().clearSelection();
+    }
+
+    public void handleTvSongClicked(MouseEvent mouseEvent) {
+        tvSongsOnPlaylist.getSelectionModel().clearSelection();
+    }
+
+    public void updateSelection() {
+        tvSongsOnPlaylist.getSelectionModel().select(songPlayer.getIndex());
+    }
+
+
+
+
     public void infoToCreateSong(String title, String artist, String genre, double duration, String pathToFile) throws MyTunesException {
         try {
             songListModel.createSong(title, artist, genre, duration, pathToFile);
@@ -315,26 +493,10 @@ public class MainController implements Initializable {
         }
     }
 
-//____________________________________mediaPlayer___________________________________________
+    /** =======================================================================================================
+        ================================================ SLIDERS ==============================================
+        ======================================================================================================= */
 
-    /**
-     * sets volume og the songs that will be played
-     *
-     * @param dragEvent when you move the slider you change the volume
-     */
-    public void sldVolumeInput(MouseEvent dragEvent) {
-        if (songPlayer != null) {
-            songPlayer.setVolume(sldVolume.getValue());
-        }
-    }
-
-    public void handleTvSongsInPlaylistClicked(MouseEvent mouseEvent) {
-        tvSongs.getSelectionModel().clearSelection();
-    }
-
-    public void handleTvSongClicked(MouseEvent mouseEvent) {
-        tvSongsOnPlaylist.getSelectionModel().clearSelection();
-    }
 
     public double getProgBarValue() {
         return progressBar.getValue();
@@ -362,75 +524,22 @@ public class MainController implements Initializable {
         lblSongDuration.setText(songPlayer.getSongModel().getDurationString().get());
     }
 
+    /** =======================================================================================================
+        ================================================= LABELS ==============================================
+        ======================================================================================================= */
+
     public void updateIsPlayingLabel(String title) {
         lblCurrentSongPlaying.setText(title);
     }
 
     /**
-     * skips current song to next song
+     * sets volume og the songs that will be played
      *
-     * @param actionEvent when an action is performed on button program will run
+     * @param dragEvent when you move the slider you change the volume
      */
-    public void handleNextSongBtn(ActionEvent actionEvent) {
-        btnPause.setVisible(true);
-        btnPlay.setVisible(false);
-        songPlayer.nextSong();
-        updateSelection();
-        updateProgBar();
-    }
-
-    public void updateSelection() {
-        tvSongsOnPlaylist.getSelectionModel().select(songPlayer.getIndex());
-    }
-
-    /**
-     * goes back to previous song
-     *
-     * @param actionEvent will run when an action is called on the button
-     */
-    public void handlePreviousSongBtn(ActionEvent actionEvent){
-        btnPause.setVisible(true);
-        btnPlay.setVisible(false);
-        songPlayer.previousSong();
-        tvSongsOnPlaylist.getSelectionModel().select(songPlayer.getIndex());
-        updateProgBar();
-    }
-
-    /**
-     * switches to picture of pause button and plays music either playing the old song or a new song.
-     *
-     * @param actionEvent runs when an action is performed on the button
-     */
-    public void handlePlayBtn(ActionEvent actionEvent) {
-        try {
-            if (songPlayer == null) {
-                songPlayer = new SongPlayer(tvSongsOnPlaylist.getItems(), playlistModel.getIdProperty().get());
-            } else if (tvPlaylists.getSelectionModel().getSelectedItem().getIdProperty().get() != songPlayer.getId()) {
-                songPlayer = new SongPlayer(tvSongsOnPlaylist.getItems(), playlistModel.getIdProperty().get());
-            }
-            btnPreviousSong.setDisable(false);
-            btnSkipSong.setDisable(false);
-            btnPause.setVisible(true);
-            btnPlay.setVisible(false);
-            sldVolume.setDisable(false);
-            progressBar.setDisable(false);
-            songPlayer.play(tvSongsOnPlaylist.getSelectionModel().getSelectedIndex());
-            updateProgBar();
+    public void sldVolumeInput(MouseEvent dragEvent) {
+        if (songPlayer != null) {
             songPlayer.setVolume(sldVolume.getValue());
-        } catch (Exception ex) {
-            displayMessage("Nothing selected. Please select a playlist and a song.");
         }
-    }
-
-    /**
-     * switches to the play button picture
-     *
-     * @param actionEvent
-     */
-    public void handlePauseBtn(ActionEvent actionEvent) {
-        btnPlay.setVisible(true);
-        btnPause.setVisible(false);
-        songPlayer.pause();
-        updateProgBar();
     }
 }
