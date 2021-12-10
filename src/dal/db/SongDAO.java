@@ -1,7 +1,7 @@
 package dal.db;
 
 import be.Song;
-import dal.MyTunesException;
+import be.MyTunesException;
 import dal.interfaces.ISongRepository;
 import java.io.IOException;
 import java.sql.*;
@@ -40,7 +40,7 @@ public class SongDAO implements ISongRepository {
                 }
             }
         }  catch (SQLException SQLex) {
-           throw new MyTunesException(ERROR_STRING, SQLex.getCause());
+           throw new MyTunesException(ERROR_STRING, SQLex.fillInStackTrace());
         }
         return allSongsList;
     }
@@ -67,14 +67,14 @@ public class SongDAO implements ISongRepository {
                 }
             }
         } catch (SQLException SQLex) {
-            throw new MyTunesException(ERROR_STRING, SQLex.getCause());
+            throw new MyTunesException(ERROR_STRING, SQLex.fillInStackTrace());
         }
         return null;
     }
 
     @Override
     public void updateSong(Song song) throws MyTunesException {
-        try(Connection connection = databaseConnector.getConnection()){
+        try(Connection connection = databaseConnector.getConnection()) {
             String sql = "UPDATE Song SET title = ?, filePath=?, artist=?, genre=?, duration=? WHERE Id=?;";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, song.getTitle());
@@ -85,28 +85,27 @@ public class SongDAO implements ISongRepository {
             preparedStatement.setInt(6, song.getId());
 
             int affectedRows = preparedStatement.executeUpdate();
-
-            if(affectedRows != 1){
-                throw new MyTunesException();
+            if(affectedRows != 1) {
+                throw new MyTunesException(affectedRows + " affectedRows  in DAL");
             }
         } catch (SQLException SQLex) {
-            throw new MyTunesException(ERROR_STRING, SQLex.getCause());
+            throw new MyTunesException(ERROR_STRING, SQLex.fillInStackTrace());
         }
     }
 
     @Override
     public void deleteSong(Song song) throws MyTunesException {
         try(Connection connection = databaseConnector.getConnection()){
-            String sql = "DELETE FROM Song WHERE Id=?;";
+            String sql = "DELETE FROM Song WHERE Id=(?);";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, song.getId());
             int affectedRows = preparedStatement.executeUpdate();
 
             if(affectedRows != 1){
-                throw new MyTunesException();
+                throw new MyTunesException(affectedRows + " affectedRows in DAL");
             }
         } catch (SQLException SQLex) {
-            throw new MyTunesException(ERROR_STRING, SQLex.getCause());
+            throw new MyTunesException(ERROR_STRING, SQLex.fillInStackTrace());
         }
     }
 }

@@ -3,26 +3,19 @@ package gui.model;
 import be.Playlist;
 import be.Song;
 import bll.PlaylistManager;
-import dal.MyTunesException;
+import be.MyTunesException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import java.io.IOException;
 
 public class PlaylistListModel {
     private PlaylistManager playlistManager;
     private ObservableList<PlaylistModel> playListToBeViewed;
 
-    public PlaylistListModel() throws IOException, MyTunesException {
+    public PlaylistListModel() throws MyTunesException {
         playlistManager = new PlaylistManager();
 
-        playListToBeViewed = FXCollections.observableArrayList(playlistManager.getAllPlaylists().stream().map(playList -> {
-            try {
-                return new PlaylistModel(playList);
-            } catch (IOException | MyTunesException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }).toList());
+        playListToBeViewed = FXCollections.observableArrayList(playlistManager.getAllPlaylists().stream().map(playList ->
+                new PlaylistModel(playList)).toList());
 
     }
 
@@ -30,7 +23,7 @@ public class PlaylistListModel {
         return playListToBeViewed;
     }
 
-    public void createPlaylist(String playlistName) throws MyTunesException, IOException {
+    public void createPlaylist(String playlistName) throws MyTunesException {
         Playlist playlist = playlistManager.createPlaylist(playlistName);
         playListToBeViewed.add(new PlaylistModel(playlist));
     }

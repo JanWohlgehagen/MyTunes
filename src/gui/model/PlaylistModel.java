@@ -1,7 +1,7 @@
 package gui.model;
 
 import be.Playlist;
-import dal.MyTunesException;
+import be.MyTunesException;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,7 +22,7 @@ public class PlaylistModel {
     private StringProperty durationString = new SimpleStringProperty();
 
 
-    public PlaylistModel(Playlist playlist) throws IOException, MyTunesException {
+    public PlaylistModel(Playlist playlist) {
         this.getIdProperty().set(playlist.getId());
         this.getNameProperty().set(playlist.getName());
         this.getDurationProperty().set(getTotalTime());
@@ -36,13 +36,28 @@ public class PlaylistModel {
         return durationString;
     }
 
-
     public StringProperty getNameProperty() {
         return name;
     }
 
+    public void setNameProperty(String name) {
+        getNameProperty().set(name);
+    }
+
     public ObservableList<SongModel> getListOfSongs() {
         return allSongs;
+    }
+
+    public IntegerProperty getTotalSongsProperty() {
+        return totalSongs;
+    }
+
+    public DoubleProperty getDurationProperty() {
+        return duration;
+    }
+
+    public IntegerProperty getIdProperty() {
+        return id;
     }
 
     public void AscendSongInPlaylist(SongModel selectedSongModel) {
@@ -66,18 +81,6 @@ public class PlaylistModel {
             allSongs.set(indexOfAboveSelectedSong, selectedSongModel);
             allSongs.set(indexOfSelectedSongModel, songModelOfAboveSelectedSong);
         } else displayMessage("It is at the bottom");
-    }
-
-    public IntegerProperty getTotalSongsProperty() {
-        return totalSongs;
-    }
-
-    public DoubleProperty getDurationProperty() {
-        return duration;
-    }
-
-    public IntegerProperty getIdProperty() {
-        return id;
     }
 
     public void removeSongFromList(SongModel songModel) {
@@ -106,10 +109,6 @@ public class PlaylistModel {
             totalTime += songModel.getDurationProperty().get();
         }
         return totalTime;
-    }
-
-    public void setNameProperty(String name) {
-        getNameProperty().set(name);
     }
 
     public Playlist convertToPlaylist() {

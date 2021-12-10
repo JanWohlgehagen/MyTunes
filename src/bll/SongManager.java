@@ -3,11 +3,13 @@ package bll;
 import be.Song;
 import bll.util.ISearcher;
 import bll.util.SongSearcher;
-import dal.MyTunesException;
+import be.MyTunesException;
 import dal.db.SongDAO;
 import dal.interfaces.ISongRepository;
 import java.io.IOException;
 import java.util.List;
+
+import static be.DisplayMessage.displayError;
 
 public class SongManager {
 
@@ -19,7 +21,7 @@ public class SongManager {
         try {
             songDAO = new SongDAO();
         } catch (IOException e) {
-            e.printStackTrace();
+            displayError(new MyTunesException(songDAO.ERROR_STRING, e.fillInStackTrace()));
         }
     }
 

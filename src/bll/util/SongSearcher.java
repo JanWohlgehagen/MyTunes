@@ -19,7 +19,7 @@ public class SongSearcher implements ISearcher {
         List<Song> searchResult = new ArrayList<>();
 
         for (Song song : searchBase) {
-            if(compareToSongTitle(song, query) || compareToSongArtist(song, query) || compareToSongGerne(song, query))
+            if(compareToSongTitle(song, query) || compareToSongArtist(song, query))
             {
                 searchResult.add(song);
             }
@@ -35,10 +35,5 @@ public class SongSearcher implements ISearcher {
     @Override
     public boolean compareToSongArtist(Song song, String query) {
         return song.getArtist().toLowerCase().contains(query.toLowerCase());
-    }
-
-    @Override
-    public boolean compareToSongGerne(Song song, String query) {
-        return song.getGenre().toLowerCase().contains(query.toLowerCase());
     }
 }

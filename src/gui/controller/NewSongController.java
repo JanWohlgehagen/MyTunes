@@ -1,6 +1,6 @@
 package gui.controller;
 
-import dal.MyTunesException;
+import be.MyTunesException;
 import gui.App;
 import gui.model.SongListModel;
 import javafx.collections.FXCollections;
@@ -89,7 +89,7 @@ public class NewSongController implements Initializable {
         }
     }
 
-    public void handleSaveBtn(ActionEvent actionEvent) throws MyTunesException, IOException {
+    public void handleSaveBtn(ActionEvent actionEvent) throws MyTunesException {
         saveSong();
     }
 

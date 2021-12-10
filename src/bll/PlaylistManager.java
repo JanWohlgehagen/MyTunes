@@ -2,11 +2,13 @@ package bll;
 
 import be.Playlist;
 import be.Song;
-import dal.MyTunesException;
+import be.MyTunesException;
 import dal.db.PlaylistDAO;
 import dal.interfaces.IPlaylistRepository;
 import java.io.IOException;
 import java.util.List;
+
+import static be.DisplayMessage.displayError;
 
 public class PlaylistManager {
 
@@ -16,7 +18,7 @@ public class PlaylistManager {
         try {
             playListDAO = new PlaylistDAO();
         } catch (IOException e) {
-            e.printStackTrace();
+            displayError(new MyTunesException(playListDAO.ERROR_STRING, e.fillInStackTrace()));
         }
     }
 

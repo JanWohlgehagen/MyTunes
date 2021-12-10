@@ -15,7 +15,6 @@ public class SongModel {
     private StringProperty pathToFile = new SimpleStringProperty();
     private DoubleProperty duration = new SimpleDoubleProperty();
     private IntegerProperty id = new SimpleIntegerProperty();
-    private SongManager songManager;
 
 
     public SongModel(Song song) {
@@ -27,9 +26,7 @@ public class SongModel {
         this.getPathToFileProperty().set(song.getPathToFile());
     }
 
-    public SongModel() {
-        songManager = new SongManager();
-    }
+    public SongModel() {}
 
     public ObservableList<SongModel> convertSongToSongmodel(List<Song> songs) {
         return FXCollections.observableArrayList(songs.stream().map(song -> new SongModel(song)).toList());
