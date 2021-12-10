@@ -99,16 +99,13 @@
 
 .slider .track {
     -fx-background-color: linear-gradient(to right, red 0%, red 50%, -fx-base 50%, -fx-base 100%);
+    -fx-background-color: -slider-track-color ;
+    -fx-border-radius: 3;
 }
 
 .slider {
     -slider-filled-track-color: red ;
     -slider-track-color: -slider-filled-track-color ;
-}
-
-.slider .track {
-    -fx-background-color: -slider-track-color ;
-    -fx-border-radius: 3;
 }
 
 .slider:disabled{
