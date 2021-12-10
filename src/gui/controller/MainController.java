@@ -134,7 +134,7 @@ public class MainController implements Initializable {
             return String.format("-slider-track-color: linear-gradient(to right, -slider-filled-track-color 0%%, "
                             + "-slider-filled-track-color %f%%, -fx-base %f%%, -fx-base 100%%);",
                     percentage, percentage);
-        }, sldVolume.valueProperty(), sldVolume.minProperty(), sldVolume.maxProperty())); // hello
+        }, sldVolume.valueProperty(), sldVolume.minProperty(), sldVolume.maxProperty()));
     }
 
 
