@@ -1,5 +1,6 @@
 package be;
 
+import bll.util.Log;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -10,6 +11,7 @@ import java.util.Arrays;
 import java.util.Optional;
 
 public class DisplayMessage {
+    private static Log log = new Log();
 
     /**
      * Displays errormessages to the user.
@@ -19,36 +21,32 @@ public class DisplayMessage {
     public static void displayError(Exception ex) {
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.ERROR);
+            addImage(alert);
             alert.setTitle("Error: Something went wrong");
             alert.setHeaderText(ex.getMessage());
             alert.setContentText(String.valueOf(ex.getCause()));
-            Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-            Image image = new Image("/gui/Images/MyTunesLogo.png");
-            stage.getIcons().add(image);
             alert.showAndWait();
+            log.createLog(String.valueOf(ex.getCause()));
         });
     }
 
     public static boolean displayErrorSTOP(Exception ex) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
+        addImage(alert);
         alert.setTitle("Error: Something went wrong");
         alert.setHeaderText(ex.getMessage());
         alert.setContentText(String.valueOf(ex.getCause()));
-        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-        Image image = new Image("/gui/Images/MyTunesLogo.png");
-        stage.getIcons().add(image);
+        log.createLog(String.valueOf(ex.getCause()));
         Optional<ButtonType> result = alert.showAndWait();
         return result.get() == ButtonType.OK;
     }
 
     public static boolean displayWarning (String message){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        addImage(alert);
         alert.setTitle("Confirmation Dialog");
         alert.setHeaderText(message);
         alert.setContentText("Press OK to continue.");
-        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-        Image image = new Image("/gui/Images/MyTunesLogo.png");
-        stage.getIcons().add(image);
         Optional<ButtonType> result = alert.showAndWait();
         return result.get() == ButtonType.OK;
     }
@@ -56,12 +54,16 @@ public class DisplayMessage {
     public static void displayMessage(String message) {
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            addImage(alert);
             alert.setTitle("Message");
-            Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-            Image image = new Image("/gui/Images/MyTunesLogo.png");
-            stage.getIcons().add(image);
             alert.setHeaderText(message);
             alert.showAndWait();
         });
+    }
+
+    private static void addImage(Alert alert){
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        Image image = new Image("/gui/Images/MyTunesLogo.png");
+        stage.getIcons().add(image);
     }
 }

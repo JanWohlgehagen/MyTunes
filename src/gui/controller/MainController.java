@@ -129,7 +129,7 @@ public class MainController implements Initializable {
      * @param actionEvent runs when an action happens on a button.
      */
     public void handleNewPlaylistBtn(ActionEvent actionEvent) {
-        sceneSwapper.sceneSwitch(new Stage(), "NewPlaylistView.fxml");
+        sceneSwapper.sceneSwitch(new Stage(), "NewPlaylistVieww.fxml");
     }
 
 

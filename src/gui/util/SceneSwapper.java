@@ -32,7 +32,7 @@ public class SceneSwapper {
             stage.setScene(ViewScene);
             stage.show();
         }catch (IOException IOex){
-            displayError(new MyTunesException("Cant find the stage -> " + fxmlClassName));
+            displayError(new MyTunesException("Cant find the stage -> " + fxmlClassName, IOex.fillInStackTrace()));
         }
     }
 }
