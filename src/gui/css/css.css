@@ -9,6 +9,38 @@
     -fx-border-radius: 5;
 }
 
+.toggle-button {
+    -fx-background-image: url("../Images/shuffle.png");
+    -fx-background-color: transparent;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 20 20;
+    -fx-background-position: center;
+
+    -fx-border-color: black;
+    -fx-border-radius: 5;
+}
+.toggle-button:selected {
+    -fx-background-image: url("../images/shuffle.png");
+    -fx-background-color: transparent;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 20 20;
+    -fx-background-position: center;
+
+    -fx-border-color: blue;
+    -fx-border-radius: 10;
+}
+.toggle-button:selected:focused {
+    -fx-background-image: url("../images/shuffle.png");
+    -fx-background-color: transparent;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 20 20;
+    -fx-background-position: center;
+
+    -fx-border-color: blue;
+    -fx-border-radius: 10;
+}
+
+
 #btnPlay {
     -fx-background-image: url("../images/play.png");
     -fx-background-size: 45 45;
@@ -17,6 +49,7 @@
     -fx-border-radius: 45px;
     -fx-opacity: 0.8;
 }
+
 #btnPause{
     -fx-background-image: url("../images/pausereal.PNG");
     -fx-background-size: 45 45;

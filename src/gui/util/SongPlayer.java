@@ -6,8 +6,9 @@ import gui.model.SongModel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
+
 import java.io.File;
-import java.util.List;
+import java.util.*;
 
 /**
  * Class SongPlayer plays a list of songs, and holds the logic for playing, pausing and navigating through a playlist.
@@ -19,20 +20,29 @@ public class SongPlayer {
     private Duration snapshot;
     private int id = -1;
     MainController mainController;
+    private List<SongModel> shuffledSongs = new ArrayList<>();
 
     /**
      * constructor for a song takes a list of SongModels
      *
-     * @param songModels
+     * @param songModels gets a list of SongModel and an id
      */
     public SongPlayer(List<SongModel> songModels, int id) {
         this.songModels = songModels;
         this.id = id;
         mainController = new App().getController();
         snapshot = new Duration(0.0);
+        shuffleSong();
         initializeSong();
     }
 
+    /**
+     *  Plays a song
+     *
+     * checks for if the song is the same song
+     * checks if the btntoggleshuffle is selected.
+     * @param index revices the index of the song, than is wanted to be played.
+     */
     public void play(int index) {
         if (index != this.index) {
             setIndex(index);
@@ -40,15 +50,26 @@ public class SongPlayer {
         } else {
             mediaPlayer.setStartTime(snapshot);
         }
-        mainController.updateIsPlayingLabel(songModels.get(index).getTitleProperty().get());
+        if (mainController.btnToggleShuffle.isSelected()) {
+            mainController.updateIsPlayingLabel(shuffledSongs.get(index).getTitleProperty().get());
+        } else {
+            mainController.updateIsPlayingLabel(songModels.get(index).getTitleProperty().get());
+        }
         mediaPlayer.play();
     }
 
+    /**
+     * pause the music and takes a snapshot of the time where the Media Player was.
+     */
     public void pause() {
         snapshot = mediaPlayer.getCurrentTime();
         mediaPlayer.pause();
     }
 
+    /**
+     * goes one song forward
+     * by using the set index to go one song forward. if possible.
+     */
     public void nextSong() {
         mediaPlayer.stop();
         setIndex(index + 1);
@@ -58,21 +79,25 @@ public class SongPlayer {
 
     }
 
-    public void barDragStart() {
-        mediaPlayer.pause();
-    }
-
-    public void barDragEnd() {
-        mediaPlayer.seek(Duration.seconds((mainController.getProgBarValue() / 100) * mediaPlayer.getTotalDuration().toSeconds()));
-        mediaPlayer.play();
-    }
-
+    /**
+     * goes one song back.
+     * by using the set index to go one song backwards, if possible.
+     */
     public void previousSong() {
         mediaPlayer.stop();
         setIndex(index - 1);
         snapshot = new Duration(0.0);
         initializeSong();
         play(getIndex());
+    }
+
+    /**
+     * shuffles all the songs into a ShuffledSongs List.
+     */
+    public void shuffleSong() {
+        shuffledSongs.addAll(songModels);
+        Collections.shuffle(shuffledSongs);
+
     }
 
 
@@ -89,8 +114,31 @@ public class SongPlayer {
         }
     }
 
+    /**
+     * pauses the Song / Media Player.
+     * used for when user have started a drag the music will pause.
+     */
+    public void barDragStart() {
+        mediaPlayer.pause();
+    }
+
+    /**
+     * start the music at specific time in the song.
+     * uses for when user end a drag event we will resume the Media Player where the user dropped slider.
+     */
+    public void barDragEnd() {
+        mediaPlayer.seek(Duration.seconds((mainController.getProgBarValue() / 100) * mediaPlayer.getTotalDuration().toSeconds()));
+        mediaPlayer.play();
+    }
+
+    /**
+     * we initialize the a song ready to be played. we also use a lambda to check for when the song is finished playing
+     */
     private void initializeSong() {
         String path = songModels.get(index).getPathToFileProperty().get();
+        if (mainController.btnToggleShuffle.isSelected()) {
+            path = shuffledSongs.get(index).getPathToFileProperty().get();
+        }
         File file = new File(path);
         String MEDIA_URL = file.toURI().toString();
         Media song = new Media(MEDIA_URL);
@@ -100,13 +148,25 @@ public class SongPlayer {
             nextSong();
             mainController.updateProgBar();
             mainController.updateSelection();
+            mainController.setSongVolume();
         });
     }
 
+    /**
+     * to access the media Player from Main controller.
+     *
+     * @return the mediaplayer we are currently using.
+     */
     public MediaPlayer getMediaPlayer() {
         return this.mediaPlayer;
     }
 
+    /**
+     * @param index, gets an index for the song
+     *               checks wether its possible to place the index.
+     * @return returns true if the setindex passes otherwise it returns false and set the index to 0.
+     * first song in.
+     */
     public boolean setIndex(int index) {
         if (index >= 0 && index < songModels.size()) {
             this.index = index;
@@ -115,14 +175,37 @@ public class SongPlayer {
         return false;
     }
 
+    /**
+     * @return the int index of the song on the tableview.
+     */
+    public int getShuffledSongIndex() {
+
+        for (int i = 0; i < songModels.size(); i++) {
+            if (songModels.get(i).getIdProperty().equals(shuffledSongs.get(index).getIdProperty())) {
+                return i;
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     * @return the int index of the song, what position the song has on the tableview.
+     */
     public int getIndex() {
         return index;
     }
 
+    /**
+     * @return SongModel Instance of the song we are currently playing
+     */
     public SongModel getSongModel() {
         return songModels.get(index);
     }
 
+    /**
+     * @return
+     */
     public int getId() {
         return id;
     }
