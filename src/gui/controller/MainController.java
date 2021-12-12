@@ -523,6 +523,21 @@ public class MainController implements Initializable {
         btnPlay.setVisible(false);
     }
 
+    /**
+     * sets volume og the songs that will be played
+     *
+     * @param dragEvent when you move the slider you change the volume
+     */
+    public void sldVolumeInput(MouseEvent dragEvent) {
+        if (songPlayer != null) {
+            setSongVolume();
+        }
+    }
+
+    public void setSongVolume() {
+        songPlayer.setVolume(sldVolume.getValue());
+    }
+
     public void updateProgBar() {
         songPlayer.getMediaPlayer().currentTimeProperty().addListener(new ChangeListener<Duration>() {
             double totalSongDuration = songPlayer.getSongModel().getDurationProperty().get();
@@ -545,20 +560,5 @@ public class MainController implements Initializable {
 
     public void updateIsPlayingLabel(String title) {
         lblCurrentSongPlaying.setText(title);
-    }
-
-    /**
-     * sets volume og the songs that will be played
-     *
-     * @param dragEvent when you move the slider you change the volume
-     */
-    public void sldVolumeInput(MouseEvent dragEvent) {
-        if (songPlayer != null) {
-            setSongVolume();
-        }
-    }
-
-    public void setSongVolume() {
-        songPlayer.setVolume(sldVolume.getValue());
     }
 }
