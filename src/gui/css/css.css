@@ -163,5 +163,11 @@
    -fx-opacity: 1;
 }
 
+.titleLabel{
+    -fx-background-color:  linear-gradient(to bottom, #7d7a79, white);
+}
 
+.bottomPane{
+    -fx-background-color:  linear-gradient(to top, #7d7a79, white);
+}
 

@@ -19,7 +19,7 @@
    <children>
       <AnchorPane prefHeight="525.0" prefWidth="896.0" stylesheets="@../css/css.css">
          <children>
-            <Label fx:id="lblCurrentSongPlaying1" alignment="TOP_CENTER" contentDisplay="CENTER" prefHeight="110.0" prefWidth="896.0" style="-fx-background-color: linear-gradient(to bottom, #7d7a79, white);" text="MyTunes!" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <Label fx:id="lblCurrentSongPlaying1" alignment="TOP_CENTER" contentDisplay="CENTER" prefHeight="110.0" prefWidth="896.0" styleClass="titleLabel" text="MyTunes!" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <font>
                   <Font size="24.0" />
                </font>
@@ -112,7 +112,7 @@
       </AnchorPane>
       <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="110.0" prefWidth="896.0">
          <children>
-            <AnchorPane maxHeight="-Infinity" prefHeight="110.0" prefWidth="896.0" style="-fx-background-color: linear-gradient(to top, #7d7a79, white);" HBox.hgrow="SOMETIMES">
+            <AnchorPane maxHeight="-Infinity" prefHeight="110.0" prefWidth="896.0" styleClass="bottomPane" HBox.hgrow="SOMETIMES">
                <children>
                   <HBox alignment="CENTER" layoutX="327.0" layoutY="19.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="47.0" spacing="15.0" AnchorPane.bottomAnchor="44.0" AnchorPane.topAnchor="19.0">
                      <children>
