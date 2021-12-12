@@ -1,3 +1,7 @@
+.root{
+    -fx-background-color: white;
+}
+
 .button:hover {
     -fx-border-width: 2;
 }
@@ -73,6 +77,31 @@
     -fx-border-radius: 25;
     -fx-background-position: center;
     -fx-opacity: 0.8;
+}
+
+#btnVolume{
+    -fx-background-image: url("../Images/volume.png");
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-size: 30 30;
+    -fx-background-position: center;
+    -fx-border-width: 0;
+    -fx-opacity: 0.8;
+}
+
+#btnVolume:hover{
+    -fx-scale-y: 1;
+    -fx-scale-x: 1;
+    -fx-border-width: 0;
+}
+
+.btnLogo{
+    -fx-opacity: 1;
+    -fx-background-image: url("../Images/MyTunesLogo.png");
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-size: 40 40;
+    -fx-background-position: center;
 }
 
 #btnAddSongToPlaylist{

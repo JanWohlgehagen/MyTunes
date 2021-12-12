@@ -10,12 +10,15 @@ import gui.util.SongPlayer;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -27,7 +30,6 @@ import static be.DisplayMessage.*;
 
 public class MainController implements Initializable {
 
-    public Button btnPause;
     public ToggleButton btnToggleShuffle;
     @FXML
     private Label lblSongProgress;
@@ -65,6 +67,10 @@ public class MainController implements Initializable {
     @FXML
     private Button btnPlay;
     @FXML
+    private Button btnPause;
+    @FXML
+    private Button btnVolume;
+    @FXML
     private TextField txtSearch;
     @FXML
     private Slider sldVolume;
@@ -72,6 +78,8 @@ public class MainController implements Initializable {
     private Label lblCurrentSongPlaying;
     @FXML
     private Slider progressBar;
+    @FXML
+    private HBox hboxVolume;
 
     private SceneSwapper sceneSwapper;
     private SongPlayer songPlayer;
@@ -87,14 +95,11 @@ public class MainController implements Initializable {
             sceneSwapper = new SceneSwapper();
             songListModel = new SongListModel();
             playlistListModel = new PlaylistListModel();
-
         } catch (MyTunesException DALex) {
             if (displayErrorSTOP(DALex)) {
                 System.exit(0);
             }
         }
-
-
     }
 
     @Override
@@ -114,12 +119,32 @@ public class MainController implements Initializable {
         txtSongs.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTotalSongsProperty().asObject());
         txtTime.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getDurationStringProperty());
 
+        //hides the volume slider initially
+        hboxVolume.getChildren().remove(sldVolume);
+
         // Search in all songs
         txtSearch.textProperty().addListener((observableValue, oldValue, newValue) -> {
             try {
                 songListModel.searchSong(newValue);
             } catch (MyTunesException DALex) {
                 displayError(DALex);
+            }
+        });
+
+        btnVolume.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if(hboxVolume.lookup("#sldVolume") == null){
+                    sldVolume.setVisible(true);
+                    hboxVolume.getChildren().add(sldVolume);
+                }
+            }
+        });
+
+        hboxVolume.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                hboxVolume.getChildren().remove(sldVolume);
             }
         });
     }
@@ -389,7 +414,6 @@ public class MainController implements Initializable {
         updateProgBar();
         setSongVolume();
     }
-
 
     /** =======================================================================================================
      ============================================ KEYBOARD INPUT ===========================================
