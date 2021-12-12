@@ -519,6 +519,8 @@ public class MainController implements Initializable {
 
     public void handleProgBarReleased(MouseEvent event) {
         songPlayer.barDragEnd();
+        btnPause.setVisible(true);
+        btnPlay.setVisible(false);
     }
 
     public void updateProgBar() {
