@@ -165,6 +165,7 @@ public class MainController implements Initializable {
     private void playSong() {
         try {
             if (songPlayer == null) {
+                System.out.println(tvSongsOnPlaylist.getItems());
                 songPlayer = new SongPlayer(tvSongsOnPlaylist.getItems(), playlistModel.getIdProperty().get());
             } else if (tvPlaylists.getSelectionModel().getSelectedItem().getIdProperty().get() != songPlayer.getId()) {
                 songPlayer = new SongPlayer(tvSongsOnPlaylist.getItems(), playlistModel.getIdProperty().get());

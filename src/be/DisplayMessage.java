@@ -19,7 +19,7 @@ public class DisplayMessage {
     public static void displayError(Exception ex) {
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            addImage(alert);
+            addIicon(alert);
             alert.setTitle("Error: Something went wrong");
             alert.setHeaderText(ex.getMessage());
             alert.setContentText(String.valueOf(ex.getCause()));
@@ -31,11 +31,11 @@ public class DisplayMessage {
     /**
      * displays error to the user.
      * @param ex the exception
-     *  @return true if user have clicked ok. false if user not clicked ok
+     *  @return true if user have clicked ok. false if user clicked cansel
      */
     public static boolean displayErrorSTOP(Exception ex) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        addImage(alert);
+        addIicon(alert);
         alert.setTitle("Error: Something went wrong");
         alert.setHeaderText(ex.getMessage());
         alert.setContentText(String.valueOf(ex.getCause()));
@@ -47,11 +47,11 @@ public class DisplayMessage {
     /**
      *  used for getting confirmation from user thet they want to perform a certain action.
      * @param message the exception message.
-     * @return true if user have clicked ok. false if user not clicked ok // TODO right tobias?
+     * @return true if user have clicked ok. false if user clicked cansel
      */
     public static boolean displayWarning (String message){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        addImage(alert);
+        addIicon(alert);
         alert.setTitle("Confirmation Dialog");
         alert.setHeaderText(message);
         alert.setContentText("Press OK to continue.");
@@ -66,7 +66,7 @@ public class DisplayMessage {
     public static void displayMessage(String message) {
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            addImage(alert);
+            addIicon(alert);
             alert.setTitle("Message");
             alert.setHeaderText(message);
             alert.showAndWait();
@@ -76,9 +76,8 @@ public class DisplayMessage {
     /**
      * adds a image as a icon in error message.
      * @param alert the alert that we want to add image to.
-     *              TODO maybe rename to icon for better understanding.
      */
-    private static void addImage(Alert alert){
+    private static void addIicon(Alert alert){
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         Image image = new Image("/gui/Images/MyTunesLogo.png");
         stage.getIcons().add(image);

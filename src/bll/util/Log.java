@@ -33,9 +33,4 @@ public class Log {
             displayError(MyTex);
         }
     }
-
-    public static void main(String[] args) {
-        Log log = new Log();
-        System.out.println(log.getDate());
-    }
 }

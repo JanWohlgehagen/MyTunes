@@ -12,6 +12,8 @@ import javafx.util.Duration;
 import java.io.File;
 import java.util.*;
 
+import static be.DisplayMessage.displayError;
+
 /**
  * Class SongPlayer plays a list of songs, and holds the logic for playing, pausing and navigating through a playlist.
  */
@@ -60,7 +62,7 @@ public class SongPlayer {
             }
             mediaPlayer.play();
         }catch (Exception ex) {
-            DisplayMessage.displayError(ex);
+            displayError(ex);
         }
     }
 
@@ -76,7 +78,7 @@ public class SongPlayer {
      * goes one song forward
      * by using the set index to go one song forward. if possible.
      */
-    public void nextSong() {
+    public void nextSong(){
         mediaPlayer.stop();
         setIndex(index + 1);
         snapshot = new Duration(0.0);
@@ -140,22 +142,26 @@ public class SongPlayer {
     /**
      * we initialize the a song ready to be played. we also use a lambda to check for when the song is finished playing
      */
-    private void initializeSong() {
-        String path = songModels.get(index).getPathToFileProperty().get();
-        if (mainController.btnToggleShuffle.isSelected()) {
-            path = shuffledSongs.get(index).getPathToFileProperty().get();
-        }
-        File file = new File(path);
-        String MEDIA_URL = file.toURI().toString();
-        Media song = new Media(MEDIA_URL);
-        mediaPlayer = new MediaPlayer(song);
+    private void initializeSong(){
+        try {
+            String path = songModels.get(index).getPathToFileProperty().get();
+            if (mainController.btnToggleShuffle.isSelected()) {
+                path = shuffledSongs.get(index).getPathToFileProperty().get();
+            }
+            File file = new File(path);
+            String MEDIA_URL = file.toURI().toString();
+            Media song = new Media(MEDIA_URL);
+            mediaPlayer = new MediaPlayer(song);
 
-        mediaPlayer.setOnEndOfMedia(() -> {
-            nextSong();
-            mainController.updateProgBar();
-            mainController.updateSelection();
-            mainController.setSongVolume();
-        });
+            mediaPlayer.setOnEndOfMedia(() -> {
+                nextSong();
+                mainController.updateProgBar();
+                mainController.updateSelection();
+                mainController.setSongVolume();
+            });
+        }catch (Exception ex){
+            displayError(ex);
+        }
     }
 
     /**
