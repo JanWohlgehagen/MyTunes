@@ -18,7 +18,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -31,6 +30,7 @@ import static be.DisplayMessage.*;
 public class MainController implements Initializable {
 
     public ToggleButton btnToggleShuffle;
+    public Button btnSøg;
     @FXML
     private Label lblSongProgress;
     @FXML
@@ -38,7 +38,7 @@ public class MainController implements Initializable {
     @FXML
     private TableView<SongModel> tvSongsOnPlaylist;
     @FXML
-    private TableColumn<SongModel, String> txtSongsInPlayList;
+    private TableColumn<SongModel, String> tcSongsInPlayList;
 
     @FXML
     private TableView<SongModel> tvSongs;
@@ -49,16 +49,16 @@ public class MainController implements Initializable {
     @FXML
     private TableColumn<SongModel, String> tcCategory;
     @FXML
-    private TableColumn<SongModel, String> tcTime;
+    private TableColumn<SongModel, String> tcTimeInSong;
 
     @FXML
     private TableView<PlaylistModel> tvPlaylists;
     @FXML
-    private TableColumn<PlaylistModel, String> txtName;
+    private TableColumn<PlaylistModel, String> tcName;
     @FXML
-    private TableColumn<PlaylistModel, Integer> txtSongs;
+    private TableColumn<PlaylistModel, Integer> tcSongs;
     @FXML
-    private TableColumn<PlaylistModel, String> txtTime;
+    private TableColumn<PlaylistModel, String> tcTimeInPlaylist;
 
     @FXML
     private Button btnPreviousSong;
@@ -111,16 +111,19 @@ public class MainController implements Initializable {
         tcTitle.setCellValueFactory(addSongToList -> addSongToList.getValue().getTitleProperty());
         tcArtist.setCellValueFactory(addSongToList -> addSongToList.getValue().getArtistProperty());
         tcCategory.setCellValueFactory(addSongToList -> addSongToList.getValue().getGenreProperty());
-        tcTime.setCellValueFactory(addSongToList -> addSongToList.getValue().getDurationString());
+        tcTimeInSong.setCellValueFactory(addSongToList -> addSongToList.getValue().getDurationString());
 
         // list of all Playlists
         tvPlaylists.setItems(playlistListModel.getPlayLists());
-        txtName.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getNameProperty());
-        txtSongs.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTotalSongsProperty().asObject());
-        txtTime.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getDurationStringProperty());
+        tcName.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getNameProperty());
+        tcSongs.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTotalSongsProperty().asObject());
+        tcTimeInPlaylist.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getDurationStringProperty());
 
         //hides the volume slider initially
         hboxVolume.getChildren().remove(sldVolume);
+
+        //hides the Search text box initially
+        txtSearch.setVisible(false);
 
         // Search in all songs
         txtSearch.textProperty().addListener((observableValue, oldValue, newValue) -> {
@@ -134,7 +137,7 @@ public class MainController implements Initializable {
         btnVolume.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if(hboxVolume.lookup("#sldVolume") == null){
+                if (hboxVolume.lookup("#sldVolume") == null) {
                     sldVolume.setVisible(true);
                     hboxVolume.getChildren().add(sldVolume);
                 }
@@ -154,6 +157,22 @@ public class MainController implements Initializable {
      ======================================================================================================= */
 
     /**
+     * When it is clicked, then turns on the search field and if is clicked again then is disappeared.
+     *
+     * @param actionEvent
+     */
+    public void handleSearchButton(ActionEvent actionEvent) {
+        if (txtSearch.isVisible()) {
+            txtSearch.setText("");
+            txtSearch.setVisible(false);
+        } else {
+            txtSearch.setVisible(true);
+            txtSearch.requestFocus();
+        }
+    }
+
+
+    /**
      * switches to picture of pause button and plays music either playing the old song or a new song.
      *
      * @param actionEvent runs when an action is performed on the button
@@ -165,7 +184,6 @@ public class MainController implements Initializable {
     private void playSong() {
         try {
             if (songPlayer == null) {
-                System.out.println(tvSongsOnPlaylist.getItems());
                 songPlayer = new SongPlayer(tvSongsOnPlaylist.getItems(), playlistModel.getIdProperty().get());
             } else if (tvPlaylists.getSelectionModel().getSelectedItem().getIdProperty().get() != songPlayer.getId()) {
                 songPlayer = new SongPlayer(tvSongsOnPlaylist.getItems(), playlistModel.getIdProperty().get());
@@ -484,7 +502,7 @@ public class MainController implements Initializable {
     public void handleViewSongs(MouseEvent mouseEvent) {
         if (getSelectedPlaylist() != null) {
             tvSongsOnPlaylist.setItems(getSelectedPlaylist().getListOfSongs());
-            txtSongsInPlayList.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTitleProperty());
+            tcSongsInPlayList.setCellValueFactory(addPlayListToLIst -> addPlayListToLIst.getValue().getTitleProperty());
         }
         playlistModel = tvPlaylists.getSelectionModel().getSelectedItem();
     }

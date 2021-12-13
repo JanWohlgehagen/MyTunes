@@ -1,7 +1,5 @@
 package gui.util;
 
-import be.DisplayMessage;
-import be.MyTunesException;
 import gui.App;
 import gui.controller.MainController;
 import gui.model.SongModel;

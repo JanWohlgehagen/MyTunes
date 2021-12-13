@@ -24,7 +24,6 @@ public class LogDAO {
             preparedStatement.setString(1, userName);
             preparedStatement.setObject(2, date);
             preparedStatement.setString(3, error);
-            System.out.println(date);
             int affectedRows = preparedStatement.executeUpdate();
             if (affectedRows != 1) {
                 throw new MyTunesException(affectedRows + " affectedRows  in Log(DAL)");

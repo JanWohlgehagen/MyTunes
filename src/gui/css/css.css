@@ -171,3 +171,6 @@
     -fx-background-color:  linear-gradient(to top, #7d7a79, white);
 }
 
+#txtSearch{
+    -fx-background-color: #8a8686;
+}
