@@ -2,6 +2,10 @@ package be;
 
 public class MyTunesException extends Exception {
 
+    /**
+     * different constructors for when we are throwing the exception.
+     * depending on if we just want to get the message or also the cause.
+     */
     public MyTunesException()
     {
         super();
