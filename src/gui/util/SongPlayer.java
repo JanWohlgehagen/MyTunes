@@ -1,5 +1,7 @@
 package gui.util;
 
+import be.DisplayMessage;
+import be.MyTunesException;
 import gui.App;
 import gui.controller.MainController;
 import gui.model.SongModel;
@@ -44,18 +46,22 @@ public class SongPlayer {
      * @param index revices the index of the song, than is wanted to be played.
      */
     public void play(int index) {
-        if (index != this.index) {
-            setIndex(index);
-            initializeSong();
-        } else {
-            mediaPlayer.setStartTime(snapshot);
+        try{
+            if (index != this.index) {
+                setIndex(index);
+                initializeSong();
+            } else {
+                mediaPlayer.setStartTime(snapshot);
+            }
+            if (mainController.btnToggleShuffle.isSelected()) {
+                mainController.updateIsPlayingLabel(shuffledSongs.get(index).getTitleProperty().get());
+            } else {
+                mainController.updateIsPlayingLabel(songModels.get(index).getTitleProperty().get());
+            }
+            mediaPlayer.play();
+        }catch (Exception ex) {
+            DisplayMessage.displayError(ex);
         }
-        if (mainController.btnToggleShuffle.isSelected()) {
-            mainController.updateIsPlayingLabel(shuffledSongs.get(index).getTitleProperty().get());
-        } else {
-            mainController.updateIsPlayingLabel(songModels.get(index).getTitleProperty().get());
-        }
-        mediaPlayer.play();
     }
 
     /**

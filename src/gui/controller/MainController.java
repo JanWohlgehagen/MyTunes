@@ -169,6 +169,7 @@ public class MainController implements Initializable {
             } else if (tvPlaylists.getSelectionModel().getSelectedItem().getIdProperty().get() != songPlayer.getId()) {
                 songPlayer = new SongPlayer(tvSongsOnPlaylist.getItems(), playlistModel.getIdProperty().get());
             }
+
             btnToggleShuffle.setDisable(false);
             btnPreviousSong.setDisable(false);
             btnSkipSong.setDisable(false);
