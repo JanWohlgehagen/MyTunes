@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox onKeyPressed="#HandleKeyboardInput" stylesheets="@../css/css.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.MainController">
+<VBox onKeyPressed="#HandleKeyboardInput" stylesheets="@../css/css.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.MainController">
    <children>
       <AnchorPane prefHeight="525.0" prefWidth="896.0" stylesheets="@../css/css.css">
          <children>
@@ -116,7 +116,7 @@
                <children>
                   <HBox alignment="CENTER" layoutX="327.0" layoutY="19.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="47.0" spacing="15.0" AnchorPane.bottomAnchor="44.0" AnchorPane.topAnchor="19.0">
                      <children>
-                        <ToggleButton fx:id="btnToggleShuffle" disable="true" mnemonicParsing="false" prefHeight="23.0" prefWidth="26.0" />
+                        <ToggleButton fx:id="btnToggleShuffle" disable="true" mnemonicParsing="false" onAction="#handleShuffleBtn" prefHeight="23.0" prefWidth="26.0" />
                         <Button fx:id="btnPreviousSong" disable="true" mnemonicParsing="false" onAction="#handlePreviousSongBtn" prefHeight="35.0" prefWidth="35.0" />
                         <Button fx:id="btnPlay" mnemonicParsing="false" onAction="#handlePlayBtn" prefHeight="45.0" prefWidth="45.0" styleClass="css" />
                         <Button fx:id="btnSkipSong" disable="true" mnemonicParsing="false" onAction="#handleNextSongBtn" prefHeight="35.0" prefWidth="35.0" />

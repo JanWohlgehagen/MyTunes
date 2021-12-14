@@ -20,9 +20,9 @@ public class SongPlayer {
     private int index;
     private List<SongModel> songModels;
     private Duration snapshot;
-    private int id = -1;
+    private int id = 0;
     MainController mainController;
-    private List<SongModel> shuffledSongs = new ArrayList<>();
+    private List<SongModel> songsToBePlayed = new ArrayList<>();
 
     /**
      * constructor for a song takes a list of SongModels
@@ -31,35 +31,34 @@ public class SongPlayer {
      */
     public SongPlayer(List<SongModel> songModels, int id) {
         this.songModels = songModels;
+        this.songsToBePlayed = songModels;
         this.id = id;
         mainController = new App().getController();
         snapshot = new Duration(0.0);
-        shuffleSong();
+        shufflePlaylist();
         initializeSong();
     }
 
     /**
-     *  Plays a song
-     *
+     * Plays a song
+     * <p>
      * checks for if the song is the same song
      * checks if the btntoggleshuffle is selected.
+     *
      * @param index revices the index of the song, than is wanted to be played.
      */
     public void play(int index) {
-        try{
+        try {
             if (index != this.index) {
                 setIndex(index);
                 initializeSong();
             } else {
                 mediaPlayer.setStartTime(snapshot);
             }
-            if (mainController.btnToggleShuffle.isSelected()) {
-                mainController.updateIsPlayingLabel(shuffledSongs.get(index).getTitleProperty().get());
-            } else {
-                mainController.updateIsPlayingLabel(songModels.get(index).getTitleProperty().get());
-            }
+
+            mainController.updateIsPlayingLabel(songsToBePlayed.get(index).getTitleProperty().get());
             mediaPlayer.play();
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             displayError(ex);
         }
     }
@@ -76,7 +75,7 @@ public class SongPlayer {
      * goes one song forward
      * by using the set index to go one song forward. if possible.
      */
-    public void nextSong(){
+    public void nextSong() {
         mediaPlayer.stop();
         setIndex(index + 1);
         snapshot = new Duration(0.0);
@@ -100,9 +99,15 @@ public class SongPlayer {
     /**
      * shuffles all the songs into a ShuffledSongs List.
      */
-    public void shuffleSong() {
-            shuffledSongs.addAll(songModels);
-            Collections.shuffle(shuffledSongs);
+    public void shufflePlaylist() {
+        Collections.shuffle(songsToBePlayed);
+    }
+
+    /**
+     * sets the playlist to the unruffled list
+     */
+    public void unshufflePlaylist() {
+        songsToBePlayed = songModels;
     }
 
 
@@ -139,12 +144,10 @@ public class SongPlayer {
     /**
      * we initialize the a song ready to be played. we also use a lambda to check for when the song is finished playing
      */
-    private void initializeSong(){
+    private void initializeSong() {
         try {
-            String path = songModels.get(index).getPathToFileProperty().get();
-            if (mainController.btnToggleShuffle.isSelected()) {
-                path = shuffledSongs.get(index).getPathToFileProperty().get();
-            }
+
+            String path = songsToBePlayed.get(index).getPathToFileProperty().get();
             File file = new File(path);
             String MEDIA_URL = file.toURI().toString();
             Media song = new Media(MEDIA_URL);
@@ -156,7 +159,7 @@ public class SongPlayer {
                 mainController.updateSelection();
                 mainController.setSongVolume();
             });
-        }catch (Exception ex){
+        } catch (Exception ex) {
             displayError(ex);
         }
     }
@@ -182,19 +185,6 @@ public class SongPlayer {
             return true;
         } else setIndex(0);
         return false;
-    }
-
-    /**
-     * @return the int index of the song on the tableview.
-     */
-    public int getShuffledSongIndex() {
-
-            for (int i = 0; i < songModels.size(); i++) {
-                if (songModels.get(i).getIdProperty().equals(shuffledSongs.get(index).getIdProperty())) {
-                    return i;
-                }
-            }
-        return 0;
     }
 
     /**

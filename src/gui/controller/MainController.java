@@ -182,6 +182,19 @@ public class MainController implements Initializable {
 
 
     /**
+     *
+     * @param actionEvent
+     */
+    public void handleShuffleBtn(ActionEvent actionEvent) {
+
+        if(btnToggleShuffle.isSelected()){
+            songPlayer.shufflePlaylist();
+        }else{
+            songPlayer.unshufflePlaylist();
+        }
+    }
+
+    /**
      * @param actionEvent runs when an action is performed on the playBtn button
      */
     public void handlePlayBtn(ActionEvent actionEvent) {
@@ -356,9 +369,6 @@ public class MainController implements Initializable {
             try {
                 playlistListModel.addSongToPlaylist(songModel.convertToSong(), playlistModel.convertToPlaylist());
                 playlistModel.addSongToPlayList(songModel);
-
-                pauseSong();
-                songPlayer = new SongPlayer(tvSongsOnPlaylist.getItems(), playlistModel.getIdProperty().get());
             } catch (MyTunesException MyTex) {
                 displayError(new MyTunesException("This song already exist in this playlist."));
             }
@@ -600,13 +610,7 @@ public class MainController implements Initializable {
      * updates the selected place on the tableview.
      */
     public void updateSelection() {
-        if (btnToggleShuffle.isSelected()) {
-            tvSongsOnPlaylist.getSelectionModel().select(songPlayer.getShuffledSongIndex());
-        } else {
             tvSongsOnPlaylist.getSelectionModel().select(songPlayer.getIndex());
-        }
-
-
     }
 
     /**
@@ -710,4 +714,5 @@ public class MainController implements Initializable {
     public void updateIsPlayingLabel(String title) {
         lblCurrentSongPlaying.setText(title);
     }
+
 }
