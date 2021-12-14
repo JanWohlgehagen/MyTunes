@@ -43,6 +43,9 @@ public class EditSongController implements Initializable {
     SongListModel songListModel;
     SongModel songModel;
 
+    /**
+     * constructor of EditSongController.
+     */
     public EditSongController() {
         fileChooser = new FileChooser();
         categories = FXCollections.observableArrayList();
@@ -50,6 +53,10 @@ public class EditSongController implements Initializable {
 
     }
 
+
+    /**
+     * initialize the stage
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -68,11 +75,16 @@ public class EditSongController implements Initializable {
         setData();
     }
 
+    /**
+     * @param actionEvent runs when an action is performed on SaveBtn
+     */
     public void handleSaveBtn(ActionEvent actionEvent) {
         saveSong();
     }
 
-    //closes the stage
+    /**
+     * @param actionEvent runs when an action is performed on the CancelBtn button.
+     */
     public void handleCancelBtn(ActionEvent actionEvent) {
         closeStage();
     }
