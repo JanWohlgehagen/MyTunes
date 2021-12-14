@@ -105,7 +105,7 @@ public class MainController implements Initializable {
 
     /**
      *  initialize our program.
-     *  TODO hvad skal der stå her.
+     *
      * @param location
      * @param resources
      */
