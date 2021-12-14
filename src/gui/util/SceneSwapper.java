@@ -16,9 +16,9 @@ import static be.DisplayMessage.displayError;
 public class SceneSwapper {
 
     /**
-     *
-     * @param stage
-     * @param fxmlClassName
+     * switches the stage to a certain fxml file.
+     * @param stage of stage wanted to be shown.
+     * @param fxmlClassName the file that wanted to be shown
      * @throws MyTunesException if cant find the stage.
      */
     public void sceneSwitch(Stage stage, String fxmlClassName){
