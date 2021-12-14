@@ -691,7 +691,7 @@ public class MainController implements Initializable {
     /**
      *  here we use a listener changed to move to slider along with the song playing
      *
-     *  TODO jan -.-  plus totalingDuration wants to be final.
+     *
      */
     public void updateProgBar() {
         songPlayer.getMediaPlayer().currentTimeProperty().addListener(new ChangeListener<Duration>() {
