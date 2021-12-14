@@ -16,8 +16,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.ResourceBundle;
@@ -79,12 +77,21 @@ public class EditSongController implements Initializable {
         closeStage();
     }
 
+
+    /**
+     * Checks if Enter is pressed, and then runs the saveSong.
+     * @param keyEvent runs when a key is pressed.
+     */
     public void HandleEnterSave(KeyEvent keyEvent) {
         if(keyEvent.getCode().equals(KeyCode.ENTER)){
             saveSong();
         }
     }
 
+    /**
+     * saves a song.
+     * checks all textfields is not empty.
+     */
     private void saveSong() {
         if(txtArtist.getText().isBlank() || txtTitle.getText().isBlank() || txtFile.getText().isBlank() || cBoxCategory.getSelectionModel().getSelectedItem() == null) {
             displayMessage("One or more field is empty");
@@ -99,11 +106,17 @@ public class EditSongController implements Initializable {
         }
     }
 
+    /**
+     * closes the stage.
+     */
     public void closeStage(){
         Stage stage = (Stage) gridPaneId.getScene().getWindow();
         stage.close();
     }
 
+    /**
+     * sets the data into the Dropbox.
+     */
     private void setData() {
         categories.add("Pop");
         categories.add("Hip hop");

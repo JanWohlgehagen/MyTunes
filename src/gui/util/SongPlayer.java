@@ -101,9 +101,8 @@ public class SongPlayer {
      * shuffles all the songs into a ShuffledSongs List.
      */
     public void shuffleSong() {
-        shuffledSongs.addAll(songModels);
-        Collections.shuffle(shuffledSongs);
-
+            shuffledSongs.addAll(songModels);
+            Collections.shuffle(shuffledSongs);
     }
 
 
@@ -190,12 +189,11 @@ public class SongPlayer {
      */
     public int getShuffledSongIndex() {
 
-        for (int i = 0; i < songModels.size(); i++) {
-            if (songModels.get(i).getIdProperty().equals(shuffledSongs.get(index).getIdProperty())) {
-                return i;
+            for (int i = 0; i < songModels.size(); i++) {
+                if (songModels.get(i).getIdProperty().equals(shuffledSongs.get(index).getIdProperty())) {
+                    return i;
+                }
             }
-        }
-
         return 0;
     }
 

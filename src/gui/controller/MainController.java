@@ -356,6 +356,9 @@ public class MainController implements Initializable {
             try {
                 playlistListModel.addSongToPlaylist(songModel.convertToSong(), playlistModel.convertToPlaylist());
                 playlistModel.addSongToPlayList(songModel);
+
+                pauseSong();
+                songPlayer = new SongPlayer(tvSongsOnPlaylist.getItems(), playlistModel.getIdProperty().get());
             } catch (MyTunesException MyTex) {
                 displayError(new MyTunesException("This song already exist in this playlist."));
             }
