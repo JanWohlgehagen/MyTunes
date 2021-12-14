@@ -167,10 +167,13 @@
     -fx-background-color:  linear-gradient(to bottom, #7d7a79, white);
 }
 
+
 .bottomPane{
     -fx-background-color:  linear-gradient(to top, #7d7a79, white);
 }
 
 #txtSearch{
-    -fx-background-color: #8a8686;
+    -fx-background-color: #5e5a5a;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
 }
