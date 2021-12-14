@@ -161,7 +161,6 @@ public class SongPlayer {
                 mainController.setSongVolume();
             });
         } catch (Exception ex) {
-            System.out.println("testetstestes");
             displayError(ex);
         }
     }
