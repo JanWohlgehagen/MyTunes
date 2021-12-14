@@ -14,6 +14,15 @@ public class LogManager {
         logDAO = new LogDAO();
     }
 
+    /**
+     * Sent the error, down to the database for be stored
+     *
+     * @param userName
+     * @param date
+     * @param error
+     * @throws MyTunesException
+     */
+
     public void storeLogInDB(String userName, Date date, String error) throws MyTunesException {
         logDAO.logErrorInDB(userName, date, error);
 

@@ -16,6 +16,15 @@ public class LogDAO {
         databaseConnector = new MyConnection();
     }
 
+    /**
+     * Log the error in DB
+     *
+     * @param userName
+     * @param date
+     * @param error
+     * @throws MyTunesException
+     */
+
     public void logErrorInDB(String userName, Date date, String error) throws MyTunesException {
 
         try (Connection connection = databaseConnector.getConnection()) {

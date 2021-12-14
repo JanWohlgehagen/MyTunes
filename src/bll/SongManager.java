@@ -25,17 +25,47 @@ public class SongManager {
         }
     }
 
+    /**
+     * Get all the songs in DB
+     *
+     * @return a list of songs
+     * @throws MyTunesException
+     */
+
     public List<Song> getAllSongs() throws MyTunesException {
         return songDAO.getAllSongs();
     }
+
+    /**
+     * Create a song in database
+     *
+     * @param title, artist,  genre, duration, pathToFile
+     *
+     * @return When a song is created in the database, after that it will then send the new song object back
+     * @throws MyTunesException
+     */
 
     public Song createSong(String title, String artist, String genre, double duration, String pathToFile) throws MyTunesException {
         return  songDAO.createSong(title, artist, genre, duration, pathToFile);
     }
 
+    /**
+     * Update a song in database
+     *
+     * @param song
+     * @throws MyTunesException
+     */
+
     public void updateSong(Song song) throws MyTunesException {
         songDAO.updateSong(song);
     }
+
+    /**
+     * remove a song form database
+     *
+     * @param song
+     * @throws MyTunesException
+     */
 
     public void deleteSong(Song song) throws MyTunesException {
         songDAO.deleteSong(song);

@@ -27,11 +27,26 @@ public class SongSearcher implements ISearcher {
         return searchResult;
     }
 
+    /**
+     * Compare keyword to the songs title
+     *
+     * @param song
+     * @param query
+     * @return true if keyword match title
+     */
+
     @Override
     public boolean compareToSongTitle(Song song, String query) {
         return song.getTitle().toLowerCase().contains(query.toLowerCase());
     }
 
+    /**
+     * Compare keyword to the songs artist
+     *
+     * @param song
+     * @param query
+     * @return true if keyword match artist
+     */
     @Override
     public boolean compareToSongArtist(Song song, String query) {
         return song.getArtist().toLowerCase().contains(query.toLowerCase());

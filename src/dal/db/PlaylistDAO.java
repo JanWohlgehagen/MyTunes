@@ -17,6 +17,14 @@ public class PlaylistDAO implements IPlaylistRepository {
         databaseConnector = new MyConnection();
     }
 
+    /**
+     *
+     * Get all the playlist in DB
+     *
+     * @return
+     * @throws MyTunesException
+     */
+
     @Override
     public List<Playlist> getAllPlaylists() throws MyTunesException {
         List<Playlist> allPlaylists = new ArrayList<>();
@@ -61,6 +69,14 @@ public class PlaylistDAO implements IPlaylistRepository {
         return allPlaylists;
     }
 
+    /**
+     * Get all songs form a playlist in DB
+     *
+     * @param playlistId
+     * @return
+     * @throws MyTunesException
+     */
+
     @Override
     public List<Song> getSongsFromPlaylist(int playlistId) throws MyTunesException {
         List<Song> songsInPlaylist = new ArrayList<>();
@@ -91,6 +107,14 @@ public class PlaylistDAO implements IPlaylistRepository {
         return songsInPlaylist;
     }
 
+    /**
+     * Add a song form playlist in DB.
+     *
+     * @param song
+     * @param playlist
+     * @throws MyTunesException
+     */
+
     @Override
     public void addSongToPLaylist(Song song, Playlist playlist) throws MyTunesException {
         try (Connection connection = databaseConnector.getConnection()) {
@@ -104,6 +128,13 @@ public class PlaylistDAO implements IPlaylistRepository {
         }
     }
 
+    /**
+     * Delete a song form playlist in DB
+     *
+     * @param song
+     * @param playlist
+     * @throws MyTunesException
+     */
     @Override
     public void removeSongFromPlaylist(Song song, Playlist playlist) throws MyTunesException {
         try (Connection connection = databaseConnector.getConnection()) {
@@ -117,6 +148,13 @@ public class PlaylistDAO implements IPlaylistRepository {
         }
     }
 
+    /**
+     * Create a playlist in DB
+     *
+     * @param name
+     * @return
+     * @throws MyTunesException
+     */
 
     @Override
     public Playlist createPlaylist(String name) throws MyTunesException {
@@ -140,6 +178,13 @@ public class PlaylistDAO implements IPlaylistRepository {
         return null;
     }
 
+    /**
+     * Update a playlist in DB
+     *
+     * @param playlist
+     * @throws MyTunesException
+     */
+
     @Override
     public void updatePlaylist(Playlist playlist) throws MyTunesException {
         try(Connection connection = databaseConnector.getConnection()){
@@ -157,6 +202,13 @@ public class PlaylistDAO implements IPlaylistRepository {
             throw new MyTunesException(ERROR_STRING, SQLex.fillInStackTrace());
         }
     }
+
+    /**
+     * Delete a playlist in DB
+     *
+     * @param playlist
+     * @throws MyTunesException
+     */
 
     @Override
     public void deletePlaylist(Playlist playlist) throws MyTunesException {
