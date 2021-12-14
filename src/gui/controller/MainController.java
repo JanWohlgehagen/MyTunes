@@ -181,7 +181,7 @@ public class MainController implements Initializable {
     }
 
     /**
-     *
+     * depending on btnToggleShuffle is selected or not, is calling shuffle or unshuffle method-
      * @param actionEvent runs on action on btnToggleShuffle button.
      */
     public void handleShuffleBtn(ActionEvent actionEvent) {
