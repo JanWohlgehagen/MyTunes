@@ -42,18 +42,16 @@ public class PlaylistManager {
         playListDAO.addSongToPLaylist(song, playlist);
     }
 
-    public void removeSongFromPLaylist(Song song, Playlist playlist) throws MyTunesException {
-        playListDAO.removeSongFromPlaylist(song, playlist);
-    }
-
     /**
-     * Returns all songs in a given playlist from the DB
-     * @param playlistId
-     * @return
+     * Remove a song form is playlist, in the DB
+     *
+     * @param song
+     * @param playlist
      * @throws MyTunesException
      */
-    public List<Song> getSongsFromPlaylist (int playlistId) throws MyTunesException {
-        return playListDAO.getSongsFromPlaylist(playlistId);
+
+    public void removeSongFromPLaylist(Song song, Playlist playlist) throws MyTunesException {
+        playListDAO.removeSongFromPlaylist(song, playlist);
     }
 
     /**
