@@ -24,6 +24,9 @@ import java.util.*;
 
 import static be.DisplayMessage.displayMessage;
 
+/**
+ * we use the controller for when a user wants to import a song to the program.
+ */
 public class NewSongController implements Initializable {
 
     @FXML
@@ -48,7 +51,11 @@ public class NewSongController implements Initializable {
     private String strDurInMinutes ="";
 
 
-
+    /**
+     * constructor of NewSongController, where we are creating new Objects.
+     * @throws MyTunesException
+     * @throws IOException
+     */
     public NewSongController() throws MyTunesException, IOException {
         fileChooser = new FileChooser();
         categories = FXCollections.observableArrayList();
@@ -56,11 +63,21 @@ public class NewSongController implements Initializable {
         songListModel = new SongListModel();
     }
 
+    /**
+     * initialize the controller.
+     * uses the setdata method.
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setData();
     }
 
+    /**
+     *  opens a chose window where you can choose the song you want to import into the program.
+     * @param actionEvent runs when an actions in performed on the ChooseBtn.
+     */
     public void handleChooseBtn(ActionEvent actionEvent) {
         Stage stage = (Stage) gridPaneId.getScene().getWindow();
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Music file", "*.mp3", "*.wav", "*.wave"));
@@ -83,26 +100,43 @@ public class NewSongController implements Initializable {
         }
     }
 
+    /**
+     *  checks if the Enter key have been pressed, and calls the saveSong.
+     * @param keyEvent runs when a key is pressed
+     */
     public void HandleEnterSave(KeyEvent keyEvent) throws MyTunesException {
         if(keyEvent.getCode().equals(KeyCode.ENTER)){
             saveSong();
         }
     }
 
+    /**
+     * @param actionEvent runs when a actions in performed on the SaveBtn.
+     */
     public void handleSaveBtn(ActionEvent actionEvent) throws MyTunesException {
         saveSong();
     }
 
-    //closes the stage
+    /**
+     * @param actionEvent runs when a action is performed on the cancel button.
+     */
     public void handleCancelBtn(ActionEvent actionEvent) {
         closeStage();
     }
 
+    /**
+     * closess the stage.
+     */
     public void closeStage(){
         Stage stage = (Stage) gridPaneId.getScene().getWindow();
         stage.close();
     }
 
+    /**
+     * saves a song.
+     * checks if all fields is filled in.
+     * @throws MyTunesException
+     */
     private void saveSong() throws MyTunesException {
         MainController mainController = new App().getController();
         if(txtArtist.getText().isBlank() || txtFile.getText().isBlank() || txtTitle.getText().isBlank() || cBoxCategory.getSelectionModel().getSelectedItem() == null){
@@ -113,6 +147,9 @@ public class NewSongController implements Initializable {
         }
     }
 
+    /**
+     * sets the data into the dropbox.
+     */
     private void setData() {
         categories.add("Pop");
         categories.add("Hip hop");

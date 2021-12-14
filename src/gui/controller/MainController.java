@@ -88,8 +88,11 @@ public class MainController implements Initializable {
     private PlaylistListModel playlistListModel;
 
 
+    /**
+     * constructor of the controller. where we create new objects.
+     * @throws IOException
+     */
     public MainController() throws IOException {
-
         try {
             progressBar = new Slider();
             sceneSwapper = new SceneSwapper();
@@ -102,6 +105,12 @@ public class MainController implements Initializable {
         }
     }
 
+    /**
+     *  initialize our program.
+     *  TODO hvad skal der stå her.
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         tvSongsOnPlaylist.setPlaceholder(new Label("Select a playlist \n with songs"));
@@ -159,7 +168,7 @@ public class MainController implements Initializable {
     /**
      * When it is clicked, then turns on the search field and if is clicked again then is disappeared.
      *
-     * @param actionEvent
+     * @param actionEvent runs when a action is performed on SearchButton.
      */
     public void handleSearchButton(ActionEvent actionEvent) {
         if (txtSearch.isVisible()) {
@@ -173,14 +182,19 @@ public class MainController implements Initializable {
 
 
     /**
-     * switches to picture of pause button and plays music either playing the old song or a new song.
-     *
-     * @param actionEvent runs when an action is performed on the button
+     * @param actionEvent runs when an action is performed on the playBtn button
      */
     public void handlePlayBtn(ActionEvent actionEvent) {
         playSong();
     }
 
+
+    /**
+     * plays the song
+     * checks if songplayer is null, creates a new songplayer object.
+     * checks if the playlist selected is not the same id as songplayer, creates a new songplayer object.
+     * otherwise, we wil just resume the song.
+     */
     private void playSong() {
         try {
             if (songPlayer == null) {
@@ -188,14 +202,9 @@ public class MainController implements Initializable {
             } else if (tvPlaylists.getSelectionModel().getSelectedItem().getIdProperty().get() != songPlayer.getId()) {
                 songPlayer = new SongPlayer(tvSongsOnPlaylist.getItems(), playlistModel.getIdProperty().get());
             }
-
-            btnToggleShuffle.setDisable(false);
-            btnPreviousSong.setDisable(false);
-            btnSkipSong.setDisable(false);
+            activateButtons();
             btnPause.setVisible(true);
             btnPlay.setVisible(false);
-            sldVolume.setDisable(false);
-            progressBar.setDisable(false);
             songPlayer.play(tvSongsOnPlaylist.getSelectionModel().getSelectedIndex());
             updateProgBar();
             setSongVolume();
@@ -205,14 +214,26 @@ public class MainController implements Initializable {
     }
 
     /**
-     * switches to the play button picture
-     *
-     * @param actionEvent
+     * activates the buttons.
+     */
+    private void activateButtons(){
+        sldVolume.setDisable(false);
+        progressBar.setDisable(false);
+        btnToggleShuffle.setDisable(false);
+        btnPreviousSong.setDisable(false);
+        btnSkipSong.setDisable(false);
+    }
+
+    /**
+     * @param actionEvent runs when an action is performed on the Pausebtn button.
      */
     public void handlePauseBtn(ActionEvent actionEvent) {
         pauseSong();
     }
 
+    /**
+     * pauses a song.
+     */
     private void pauseSong() {
         btnPlay.setVisible(true);
         btnPause.setVisible(false);
@@ -221,9 +242,9 @@ public class MainController implements Initializable {
     }
 
     /**
-     * switch the scene to a different scene.
+     * switch the scene to NewPlaylistView.fxml.
      *
-     * @param actionEvent runs when an action happens on a button.
+     * @param actionEvent runs when an action happens on newPlaylistBtn button.
      */
     public void handleNewPlaylistBtn(ActionEvent actionEvent) {
         sceneSwapper.sceneSwitch(new Stage(), "NewPlaylistView.fxml");
@@ -231,10 +252,9 @@ public class MainController implements Initializable {
 
     /**
      * switch the scene to a EditPlaylistView.fxml scene.
-     *
-     * @param actionEvent runs when an action happens on a button.
+     * checks for a playlist is selected to be edited.
+     * @param actionEvent runs when an action happens on handleEditPlaylistBtn button.
      */
-
     public void handleEditPlaylistBtn(ActionEvent actionEvent) {
         if (getSelectedPlaylist() == null) {
             displayMessage("There is no playlist select, please select a playlist");
@@ -244,14 +264,17 @@ public class MainController implements Initializable {
     }
 
     /**
-     * deletes a playlist from the application
-     *
-     * @param actionEvent runs when an action is performed on the button.
+     * @param actionEvent runs when an action is performed on the handleDeletePlaylistBtn button.
      */
     public void handleDeletePlaylistBtn(ActionEvent actionEvent) {
         deletePlaylist();
     }
 
+    /**
+     * deletes a playlist.
+     * checks there is a selected playlist.
+     * displays a confirmation box.
+     */
     private void deletePlaylist() {
         if (getSelectedPlaylist() == null) {
             displayMessage("There is no playlist select, please select a playlist");
@@ -267,14 +290,17 @@ public class MainController implements Initializable {
     }
 
     /**
-     * moves a song up by one in the tableview.
-     *
-     * @param actionEvent runs when an action is called on the button
+     * @param actionEvent runs when an action is called on the handleAscendSongsInPlaylistBtn button
      */
     public void handleAscendSongInPlaylistBtn(ActionEvent actionEvent) {
         ascendSong();
     }
 
+
+    /**
+     * Ascends a song In the tvSongsOnPlaylist tableview.
+     * checks for no selected song from playlist.
+     */
     private void ascendSong() {
         if (getSelectedSongFromPlaylist() == null) {
             displayMessage("There is no song select, please select a song");
@@ -286,17 +312,20 @@ public class MainController implements Initializable {
     }
 
     /**
-     * moves a song down by one in the tableview.
-     *
-     * @param actionEvent runs when action is performed on the button.
+     * @param actionEvent runs when action is performed on the handleDescendSongInPlaylistBtn button.
      */
     public void handleDescendSongInPlaylistBtn(ActionEvent actionEvent) {
         descendSong();
     }
 
+
+    /**
+     * descends a song In the tvSongsOnPlaylist tableview.
+     * checks for no selected song from playlist.
+     */
     private void descendSong() {
         if (getSelectedSongFromPlaylist() == null) {
-            displayMessage("There is no song select, please select a song");
+            displayMessage("There is no song selected, please select a song");
         } else {
             SongModel songModel = getSelectedSongFromPlaylist();
             PlaylistModel playlistModel = getSelectedPlaylist();
@@ -305,20 +334,24 @@ public class MainController implements Initializable {
     }
 
     /**
-     * adds a song to a certain playlist
-     *
-     * @param actionEvent runs when an action is performed on a button.
+     * @param actionEvent runs when an action is performed on handleAddSongToPlaylistBtn button.
      */
     public void handleAddSongToPlaylistBtn(ActionEvent actionEvent) {
         addSongToPlaylist();
     }
 
+
+    /**
+     * adds a song to a Playlist.
+     * checks for a selected song and playlist.
+     * and throws an error if the song already exist.
+     */
     private void addSongToPlaylist() {
         SongModel songModel = getSelectedSong();
         PlaylistModel playlistModel = getSelectedPlaylist();
 
         if (getSelectedSong() == null || getSelectedPlaylist() == null) {
-            displayMessage("There is no song or playlist select, please select a song or playlist");
+            displayMessage("There is no song or playlist selected, please select a song or playlist");
         } else {
             try {
                 playlistListModel.addSongToPlaylist(songModel.convertToSong(), playlistModel.convertToPlaylist());
@@ -330,17 +363,21 @@ public class MainController implements Initializable {
     }
 
     /**
-     * deletes a song from a playlist.
-     *
-     * @param actionEvent runs when an action is performed on the button.
+     * @param actionEvent runs when an action is performed on the deleteSongInPlaylistBtn button.
      */
     public void handleDeleteSongInPlaylistBtn(ActionEvent actionEvent) {
         deleteSongFromPlaylist();
     }
 
+
+    /**
+     * deletes a Song From a Playlist.
+     * checks for both a song and a playlist.
+     * and display a confirmation box.
+     */
     private void deleteSongFromPlaylist() {
         if (getSelectedSongFromPlaylist() == null || getSelectedPlaylist() == null) {
-            displayMessage("There is no song or playlist select, please select a song or playlist");
+            displayMessage("There is no song or playlist selected, please select a song or playlist");
         } else {
             if (displayWarning("This action will delete the song from the playlist.")) {
                 try {
@@ -370,24 +407,27 @@ public class MainController implements Initializable {
      */
     public void handleEditSongBtn(ActionEvent actionEvent) {
         if (getSelectedSong() == null) {
-            displayMessage("There is no song select, please select a song");
+            displayMessage("There is no song selected, please select a song");
         } else {
             sceneSwapper.sceneSwitch(new Stage(), "EditSongView.fxml");
         }
     }
 
     /**
-     * removes a song
-     *
-     * @param actionEvent runs when an action is performed.
+     * @param actionEvent runs when an action is performed on the handleDeleteSongBtn.
      */
     public void handleDeleteSongBtn(ActionEvent actionEvent) throws MyTunesException {
         deleteSong();
     }
 
+    /**
+     * Deletes and Songs.
+     * Checks for song is selected.
+     * and display a confirmation warning.
+     */
     private void deleteSong() {
         if (getSelectedSong() == null) {
-            displayMessage("There is no song select, please select a song");
+            displayMessage("There is no song selected, please select a song");
         } else {
             if (displayWarning("This action will delete the song permanently.")) {
                 try {
@@ -400,14 +440,15 @@ public class MainController implements Initializable {
     }
 
     /**
-     * skips current song to next song
-     *
-     * @param actionEvent when an action is performed on button program will run
+     * @param actionEvent when an action is performed on next song button.
      */
     public void handleNextSongBtn(ActionEvent actionEvent) {
         nextSong();
     }
 
+    /**
+     * used when wanted to play the next song.
+     */
     private void nextSong() {
         btnPause.setVisible(true);
         btnPlay.setVisible(false);
@@ -418,14 +459,15 @@ public class MainController implements Initializable {
     }
 
     /**
-     * goes back to previous song
-     *
-     * @param actionEvent will run when an action is called on the button
+     * @param actionEvent will run when an action is called on the previous button.
      */
     public void handlePreviousSongBtn(ActionEvent actionEvent) {
         previousSong();
     }
 
+    /**
+     * used when wanted to play previous song.
+     */
     private void previousSong() {
         btnPause.setVisible(true);
         btnPlay.setVisible(false);
@@ -442,7 +484,7 @@ public class MainController implements Initializable {
     /**
      * Takes input from the keyboard when the MainView (root BorderPane) is in focus.
      *
-     * @param keyEvent
+     * @param keyEvent runs on a keyEvent.
      * @throws MyTunesException
      */
     public void HandleKeyboardInput(KeyEvent keyEvent) throws MyTunesException {
@@ -487,7 +529,11 @@ public class MainController implements Initializable {
      * =======================================================================================================
      */
 
-
+    /**
+     * creates a new playlist.
+     * @param playlistName the name of the new playlist.
+     * @throws MyTunesException error
+     */
     public void infoToNewPlaylist(String playlistName) throws MyTunesException {
         try {
             playlistListModel.createPlaylist(playlistName);
@@ -507,26 +553,49 @@ public class MainController implements Initializable {
         playlistModel = tvPlaylists.getSelectionModel().getSelectedItem();
     }
 
+    /**
+     * @return the selected PlaylistModel on the tvPlaylists Tableview.
+     */
     public PlaylistModel getSelectedPlaylist() {
         return tvPlaylists.getSelectionModel().getSelectedItem();
     }
 
+
+    /**
+     * @return the selected SongModel object in the tvSongs Tableview.
+     */
     public SongModel getSelectedSong() {
         return tvSongs.getSelectionModel().getSelectedItem();
     }
 
+
+    /**
+     * @return the selected SongModel object in the tvSongsOnPlaylist tableview.
+     */
     public SongModel getSelectedSongFromPlaylist() {
         return tvSongsOnPlaylist.getSelectionModel().getSelectedItem();
     }
 
+    /**
+     *  clears the selected item on the tvSongs Tableview.
+     * @param mouseEvent happens when clicked on the tvSongsOnPlaylist Tableview.
+     */
     public void handleTvSongsInPlaylistClicked(MouseEvent mouseEvent) {
         tvSongs.getSelectionModel().clearSelection();
     }
 
+
+    /**
+     *   clears the selected item on the tvSongsOnPlaylist tableview.
+     * @param mouseEvent happens when clicked on tvSongs Tableview
+     */
     public void handleTvSongClicked(MouseEvent mouseEvent) {
         tvSongsOnPlaylist.getSelectionModel().clearSelection();
     }
 
+    /**
+     * updates the selected place on the tableview.
+     */
     public void updateSelection() {
         if (btnToggleShuffle.isSelected()) {
             tvSongsOnPlaylist.getSelectionModel().select(songPlayer.getShuffledSongIndex());
@@ -537,7 +606,16 @@ public class MainController implements Initializable {
 
     }
 
-
+    /**
+     * creates a song to songlistmodel.
+     *
+     * @param title the name of the song
+     * @param artist the artist of the song
+     * @param genre the genre of the song
+     * @param duration the duration of the song
+     * @param pathToFile the location to the song.
+     * @throws MyTunesException error
+     */
     public void infoToCreateSong(String title, String artist, String genre, double duration, String pathToFile) throws MyTunesException {
         try {
             songListModel.createSong(title, artist, genre, duration, pathToFile);
@@ -552,15 +630,33 @@ public class MainController implements Initializable {
      * =======================================================================================================
      */
 
+    /**
+     * sets the song volume after what the volume sliders value are.
+     */
+    public void setSongVolume() {
+        songPlayer.setVolume(sldVolume.getValue());
+    }
 
+    /**
+     * gets the music progressbar value
+     * @return return the value of the progress bar slider.
+     */
     public double getProgBarValue() {
         return progressBar.getValue();
     }
 
+    /**
+     *
+     * @param event when a drag is entered on progressbar slider.
+     */
     public void handleProgBarPressed(MouseEvent event) {
         songPlayer.barDragStart();
     }
 
+    /**
+     *
+     * @param event when mouse clicked is released from the progressbar slider.
+     */
     public void handleProgBarReleased(MouseEvent event) {
         songPlayer.barDragEnd();
         btnPause.setVisible(true);
@@ -578,10 +674,11 @@ public class MainController implements Initializable {
         }
     }
 
-    public void setSongVolume() {
-        songPlayer.setVolume(sldVolume.getValue());
-    }
-
+    /**
+     *  here we use a listener changed to move to slider along with the song playing
+     *
+     *  TODO jan -.-  plus totalingDuration wants to be final.
+     */
     public void updateProgBar() {
         songPlayer.getMediaPlayer().currentTimeProperty().addListener(new ChangeListener<Duration>() {
             double totalSongDuration = songPlayer.getSongModel().getDurationProperty().get();
@@ -602,6 +699,11 @@ public class MainController implements Initializable {
      * =======================================================================================================
      */
 
+    /**
+     * updates the label of what song is currently playing.
+     *
+     * @param title of the song that's currently playing.
+     */
     public void updateIsPlayingLabel(String title) {
         lblCurrentSongPlaying.setText(title);
     }
