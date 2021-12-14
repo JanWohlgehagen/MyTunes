@@ -54,15 +54,6 @@ public class Playlist {
     }
 
     /**
-     * adds a single song to the playlist
-     * @param song the song wanted to be added to playlist.
-     */
-    //TODO
-    public void addSongToPlayList(Song song){
-        this.songList.add(song);
-    }
-
-    /**
      * adds a list of songs to the playlist.
      * @param songs takes a list of songs.
      */
@@ -70,14 +61,4 @@ public class Playlist {
         this.songList.addAll(songs);
     }
 
-    /**
-     * creates a new playlist.
-     * @param id the int id of the playlist
-     * @param name the string name of the playlist
-     * @return a new playlist.
-     */
-    //TODO
-    public Playlist createPlaylist(int id, String name){
-        return new Playlist(id, name);
-    }
 }
