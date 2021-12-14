@@ -14,9 +14,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -171,6 +169,10 @@ public class MainController implements Initializable {
      * @param actionEvent runs when a action is performed on SearchButton.
      */
     public void handleSearchButton(ActionEvent actionEvent) {
+        toggleSearch();
+    }
+
+    private void toggleSearch(){
         if (txtSearch.isVisible()) {
             txtSearch.setText("");
             txtSearch.setVisible(false);
@@ -502,6 +504,10 @@ public class MainController implements Initializable {
      */
     public void HandleKeyboardInput(KeyEvent keyEvent) throws MyTunesException {
         KeyCode keyCode = keyEvent.getCode(); //A key from the keyboard
+
+        if(keyCode == KeyCode.F && keyEvent.isShortcutDown()){
+            toggleSearch();
+        }
 
         switch (keyCode) {
             case F7:
