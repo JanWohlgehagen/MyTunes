@@ -180,10 +180,9 @@ public class MainController implements Initializable {
         }
     }
 
-
     /**
      *
-     * @param actionEvent
+     * @param actionEvent runs on action on btnToggleShuffle button.
      */
     public void handleShuffleBtn(ActionEvent actionEvent) {
 
