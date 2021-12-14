@@ -62,7 +62,7 @@ public class EditSongController implements Initializable {
         songModel = mainController.getSelectedSong();
         txtTitle.setText(songModel.getTitleProperty().get());
         txtArtist.setText(songModel.getArtistProperty().get());
-        txtTime.setText(songModel.getDurationString().get());
+        txtTime.setText(songModel.getDurationStringProperty().get());
         txtFile.setText(songModel.getPathToFileProperty().get());
         cBoxCategory.getSelectionModel().select(songModel.getGenreProperty().get());
         setData();

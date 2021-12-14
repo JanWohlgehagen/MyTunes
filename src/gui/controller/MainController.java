@@ -118,7 +118,7 @@ public class MainController implements Initializable {
         tcTitle.setCellValueFactory(addSongToList -> addSongToList.getValue().getTitleProperty());
         tcArtist.setCellValueFactory(addSongToList -> addSongToList.getValue().getArtistProperty());
         tcCategory.setCellValueFactory(addSongToList -> addSongToList.getValue().getGenreProperty());
-        tcTimeInSong.setCellValueFactory(addSongToList -> addSongToList.getValue().getDurationString());
+        tcTimeInSong.setCellValueFactory(addSongToList -> addSongToList.getValue().getDurationStringProperty());
 
         // list of all Playlists
         tvPlaylists.setItems(playlistListModel.getPlayLists());
@@ -702,7 +702,7 @@ public class MainController implements Initializable {
                 lblSongProgress.setText(songPlayer.getSongModel().getDurationString(songPlayer.getMediaPlayer().getCurrentTime().toMillis()));
             }
         });
-        lblSongDuration.setText(songPlayer.getSongModel().getDurationString().get());
+        lblSongDuration.setText(songPlayer.getSongModel().getDurationStringProperty().get());
     }
 
     /**

@@ -28,10 +28,22 @@ public class SongModel {
 
     public SongModel() {}
 
+    /**
+     * Convert a list of songs to a list of Songmodels.
+     *
+     * @param songs
+     * @return a list of songmodels
+     */
+
     public ObservableList<SongModel> convertSongToSongmodel(List<Song> songs) {
         return FXCollections.observableArrayList(songs.stream().map(song -> new SongModel(song)).toList());
     }
 
+    /**
+     * Convert a songmodel to a song
+     *
+     * @return a song
+     */
     public Song convertToSong() {
         return new Song(this.getIdProperty().get(), this.getTitleProperty().get(), this.getTitleProperty().get(),
                 this.getGenreProperty().get(), this.getDurationProperty().get(), this.getPathToFileProperty().get());
@@ -73,13 +85,23 @@ public class SongModel {
         getGenreProperty().set(genre);
     }
 
-    public StringProperty getDurationString() {
+    /**
+     * Convert the Duration time of a song to "time string"
+     *
+     * @return the song Duration time as a string
+     */
+    public StringProperty getDurationStringProperty() {
         int timeAsIntegerInSeconds = (int) duration.get() / 1000;
         int minutes = timeAsIntegerInSeconds / 60; // divide by 60 to get the minutes from seconds.
         int seconds = timeAsIntegerInSeconds % 60; // remaining seconds
         return new SimpleStringProperty(minutes + ":" + seconds);
     }
 
+    /**
+     * Convert the Duration time of a song to "time string"
+     *
+     * @return the song Duration time as a string
+     */
     public String getDurationString(double DurationInSeconds) {
         int timeAsIntegerInSeconds = (int) DurationInSeconds / 1000;
         int minutes = timeAsIntegerInSeconds / 60; // divide by 60 to get the minutes from seconds.
@@ -89,7 +111,6 @@ public class SongModel {
         if (seconds < 10)
             returnSeconds = "0" + seconds;
         else returnSeconds = String.valueOf(seconds);
-
         return minutes + ":" + returnSeconds;
     }
 }
