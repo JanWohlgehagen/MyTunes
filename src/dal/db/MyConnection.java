@@ -14,7 +14,7 @@ public class MyConnection {
     /**
      * reading from a file database.settings. to setup the database.
      * not included in the github so to acces the database,
-     * create a new package named Data, and include a file called database.settings . Holding login information. 
+     * create a new package named Data, and include a file called database.settings . Holding login information.
      * @throws IOException
      */
     public MyConnection() throws IOException {
@@ -33,6 +33,11 @@ public class MyConnection {
             ds.setPassword(password);
     }
 
+    /**
+     *  get the database connection.
+     * @return the database connection.
+     * @throws SQLServerException
+     */
     public Connection getConnection() throws SQLServerException {
         return ds.getConnection();
     }
