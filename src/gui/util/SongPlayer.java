@@ -35,7 +35,6 @@ public class SongPlayer {
         this.id = id;
         mainController = new App().getController();
         snapshot = new Duration(0.0);
-        shufflePlaylist();
         initializeSong();
     }
 
@@ -59,6 +58,8 @@ public class SongPlayer {
             mainController.updateIsPlayingLabel(songsToBePlayed.get(index).getTitleProperty().get());
             mediaPlayer.play();
         } catch (Exception ex) {
+
+            ex.fillInStackTrace();
             displayError(ex);
         }
     }
@@ -160,6 +161,7 @@ public class SongPlayer {
                 mainController.setSongVolume();
             });
         } catch (Exception ex) {
+            System.out.println("testetstestes");
             displayError(ex);
         }
     }
