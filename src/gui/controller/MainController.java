@@ -506,6 +506,8 @@ public class MainController implements Initializable {
 
         if(keyCode == KeyCode.F && keyEvent.isShortcutDown()){
             toggleSearch();
+        } else if (keyCode == KeyCode.ESCAPE && txtSearch.isVisible()){
+            toggleSearch();
         }
 
         switch (keyCode) {

@@ -1,13 +1,9 @@
 package gui.model;
 
 import be.Playlist;
-import be.MyTunesException;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
-import java.io.IOException;
-
 import static be.DisplayMessage.displayMessage;
 
 public class PlaylistModel {
@@ -26,7 +22,7 @@ public class PlaylistModel {
         this.getIdProperty().set(playlist.getId());
         this.getNameProperty().set(playlist.getName());
         this.getDurationProperty().set(getTotalTime());
-        this.allSongs.addAll(songModel.convertSongToSongmodel(playlist.getSongList()));
+        this.allSongs.addAll(songModel.convertSongToSongmodel(playlist.getSongList())); // adds all the songs to the list allSongs in a playlist.
         this.getTotalSongsProperty().set(allSongs.size());
         this.getDurationStringProperty().set(getDurationString());
 
@@ -60,6 +56,11 @@ public class PlaylistModel {
         return id;
     }
 
+
+    /**
+     *  ascend a song in a playlist.
+     * @param selectedSongModel get a songmodel object.
+     */
     public void AscendSongInPlaylist(SongModel selectedSongModel) {
         int indexOfSelectedSongModel = allSongs.indexOf(selectedSongModel);
         if (indexOfSelectedSongModel > 0) {
@@ -72,6 +73,10 @@ public class PlaylistModel {
 
     }
 
+    /**
+     * Descend a Song in a Playlist.
+     * @param selectedSongModel gets a songmodel object.
+     */
     public void DescendSongInPlaylist(SongModel selectedSongModel) {
         int indexOfSelectedSongModel = allSongs.indexOf(selectedSongModel);
         if (indexOfSelectedSongModel < allSongs.size() - 1) {
@@ -83,18 +88,30 @@ public class PlaylistModel {
         } else displayMessage("It is at the bottom");
     }
 
-    public void removeSongFromList(SongModel songModel) {
+    /**
+     * removes a song from Playlist.
+     * @param songModel a songmodel object.
+     */
+    public void removeSongFromPlaylist(SongModel songModel) {
         allSongs.remove(songModel);
         getTotalSongsProperty().set(allSongs.size());
         getDurationStringProperty().set(getDurationString());
     }
 
+    /**
+     * add a song to a playlist.
+     * @param song the object of a song
+     */
     public void addSongToPlayList(SongModel song) {
         allSongs.add(song);
         getTotalSongsProperty().set(allSongs.size());
         getDurationStringProperty().set(getDurationString());
     }
 
+    /**
+     * converts total time into a presentable string.
+     * @return a String with the minutes and seconds,
+     */
     public String getDurationString() {
         double totalTime = getTotalTime();
         int timeAsIntegerInSeconds = (int) totalTime / 1000;
@@ -103,6 +120,10 @@ public class PlaylistModel {
         return minutes + ":" + seconds;
     }
 
+    /**
+     * gets the total time of all songs in a playlist.
+     * @return the total time of all songs in a playlist. as double.
+     */
     public double getTotalTime() {
         double totalTime = 0;
         for (SongModel songModel : allSongs) {
@@ -111,6 +132,10 @@ public class PlaylistModel {
         return totalTime;
     }
 
+    /**
+     *  converts a playlistmodel to a playlist.
+     * @return a new playlist.
+     */
     public Playlist convertToPlaylist() {
         return new Playlist(this.getIdProperty().get(), this.getNameProperty().get());
     }
