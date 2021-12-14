@@ -16,6 +16,12 @@ public class SongDAO implements ISongRepository {
         databaseConnector = new MyConnection();
     }
 
+    /**
+     * Get all songs in DB
+     *
+     * @return
+     * @throws MyTunesException
+     */
     @Override
     public List<Song> getAllSongs() throws MyTunesException {
         List<Song> allSongsList = new ArrayList<>();
@@ -45,6 +51,18 @@ public class SongDAO implements ISongRepository {
         return allSongsList;
     }
 
+    /**
+     * create a song in DB
+     *
+     * @param title
+     * @param artist
+     * @param genre
+     * @param duration
+     * @param pathToFile
+     * @return The new song
+     * @throws MyTunesException
+     */
+
     @Override
     public Song createSong(String title, String artist, String genre, double duration, String pathToFile) throws MyTunesException {
 
@@ -72,6 +90,13 @@ public class SongDAO implements ISongRepository {
         return null;
     }
 
+    /**
+     * update a song in DB
+     *
+     * @param song
+     * @throws MyTunesException
+     */
+
     @Override
     public void updateSong(Song song) throws MyTunesException {
         try(Connection connection = databaseConnector.getConnection()) {
@@ -92,6 +117,13 @@ public class SongDAO implements ISongRepository {
             throw new MyTunesException(ERROR_STRING, SQLex.fillInStackTrace());
         }
     }
+
+    /**
+     * Delete song in DB
+     *
+     * @param song
+     * @throws MyTunesException
+     */
 
     @Override
     public void deleteSong(Song song) throws MyTunesException {
