@@ -112,6 +112,8 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         tvSongsOnPlaylist.setPlaceholder(new Label("Select a playlist \n with songs"));
+        tvPlaylists.setPlaceholder(new Label("No playlist in Database"));
+        tvSongs.setPlaceholder(new Label("No song in Database"));
 
         // list of all songs
         tvSongs.setItems(songListModel.getSongs());
