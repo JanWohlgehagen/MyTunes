@@ -1,5 +1,6 @@
 package gui.util;
 
+import be.MyTunesException;
 import gui.App;
 import gui.controller.MainController;
 import gui.model.SongModel;
@@ -161,7 +162,7 @@ public class SongPlayer {
                 mainController.setSongVolume();
             });
         } catch (Exception ex) {
-            displayError(ex);
+            displayError(new MyTunesException("Can't find the songs path", ex.fillInStackTrace()));
         }
     }
 

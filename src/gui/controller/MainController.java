@@ -225,8 +225,7 @@ public class MainController implements Initializable {
             updateProgBar();
             setSongVolume();
         } catch (Exception ex) {
-            ex.fillInStackTrace();
-            displayMessage("Nothing selected. Please select a playlist and a song.");
+            displayError(new MyTunesException("Nothing selected.", ex.fillInStackTrace()));
         }
     }
 
@@ -375,6 +374,7 @@ public class MainController implements Initializable {
                 playlistModel.addSongToPlayList(songModel);
             } catch (MyTunesException MyTex) {
                 displayError(new MyTunesException("This song already exist in this playlist."));
+
             }
         }
     }
