@@ -13,8 +13,8 @@ public class MyConnection {
 
     /**
      * reading from a file database.settings. to setup the database.
-     * not included in the github so to acces the database,
-     * create a new package named Data, and include a file called database.settings . Holding login information.
+     * not included in the github so to access the database,
+     * create a new folder named data if is not there, and include a file called database.settings. login information is in the rapport.
      * @throws IOException
      */
     public MyConnection() throws IOException {
